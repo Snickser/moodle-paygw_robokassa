@@ -23,7 +23,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024032604;
+$plugin->version = 2024032605;
 $plugin->requires = 2023100400;
 $plugin->component = 'paygw_robokassa';
 $plugin->release = '0.1';
