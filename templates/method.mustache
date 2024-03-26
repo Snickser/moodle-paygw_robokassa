@@ -29,10 +29,11 @@
         "description": "for enrolment in course",
         "enrolperiod": "1",
         "enrolperiod_desc": "day"
+        "passwordmode": "1234"
     }
 
 }}
-<form id="robokassa-method-select" action="{{url}}/payment/gateway/robokassa/pay.php" class="robokassa-form" method="post">
+<form id="robokassa-method-select" action="{{url}}/payment/gateway/robokassa/pay.php" class="robokassa-form" method="POST">
     <div class="cost-display">
         <div style="text-align: center;">
             <p>{{# str }} abouttopay, paygw_robokassa {{/ str}} "{{description}}".</p>
@@ -51,7 +52,7 @@
 
 <br>
 
-<img src="{{{image}}}" alt="logo" height="30">
+<img src="{{{image}}}" alt="Robokassa" height="60">
 
         </div>
     </div>
@@ -66,6 +67,13 @@
     </div>
 
     <div style="text-align: center;">
+
+{{#passwordmode}}
+<p>
+{{# str }} password_text, paygw_robokassa {{/ str}} <br>
+{{# str }} password {{/ str}}: <input type="password" id="password" name="password" value="">
+</p>
+{{/passwordmode}}
 
 <p>{{# str }} paymentinstant {{/ str}}</p>
 
