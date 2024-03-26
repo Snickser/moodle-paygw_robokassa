@@ -24,9 +24,11 @@
 
     Example context (json):
     {
-        "fee": "50.5",
+        "fee": "10.05",
         "currency": "RUB",
         "description": "for enrolment in course",
+        "enrolperiod": "1",
+        "enrolperiod_desc": "day"
     }
 
 }}
@@ -47,7 +49,9 @@
 <p><h4>{{# str }} enrolperiod, enrol_robokassa {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4></p>
 {{/enrolperiod}}
 
-{{#pix}} icon, paygw_robokassa, logo {{/pix}}
+<br>
+
+<img src="{{{image}}}" alt="logo" height="40">
 
         </div>
     </div>
@@ -58,7 +62,7 @@
         <input type="hidden" class="hidden-inputs" id="component" name="component" value="{{component}}">
         <input type="hidden" class="hidden-inputs" id="paymentarea" name="paymentarea" value="{{paymentarea}}">
         <input type="hidden" class="hidden-inputs" id="itemid" name="itemid" value="{{itemid}}">
-        <input type="hidden" class="hidden-inputs" id="description" name="description" value="{{description}}">
+        <input type="hidden" class="hidden-inputs" id="description" name="description" value="{{{description}}}">
     </div>
 
     <div style="text-align: center;">

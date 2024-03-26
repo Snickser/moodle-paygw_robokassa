@@ -95,6 +95,8 @@ $templatedata->currency    = $currency;
 $templatedata->enrolperiod = $enrolperiod;
 $templatedata->enrolperiod_desc    = $enrolperiod_desc;
 
+$templatedata->image       = $OUTPUT->image_url('img','paygw_robokassa');
+
 echo $OUTPUT->render_from_template('paygw_robokassa/method', $templatedata);
 
 echo $OUTPUT->footer();
