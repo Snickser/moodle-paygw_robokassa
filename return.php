@@ -9,7 +9,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$id = required_param('MNT_TRANSACTION_ID', PARAM_INT);
+$id = required_param('InvId', PARAM_INT);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', array('id' => $id))) {
     die('FAIL. Not a valid transaction id');
