@@ -62,42 +62,32 @@ $paygwdata->cost = $cost;
 $paygwdata->currency = $currency;
 $paygwdata->date_created = time();
 
-
 if (!$transaction_id = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     print_error('error_txdatabase', 'paygw_robokassa');
 }
-$id = $transaction_id;
 
-// make signature
-$mntsignature = md5($config->mntid.$transaction_id.$cost.$currency.$config->mnttestmode.$config->mntdataintegritycode);
+$paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
 
-$paymenturl = "https://".$config->paymentserver."/assistant.htm?";
+// your registration data
+$mrh_login = $config->merchant_login;  // your login here
+$mrh_pass1 = $config->password1;       // merchant pass1 here
+// order properties
+$inv_id    = $transaction_id;          // shop's invoice number
+// (unique for shop's lifetime)
+$inv_desc  = $description;  // invoice desc
+$out_summ  = $cost;  // invoice summ
 
-$paymentsystem = explode('_', $config->paymentsystem);
-$paymentsystemparams = "";
-if (!empty($paymentsystem[2]))
-{
-    $paymentsystemparams .= "paymentSystem.unitId={$paymentsystem[2]}&";
-}
-if (isset($paymentsystem[3]) && !empty($paymentsystem[3]))
-{
-    $paymentsystemparams .= "paymentSystem.accountId={$paymentsystem[3]}&";
-}
+// build CRC value
+$crc =  md5("$mrh_login:$out_summ:$inv_id:$currency:$mrh_pass1");
 
-redirect($paymenturl."
-	MNT_ID={$config->mntid}&
-	MNT_TRANSACTION_ID={$transaction_id}&
-	MNT_CURRENCY_CODE={$currency}&
-	MNT_AMOUNT={$cost}&
-	MNT_SIGNATURE={$mntsignature}&
-	MNT_SUCCESS_URL=".urlencode($CFG->wwwroot."/payment/gateway/robokassa/return.php?id=".$id)."&
-	MNT_FAIL_URL=".urlencode($CFG->wwwroot."/payment/gateway/robokassa/return.php?id=".$id)."&
-	MNT_CUSTOM1=".urlencode($component.":".$paymentarea.":".$itemid)."&
-	MNT_CUSTOM2=".urlencode(fullname($USER))."&
-	MNT_CUSTOM3=".urlencode($USER->email)."&
-	MNT_DESCRIPTION=".get_string('payment','paygw_robokassa')."&
-	pawcmstype=moodle&
-	moneta.locale=".current_language()."&
-	followup=true&
-	{$paymentsystemparams}
-");
+//redirect($paymenturl."
+echo "
+	MerchantLogin=$mrh_login&
+	OutSum=$out_summ&
+	InvId=$inv_id&
+	OutSumCurrency=$currency&
+	Description=".urlencode($inv_desc)."&
+	SignatureValue=$crc&
+	Culture=".current_language()."&
+	Email=".urlencode($USER->email)."
+";
