@@ -55,8 +55,8 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('text', 'password2', get_string('password2', 'paygw_robokassa'));
         $mform->setType('password2', PARAM_TEXT);
 
-//        $mform->addElement('advcheckbox', 'mnttestmode', get_string('mnttestmode', 'paygw_robokassa'), '0');
-//        $mform->setType('mnttestmode', PARAM_TEXT);
+        $mform->addElement('advcheckbox', 'istestmode', get_string('istestmode', 'paygw_robokassa'), '0');
+        $mform->setType('istestmode', PARAM_TEXT);
 
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback', 'paygw_robokassa').':</span><br>');

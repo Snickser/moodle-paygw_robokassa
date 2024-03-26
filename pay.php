@@ -88,5 +88,6 @@ redirect($paymenturl."
 	Description=".urlencode($inv_desc)."&
 	SignatureValue=$crc&
 	Culture=".current_language()."&
-	Email=".urlencode($USER->email)."
+	Email=".urlencode($USER->email)."&
+	IsTest=".$config->istestmode."
 ");

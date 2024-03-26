@@ -24,10 +24,6 @@ $string['pluginname'] = 'Robokassa payment';
 $string['pluginname_desc'] = 'The Robokassa plugin allows you to receive payments via Robokassa.';
 $string['gatewaydescription'] = 'Robokassa is an authorised payment gateway provider for processing credit card transactions.';
 $string['gatewayname'] = 'Robokassa';
-$string['mntid'] = 'Account number';
-$string['mntdataintegritycode'] = 'Code of data integrity verification';
-$string['mnttestmode'] = 'Test mode';
-$string['paymentserver'] = 'Payment server URL';
 $string['callback'] = 'Callback URL';
 $string['callback_help'] = 'Copy this and put it in callback URLs at your Robokassa account.';
 $string['paymentsuccessful'] = 'Payment Successful';
@@ -36,6 +32,10 @@ $string['paymore'] = 'If you want to donate more, simply enter your amount inste
 $string['sendpaymentbutton'] = 'Send payment via Robokassa';
 $string['abouttopay'] = 'You are about to pay for';
 $string['payment'] = 'Donation';
+$string['password1'] = 'Password1';
+$string['password2'] = 'Password2';
+$string['merchant_login'] = 'Merchant login';
+$string['istestmode'] = 'Test mode';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Payment system';

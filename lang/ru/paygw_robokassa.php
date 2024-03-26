@@ -35,8 +35,10 @@ $string['gatewaydescription'] = 'Robokassa — авторизованный пл
 $string['cost'] = 'Стоимость записи';
 $string['currency'] = 'Валюта';
 $string['paymentserver'] = 'URL сервера оплаты';
-$string['mntid'] = 'Номер счета';
-$string['mntdataintegritycode'] = 'Код проверки целостности данных';
+$string['password1'] = 'Пароль1';
+$string['password2'] = 'Пароль2';
+$string['merchant_login'] = 'Идентификатор магазина';
+$string['istestmode'] = 'Тестовый режим';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Платежная система';
