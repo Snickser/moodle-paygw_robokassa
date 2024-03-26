@@ -76,6 +76,9 @@ class gateway extends \core_payment\gateway {
         $mform->disabledIf('password', 'passwordmode');
         $mform->addHelpButton('password', 'password', 'paygw_robokassa');
 
+        $mform->addElement('float', 'suggested', get_string('suggested', 'paygw_robokassa'));
+        $mform->setType('suggested', PARAM_FLOAT);
+
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
         $mform->addElement('html', '<span class="callback_url">'.$CFG->wwwroot.'/payment/gateway/robokassa/callback.php</span><br>');
