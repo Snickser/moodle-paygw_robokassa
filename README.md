@@ -5,7 +5,6 @@ Version 0.1
 https://robokassa.com
 
 
-
 INSTALLATION
 ------------
 Download the latest paygw_robokassa.zip and unzip the contents into the /payment/gateway directory. Or upload it from Moodle plugins adminnistration interface.
