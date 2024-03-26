@@ -51,9 +51,11 @@ class gateway extends \core_payment\gateway {
 
         $mform->addElement('text', 'password1', get_string('password1', 'paygw_robokassa'));
         $mform->setType('password1', PARAM_TEXT);
+        $mform->disabledIf('password1', 'istestmode', "neq", 0);
 
         $mform->addElement('text', 'password2', get_string('password2', 'paygw_robokassa'));
         $mform->setType('password2', PARAM_TEXT);
+        $mform->disabledIf('password2', 'istestmode', "neq", 0);
 
         $mform->addElement('advcheckbox', 'istestmode', get_string('istestmode', 'paygw_robokassa'), '0');
         $mform->setType('istestmode', PARAM_TEXT);
@@ -65,6 +67,14 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('text', 'test_password2', get_string('password2', 'paygw_robokassa'));
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
+
+        $mform->addElement('advcheckbox', 'passwordmode', get_string('passwordmode', 'paygw_robokassa'), '0');
+        $mform->setType('passwordmode', PARAM_TEXT);
+
+        $mform->addElement('text', 'password', get_string('password', 'paygw_robokassa'));
+        $mform->setType('password', PARAM_TEXT);
+        $mform->disabledIf('password', 'passwordmode');
+        $mform->addHelpButton('password', 'password', 'paygw_robokassa');
 
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
