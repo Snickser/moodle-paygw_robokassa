@@ -30,6 +30,7 @@
         "enrolperiod": "1",
         "enrolperiod_desc": "day"
         "passwordmode": "1234"
+        "suggested": "100"
     }
 
 }}
@@ -42,7 +43,9 @@
 
             <h3>{{# str }} cost {{/ str}}:
 
-<input type="number" id="cost_self" name="cost_self" min="{{fee}}" max="5000" value="{{fee}}" size="7" step="0.01">
+<input type="number" id="cost_self" name="cost_self" min="{{fee}}" max="5000"
+value="{{#suggested}}{{suggested}}{{/suggested}}{{^suggested}}{{fee}}{{/suggested}}"
+size="7" step="0.01">
 
  {{currency}}</h3>
 

@@ -41,6 +41,7 @@ $string['password1'] = 'Password1';
 $string['password2'] = 'Password2';
 $string['merchant_login'] = 'Merchant login';
 $string['istestmode'] = 'Test mode';
+$string['suggested'] = 'Suggested cost';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Payment system';
