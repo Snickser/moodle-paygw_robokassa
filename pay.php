@@ -83,13 +83,14 @@ $inv_desc  = $description;  // invoice desc
 $out_summ  = $cost;  // invoice summ
 
 // build CRC value
-$crc =  strtoupper(md5("$mrh_login:$out_summ:$inv_id:$currency:$mrh_pass1"));
+$crc =  strtoupper(md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1"));
+
+//	OutSumCurrency=$currency&
 
 redirect($paymenturl."
 	MerchantLogin=$mrh_login&
 	OutSum=$out_summ&
 	InvId=$inv_id&
-	OutSumCurrency=$currency&
 	Description=".urlencode($inv_desc)."&
 	SignatureValue=$crc&
 	Culture=".current_language()."&
