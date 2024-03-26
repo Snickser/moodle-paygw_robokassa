@@ -8,12 +8,11 @@ global $CFG, $USER, $DB;
 defined('MOODLE_INTERNAL') || die();
 
 
-$data = array();
-foreach ($_REQUEST as $key => $value) {
-	$data[$key] = $value;
-}
+$inv_id    = required_param('InvId', PARAM_ALPHANUMEXT);
+$out_summ  = required_param('OutSum', PARAM_RAW);
+$signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
-if (!$robokassatx = $DB->get_record('paygw_robokassa', array('id' => $data['InvId']))) {
+if (!$robokassatx = $DB->get_record('paygw_robokassa', array('id' => $inv_id))) {
 	die('FAIL. Not a valid transaction id');
 }
 
@@ -35,11 +34,11 @@ if($config->istestmode){
     $mrh_pass2 = $config->password2;      // merchant pass2 here
 }
 
-if(isset($data['SignatureValue']) && isset($data['OutSum']) && isset($data['InvId']))
+if(isset($mrh_pass2))
 {
-	$crc = strtoupper(md5("$data['OutSum']:$data['InvId']:$mrh_pass2"));
+	$crc = strtoupper(md5("$out_summ:$inv_id:$mrh_pass2"));
 
-	if ($data['SignatureValue'] !== $crc) {
+	if ($signature !== $crc) {
 		die('FAIL. Signature does not match.');
 	}
 
@@ -52,7 +51,7 @@ if(isset($data['SignatureValue']) && isset($data['OutSum']) && isset($data['InvI
 	// Use the same rounding of floats as on the paygw form.
 	$cost = number_format($cost, 2, '.', '');
 
-	if ($data['OutSum'] !== $cost) {
+	if ($out_summ !== $cost) {
 		die('FAIL. Amount does not match.');
 	}
 
@@ -67,7 +66,7 @@ if(isset($data['SignatureValue']) && isset($data['OutSum']) && isset($data['InvI
 	if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
 		die('FAIL. Update db error.');
 	} else {
-		die("OK".$data['InvId');
+		die("OK".$inv_id);
 	}
 } else {
 	die('FAIL');
