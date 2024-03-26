@@ -39,6 +39,9 @@ $string['password1'] = 'Пароль1';
 $string['password2'] = 'Пароль2';
 $string['merchant_login'] = 'Идентификатор магазина';
 $string['istestmode'] = 'Тестовый режим';
+$string['callback_url'] = 'ResultURL:';
+$string['callback_help'] = 'Copy this and put it in URLs at your Robokassa account.';
+$string['return_url'] = 'SuccessURL:';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Платежная система';

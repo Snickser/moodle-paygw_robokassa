@@ -59,8 +59,10 @@ class gateway extends \core_payment\gateway {
         $mform->setType('istestmode', PARAM_TEXT);
 
         global $CFG;
-        $mform->addElement('html', '<span class="label-callback">'.get_string('callback', 'paygw_robokassa').':</span><br>');
+        $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
         $mform->addElement('html', '<span class="callback_url">'.$CFG->wwwroot.'/payment/gateway/robokassa/callback.php</span><br>');
+        $mform->addElement('html', '<span class="label-return">'.get_string('return_url', 'paygw_robokassa').'</span><br>');
+        $mform->addElement('html', '<span class="return_url">'.$CFG->wwwroot.'/payment/gateway/robokassa/return.php</span><br>');
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_help', 'paygw_robokassa').'</span><br><br>');
 
     }
