@@ -80,8 +80,7 @@ $out_summ  = $cost;  // invoice summ
 // build CRC value
 $crc =  md5("$mrh_login:$out_summ:$inv_id:$currency:$mrh_pass1");
 
-//redirect($paymenturl."
-echo "
+redirect($paymenturl."
 	MerchantLogin=$mrh_login&
 	OutSum=$out_summ&
 	InvId=$inv_id&
@@ -90,4 +89,4 @@ echo "
 	SignatureValue=$crc&
 	Culture=".current_language()."&
 	Email=".urlencode($USER->email)."
-";
+");
