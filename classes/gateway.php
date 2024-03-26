@@ -58,6 +58,14 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('advcheckbox', 'istestmode', get_string('istestmode', 'paygw_robokassa'), '0');
         $mform->setType('istestmode', PARAM_TEXT);
 
+        $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'));
+        $mform->setType('test_password1', PARAM_TEXT);
+        $mform->disabledIf('test_password1', 'istestmode');
+
+        $mform->addElement('text', 'test_password2', get_string('password2', 'paygw_robokassa'));
+        $mform->setType('test_password2', PARAM_TEXT);
+        $mform->disabledIf('test_password2', 'istestmode');
+
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
         $mform->addElement('html', '<span class="callback_url">'.$CFG->wwwroot.'/payment/gateway/robokassa/callback.php</span><br>');
