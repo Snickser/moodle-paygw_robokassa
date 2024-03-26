@@ -77,7 +77,7 @@ if($config->istestmode){
 }
 
 // password mode
-if ( isset($_REQUEST['password']) ) {
+if ( strlen($_REQUEST['password']) ) {
     // build redirect
     $url = helper::get_success_url($component, $paymentarea, $itemid);
 
