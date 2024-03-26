@@ -26,14 +26,20 @@ $paymentarea = $robokassatx->paymentarea;
 $itemid      = $robokassatx->itemid;
 $userid      = $robokassatx->userid;
 
-
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
+
+// check test-mode
+if($config->istestmode){
+    $mrh_pass2 = $config->test_password2; // merchant test_pass2 here
+} else {
+    $mrh_pass2 = $config->password2;      // merchant pass2 here
+}
 
 if(isset($data['SignatureValue']) && isset($data['OutSum']) && isset($data['InvId']))
 {
-	$MNT_SIGNATURE = md5("$data['OutSum']:$data['InvId']:".$config->password2);
+	$crc = strtoupper(md5("$data['OutSum']:$data['InvId']:$mrh_pass2"));
 
-	if ($data['MNT_SIGNATURE'] !== $MNT_SIGNATURE) {
+	if ($data['SignatureValue'] !== $crc) {
 		die('FAIL. Signature does not match.');
 	}
 

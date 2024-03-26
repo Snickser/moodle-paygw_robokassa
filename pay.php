@@ -70,7 +70,12 @@ $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
 
 // your registration data
 $mrh_login = $config->merchant_login;  // your login here
-$mrh_pass1 = $config->password1;       // merchant pass1 here
+// check test-mode
+if($config->istestmode){
+    $mrh_pass1 = $config->test_password1; // merchant test_pass1 here
+} else {
+    $mrh_pass1 = $config->password1;      // merchant pass1 here
+}
 // order properties
 $inv_id    = $transaction_id;          // shop's invoice number
 // (unique for shop's lifetime)
@@ -78,7 +83,7 @@ $inv_desc  = $description;  // invoice desc
 $out_summ  = $cost;  // invoice summ
 
 // build CRC value
-$crc =  md5("$mrh_login:$out_summ:$inv_id:$currency:$mrh_pass1");
+$crc =  strtoupper(md5("$mrh_login:$out_summ:$inv_id:$currency:$mrh_pass1"));
 
 redirect($paymenturl."
 	MerchantLogin=$mrh_login&
