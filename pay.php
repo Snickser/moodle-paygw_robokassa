@@ -93,9 +93,9 @@ if ( strlen($_REQUEST['password']) ) {
 	$data->success = 2;
 	$DB->update_record('paygw_robokassa', $data);
 
-	redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
+	redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
     } else {
-	redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
+	redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
     die; // never
 }
