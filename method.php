@@ -95,7 +95,7 @@ $templatedata->currency    = $currency;
 $templatedata->enrolperiod = $enrolperiod;
 $templatedata->enrolperiod_desc = $enrolperiod_desc;
 $templatedata->passwordmode = $config->passwordmode;
-$templatedata->suggested = $config->suggested;
+$templatedata->suggest = $config->suggest;
 
 $templatedata->image       = $OUTPUT->image_url('img','paygw_robokassa');
 
