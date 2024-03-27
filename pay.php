@@ -62,6 +62,8 @@ if($paymentarea == "fee"){
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
 } else if($paymentarea == "sectionfee") {
     $cs = $DB->get_record('course_sections', ['id' => $itemid]);
+} else if($paymentarea == "unlockfee") {
+    $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
 if($cs->course){
     $gs = groups_get_all_groups($cs->course, $userid);
