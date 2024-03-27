@@ -54,20 +54,23 @@ if ( isset($_REQUEST['cost_self']) ) {
 $cost = number_format($cost, 2, '.', '');
 
 
-// get cource and groups for user
-if($component == "enrol_fee"){
+// get course and groups for user
+if($paymentarea == "fee"){
     $cs = $DB->get_record('enrol', ['id' => $itemid]);
-    $courseid = $cs->courseid;
-} else {
+    $cs->course = $cs->courseid;
+} else if($paymentarea == "cmfee") {
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
-    if($cs->course){
-	$gs = groups_get_all_groups($cs->course, $userid);
-        foreach($gs as $g){
-    	    $groups[] = $g->name;
-	}
-	$courseid = $cs->course;
-    }
+} else if($paymentarea == "sectionfee") {
+    $cs = $DB->get_record('course_sections', ['id' => $itemid]);
 }
+if($cs->course){
+    $gs = groups_get_all_groups($cs->course, $userid);
+    foreach($gs as $g){
+	$groups[] = $g->name;
+    }
+    $courseid = $cs->course;
+}
+
 
 // write tx to db
 $paygwdata = new stdClass();
