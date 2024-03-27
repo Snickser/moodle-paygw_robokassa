@@ -49,6 +49,8 @@ $string['return_url'] = 'SuccessURL и FailURL:';
 $string['payment_success'] = 'Оплата успешно произведена';
 $string['payment_error'] = 'Ошибка оплаты';
 $string['suggested'] = 'Рекомендуемая цена';
+$string['password_success'] = 'Пароль принят';
+$string['password_error'] = 'Неверный пароль';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Платежная система';

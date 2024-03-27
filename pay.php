@@ -53,6 +53,27 @@ if ( isset($_REQUEST['cost_self']) ) {
 }
 $cost = number_format($cost, 2, '.', '');
 
+
+// get course and groups for user
+if($paymentarea == "fee"){
+    $cs = $DB->get_record('enrol', ['id' => $itemid]);
+    $cs->course = $cs->courseid;
+} else if($paymentarea == "cmfee") {
+    $cs = $DB->get_record('course_modules', ['id' => $itemid]);
+} else if($paymentarea == "sectionfee") {
+    $cs = $DB->get_record('course_sections', ['id' => $itemid]);
+} else if($paymentarea == "unlockfee") {
+    $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
+}
+if($cs->course){
+    $gs = groups_get_all_groups($cs->course, $userid);
+    foreach($gs as $g){
+	$groups[] = $g->name;
+    }
+    $courseid = $cs->course;
+}
+
+
 // write tx to db
 $paygwdata = new stdClass();
 $paygwdata->userid = $userid;
@@ -61,7 +82,9 @@ $paygwdata->paymentarea = $paymentarea;
 $paygwdata->itemid = $itemid;
 $paygwdata->cost = $cost;
 $paygwdata->currency = $currency;
-$paygwdata->date_created = time();
+$paygwdata->date_created = date("Y-m-d H:i:s");
+$paygwdata->courseid = $courseid;
+$paygwdata->groups = $groups ? implode(',',$groups) : '' ;
 
 if (!$transaction_id = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     print_error('error_txdatabase', 'paygw_robokassa');
@@ -93,9 +116,9 @@ if ( strlen($_REQUEST['password']) ) {
 	$data->success = 2;
 	$DB->update_record('paygw_robokassa', $data);
 
-	redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
+	redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
     } else {
-	redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
+	redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
     die; // never
 }
