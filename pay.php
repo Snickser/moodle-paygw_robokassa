@@ -53,6 +53,22 @@ if ( isset($_REQUEST['cost_self']) ) {
 }
 $cost = number_format($cost, 2, '.', '');
 
+
+// get cource and groups for user
+if($component == "enrol_fee"){
+    $cs = $DB->get_record('enrol', ['id' => $itemid]);
+    $courseid = $cs->courseid;
+} else {
+    $cs = $DB->get_record('course_modules', ['id' => $itemid]);
+    if($cs->course){
+	$gs = groups_get_all_groups($cs->course, $userid);
+        foreach($gs as $g){
+    	    $groups[] = $g->name;
+	}
+	$courseid = $cs->course;
+    }
+}
+
 // write tx to db
 $paygwdata = new stdClass();
 $paygwdata->userid = $userid;
@@ -61,7 +77,9 @@ $paygwdata->paymentarea = $paymentarea;
 $paygwdata->itemid = $itemid;
 $paygwdata->cost = $cost;
 $paygwdata->currency = $currency;
-$paygwdata->date_created = time();
+$paygwdata->date_created = date("Y-m-d H:i:s");
+$paygwdata->courseid = $courseid;
+$paygwdata->groups = $groups ? implode(',',$groups) : '' ;
 
 if (!$transaction_id = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     print_error('error_txdatabase', 'paygw_robokassa');
