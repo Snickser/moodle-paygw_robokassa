@@ -48,11 +48,15 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 // TODO: Check if currency is IDR. If not, then something went really wrong in config.
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
+// chack self cost
 if ( isset($_REQUEST['cost_self']) ) {
     $cost = $_REQUEST['cost_self'];
 }
+// check maxcost
+if ( $config->maxcost && $cost > $config->maxcost ) {
+    $cost = $config->maxcost;
+}
 $cost = number_format($cost, 2, '.', '');
-
 
 // get course and groups for user
 if($paymentarea == "fee"){
