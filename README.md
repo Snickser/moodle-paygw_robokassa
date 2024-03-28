@@ -8,12 +8,11 @@ https://robokassa.com
 
 
 Features:
-+ Password to avoid payment.
++ Password to avoid payment or skip payment button.
 + Saving the course number and groups in which the student is enrolled.
 + Recommended payment price.
 + Displaying course enrollment duration.
 + The maximum cost limit for a form.
-+ Skip payment button.
 
 INSTALLATION
 ------------
