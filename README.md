@@ -6,7 +6,8 @@ https://robokassa.com
 
 ![alt text](https://raw.githubusercontent.com/Snickser/moodle-paygw_robokassa/da4ffeef22702ad4e087ca6ed78133f6c48dde65/pix/img.svg)
 
-FEATURES:
+
+Features:
 + Password to avoid payment
 
 INSTALLATION
