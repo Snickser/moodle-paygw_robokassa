@@ -99,6 +99,8 @@ $templatedata->enrolperiod_desc = $enrolperiod_desc;
 $templatedata->passwordmode = $config->passwordmode;
 $templatedata->suggest = $config->suggest;
 $templatedata->maxcost = $config->maxcost;
+$templatedata->skipmode = $config->skipmode;
+
 
 $templatedata->image       = $OUTPUT->image_url('img','paygw_robokassa');
 

@@ -29,10 +29,11 @@ $string['callback_help'] = 'Copy this and put it in URLs at your Robokassa accou
 $string['return_url'] = 'SuccessURL and FailURL:';
 $string['payment_success'] = 'Payment Successful';
 $string['payment_error'] = 'Payment Error';
-$string['password_success'] = 'Password Successful';
-$string['password_error'] = 'Password Error';
+$string['password_success'] = 'Paymemt password accepted';
+$string['password_error'] = 'Invalid password';
 $string['paymore'] = 'If you want to donate more, simply enter your amount instead of the indicated amount.';
-$string['sendpaymentbutton'] = 'Send payment via Robokassa';
+$string['sendpaymentbutton'] = 'Send payment via Robokassa!';
+$string['skippaymentbutton'] = 'Skip payment :(';
 $string['abouttopay'] = 'You are about to pay for';
 $string['payment'] = 'Donation';
 $string['password'] = 'Password';
@@ -45,6 +46,9 @@ $string['merchant_login'] = 'Merchant login';
 $string['istestmode'] = 'Test mode';
 $string['suggest'] = 'Suggested cost';
 $string['maxcost'] = 'Maximium cost';
+$string['skipmode'] = 'Can skip payment';
+$string['skipmode_help'] = 'This setting allows a payment bypass button, which can be useful in public courses with optional payment.';
+$string['skipmode_text'] = 'If you are not able to make a donation through the payment system, you can click on this button.';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Payment system';
