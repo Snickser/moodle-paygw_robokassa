@@ -37,9 +37,6 @@ $description = required_param('description', PARAM_TEXT);
 
 $description = json_decode("\"$description\"");
 
-if ( !empty($_REQUEST['cost_self']) ) {
-    $cost = number_format($_REQUEST['cost_self'], 2, '.', '');
-}
 
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 $payable = helper::get_payable($component, $paymentarea, $itemid);// Get currency and payment amount.
@@ -48,7 +45,7 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 // TODO: Check if currency is IDR. If not, then something went really wrong in config.
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
-// chack self cost
+// check self cost
 if ( !empty($_REQUEST['cost_self']) ) {
     $cost = $_REQUEST['cost_self'];
 }
@@ -69,12 +66,14 @@ if( $paymentarea == "fee" ){
 } else if( $paymentarea == "unlockfee" ) {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
+$groups = array();
 if( $cs->course ){
     $gs = groups_get_all_groups($cs->course, $userid);
     foreach($gs as $g){
 	$groups[] = $g->name;
     }
     $courseid = $cs->course;
+    $groups = implode(',', $groups);
 }
 
 
@@ -88,7 +87,7 @@ $paygwdata->cost = $cost;
 $paygwdata->currency = $currency;
 $paygwdata->date_created = date("Y-m-d H:i:s");
 $paygwdata->courseid = $courseid;
-$paygwdata->groups = $groups ? implode(',',$groups) : '' ;
+$paygwdata->groups = $groups;
 
 if (!$transaction_id = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     print_error('error_txdatabase', 'paygw_robokassa');
