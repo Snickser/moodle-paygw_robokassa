@@ -26,7 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['sendpaymentbutton'] = 'Пожертвовать!';
-$string['skippaymentbutton'] = 'Не могу :(';
 $string['paymore'] = 'Если вы хотите пожертвовать больше, то просто впишите свою сумму вместо указанной.';
 $string['payment'] = 'Пожертвование';
 $string['abouttopay'] = 'Вы собираетесь пожертвовать на';
@@ -56,6 +55,7 @@ $string['maxcost'] = 'Максимальная цена';
 $string['skipmode'] = 'Показать кнопку обхода платежа';
 $string['skipmode_help'] = 'Эта настройка разрешает кнопку обхода платежа, может быть полезна в публичных курсах с необязательной оплатой.';
 $string['skipmode_text'] = 'Если вы не имеете возможности совершить пожертвование через платёжную систему то можете нажать на эту кнопку.';
+$string['skippaymentbutton'] = 'Не могу :(';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Платежная система';
