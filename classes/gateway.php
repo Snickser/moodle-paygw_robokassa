@@ -98,8 +98,7 @@ class gateway extends \core_payment\gateway {
      */
     public static function validate_gateway_form(\core_payment\form\account_gateway $form,
                                                  \stdClass $data, array $files, array &$errors): void {
-        if ($data->enabled &&
-                (empty($data->merchant_login) || empty($data->password1) || empty($data->password2))) {
+        if ($data->enabled && empty($data->merchant_login)) {
             $errors['enabled'] = get_string('gatewaycannotbeenabled', 'payment');
         }
     }
