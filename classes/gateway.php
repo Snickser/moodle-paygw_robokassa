@@ -68,16 +68,26 @@ class gateway extends \core_payment\gateway {
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
 
+        $mform->addElement('advcheckbox', 'skipmode', get_string('skipmode', 'paygw_robokassa'), '0');
+        $mform->setType('skipmode', PARAM_TEXT);
+        $mform->addHelpButton('skipmode', 'skipmode', 'paygw_robokassa');
+
         $mform->addElement('advcheckbox', 'passwordmode', get_string('passwordmode', 'paygw_robokassa'), '0');
         $mform->setType('passwordmode', PARAM_TEXT);
+        $mform->disabledIf('passwordmode', 'skipmode', "neq", 0);
 
         $mform->addElement('text', 'password', get_string('password', 'paygw_robokassa'));
         $mform->setType('password', PARAM_TEXT);
         $mform->disabledIf('password', 'passwordmode');
+        $mform->disabledIf('password', 'skipmode', "neq", 0);
         $mform->addHelpButton('password', 'password', 'paygw_robokassa');
+
 
         $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'));
         $mform->setType('suggest', PARAM_FLOAT);
+
+        $mform->addElement('float', 'maxcost', get_string('maxcost', 'paygw_robokassa'));
+        $mform->setType('maxcost', PARAM_FLOAT);
 
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
@@ -98,8 +108,7 @@ class gateway extends \core_payment\gateway {
      */
     public static function validate_gateway_form(\core_payment\form\account_gateway $form,
                                                  \stdClass $data, array $files, array &$errors): void {
-        if ($data->enabled &&
-                (empty($data->merchant_login) || empty($data->password1) || empty($data->password2))) {
+        if ($data->enabled && empty($data->merchant_login)) {
             $errors['enabled'] = get_string('gatewaycannotbeenabled', 'payment');
         }
     }

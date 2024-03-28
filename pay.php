@@ -37,7 +37,7 @@ $description = required_param('description', PARAM_TEXT);
 
 $description = json_decode("\"$description\"");
 
-if ( isset($_REQUEST['cost_self']) ) {
+if ( !empty($_REQUEST['cost_self']) ) {
     $cost = number_format($_REQUEST['cost_self'], 2, '.', '');
 }
 
@@ -48,24 +48,28 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 // TODO: Check if currency is IDR. If not, then something went really wrong in config.
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
-if ( isset($_REQUEST['cost_self']) ) {
+// chack self cost
+if ( !empty($_REQUEST['cost_self']) ) {
     $cost = $_REQUEST['cost_self'];
+}
+// check maxcost
+if ( $config->maxcost && $cost > $config->maxcost ) {
+    $cost = $config->maxcost;
 }
 $cost = number_format($cost, 2, '.', '');
 
-
 // get course and groups for user
-if($paymentarea == "fee"){
+if( $paymentarea == "fee" ){
     $cs = $DB->get_record('enrol', ['id' => $itemid]);
     $cs->course = $cs->courseid;
-} else if($paymentarea == "cmfee") {
+} else if( $paymentarea == "cmfee" ) {
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
-} else if($paymentarea == "sectionfee") {
+} else if( $paymentarea == "sectionfee" ) {
     $cs = $DB->get_record('course_sections', ['id' => $itemid]);
-} else if($paymentarea == "unlockfee") {
+} else if( $paymentarea == "unlockfee" ) {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
-if($cs->course){
+if( $cs->course ){
     $gs = groups_get_all_groups($cs->course, $userid);
     foreach($gs as $g){
 	$groups[] = $g->name;
@@ -99,13 +103,14 @@ if($config->istestmode){
     $mrh_pass1 = $config->password1;      // merchant pass1 here
 }
 
-// password mode
-if ( strlen($_REQUEST['password']) ) {
+// check password mode and skipmode
+if ( !empty($_REQUEST['password']) || !empty($_REQUEST['skipmode']) ){
     // build redirect
     $url = helper::get_success_url($component, $paymentarea, $itemid);
 
+    if(isset($_REQUEST['skipmode'])) $_REQUEST['password'] = $config->password;
     // check password
-    if($_REQUEST['password'] == $config->password){
+    if( $_REQUEST['password'] == $config->password ){
 	// make fake pay
 	$cost = 0;
 	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $cost, $payable->get_currency(), 'robokassa');
