@@ -107,6 +107,7 @@ if ( strlen($_REQUEST['password']) ) {
     // check password
     if($_REQUEST['password'] == $config->password){
 	// make fake pay
+	$cost = 0;
 	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $cost, $payable->get_currency(), 'robokassa');
 	helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
@@ -114,6 +115,7 @@ if ( strlen($_REQUEST['password']) ) {
 	$data = new stdClass();
 	$data->id = $transaction_id;
 	$data->success = 2;
+	$data->cost = 0;
 	$DB->update_record('paygw_robokassa', $data);
 
 	redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
