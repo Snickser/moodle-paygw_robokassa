@@ -1,6 +1,6 @@
 # Robokassa payment gateway plugin for Moodle.
 
-Version 0.3
+Version 0.4
 
 https://robokassa.com
 
