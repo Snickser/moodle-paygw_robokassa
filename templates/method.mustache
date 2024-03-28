@@ -46,7 +46,7 @@
 
             <h3>{{# str }} cost {{/ str}}:
 
-<input type="number" id="cost_self" name="cost_self" min="{{fee}}" max="{{maxcost}}"
+<input type="number" id="cost_self" name="cost_self" min="{{fee}}" {{#maxcost}}max="{{maxcost}}"{{/maxcost}}
 value="{{#suggest}}{{suggest}}{{/suggest}}{{^suggest}}{{fee}}{{/suggest}}"
 size="7" step="0.01">
 
