@@ -66,14 +66,16 @@ if( $paymentarea == "fee" ){
 } else if( $paymentarea == "unlockfee" ) {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
-$groups = array();
 if( $cs->course ){
     $gs = groups_get_all_groups($cs->course, $userid);
+    $groups = array();
     foreach($gs as $g){
-	$groups[] = $g->name;
+        $groups[] = $g->name;
     }
     $courseid = $cs->course;
     $groups = implode(',', $groups);
+} else {
+    $groups = '';
 }
 
 
