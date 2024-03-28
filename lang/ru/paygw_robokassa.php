@@ -51,6 +51,7 @@ $string['payment_error'] = 'Ошибка оплаты';
 $string['suggest'] = 'Рекомендуемая цена';
 $string['password_success'] = 'Пароль принят';
 $string['password_error'] = 'Неверный пароль';
+$string['maxcost'] = 'Максимальная цена';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Платежная система';

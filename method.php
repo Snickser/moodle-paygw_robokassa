@@ -53,6 +53,8 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 
 // get course info
+$enrolperiod='';
+$enrolperiod_desc='';
 if($instance = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentarea])){
     $enrolperiod = $instance->enrolperiod;
     if( $enrolperiod > 0 ){
@@ -96,6 +98,7 @@ $templatedata->enrolperiod = $enrolperiod;
 $templatedata->enrolperiod_desc = $enrolperiod_desc;
 $templatedata->passwordmode = $config->passwordmode;
 $templatedata->suggest = $config->suggest;
+$templatedata->maxcost = $config->maxcost;
 
 $templatedata->image       = $OUTPUT->image_url('img','paygw_robokassa');
 
