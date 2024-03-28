@@ -13,6 +13,7 @@ Features:
 + Recommended payment price.
 + Displaying course enrollment duration.
 + The maximum cost limit for a form.
++ Skip payment button.
 
 INSTALLATION
 ------------
