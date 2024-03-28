@@ -11,7 +11,7 @@ Features:
 + Password to avoid payment.
 + Saving the course number and groups in which the student is enrolled.
 + Recommended payment price.
-+ Displaying course enrollment duration
++ Displaying course enrollment duration.
 
 INSTALLATION
 ------------
