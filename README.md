@@ -15,6 +15,7 @@ https://robokassa.com
 + Перед оплатой записи в курс отображается продолжительность обучения, если она установлена.
 
 
+
 INSTALLATION
 ------------
 Download the latest paygw_robokassa.zip and unzip the contents into the /payment/gateway directory. Or upload it from Moodle plugins adminnistration interface.
