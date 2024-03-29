@@ -67,13 +67,15 @@ if( $paymentarea == "fee" ){
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
 $group_names = '';
+$courseid = '';
 if( $cs->course ){
-    $gs = groups_get_all_groups($cs->course, $userid);
-    foreach($gs as $g){
-        $groups[] = $g->name;
-    }
     $courseid = $cs->course;
-    if(count($groups)) $group_names = implode(',', $groups);
+    if ($gs = groups_get_all_groups($cs->course, $userid)){
+        foreach($gs as $g){
+	    $groups[] = $g->name;
+        }
+        $group_names = implode(',', $groups);
+    }
 }
 
 
