@@ -7,12 +7,13 @@ https://robokassa.com
 ![alt text](https://raw.githubusercontent.com/Snickser/moodle-paygw_robokassa/da4ffeef22702ad4e087ca6ed78133f6c48dde65/pix/img.svg)
 
 
-Features:
-+ Password to avoid payment & skip payment button.
-+ Saving the course number and groups in which the student is enrolled.
-+ Recommended payment price.
-+ Displaying course enrollment duration.
-+ The maximum cost limit for a form.
+Возможности:
++ Можно использовать пароль или кнопку для обхода платежа.
++ Сохраняет в базе номер курса и группу студента.
++ Можно указать рекомендуемую цену.
++ Можно ограничить маскимальную цену.
++ Перед оплатой записи в курс отображается продолжительность обучения, если она установлена.
+
 
 INSTALLATION
 ------------
