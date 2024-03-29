@@ -1,6 +1,6 @@
 # Robokassa payment gateway plugin for Moodle.
 
-Version 0.4
+Version 0.5
 
 https://robokassa.com
 
@@ -13,7 +13,6 @@ https://robokassa.com
 + Можно указать рекомендуемую цену.
 + Можно ограничить максимальную цену.
 + Перед оплатой записи в курс отображается продолжительность обучения, если она установлена.
-
 
 
 INSTALLATION

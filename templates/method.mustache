@@ -34,13 +34,17 @@
         "suggested": "100"
         "group": "Test"
         "maxcost": "10"
+        "fixdesc": "1"
     }
 
 }}
 <form id="robokassa-method-select" action="{{url}}/payment/gateway/robokassa/pay.php" class="robokassa-form" method="POST">
     <div class="cost-display">
         <div style="text-align: center;">
-            <p>{{# str }} abouttopay, paygw_robokassa {{/ str}} "{{description}}".</p>
+
+{{^fixdesc}}
+<p>{{# str }} abouttopay, paygw_robokassa {{/ str}} "{{description}}".</p>
+{{/fixdesc}}
 
 <p>{{# str }} paymore, paygw_robokassa {{/ str}}</p>
 
