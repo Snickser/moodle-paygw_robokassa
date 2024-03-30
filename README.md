@@ -9,8 +9,8 @@ https://robokassa.com
 Рекомендации:
 ------------
 + Для записи в курс подходит стандарный плагин "Зачисление за оплату" (enrol_fee).
-+ Для контрольного задания используйте модуль "Gateway Payments" (mod_gwpayments), он правда глючный, но других нет.
-+ Для ограничения доступности используйте модуль "PaymentS availability condition for paid access" (availability_gwpayments)
++ Для контрольного задания используйте модуль "Gateway Payments" ([mod_gwpayments](https://moodle.org/plugins/mod_gwpayments)), он правда глючный, но других нет.
++ Для ограничения доступности используйте модуль "PaymentS availability condition for paid access" ([availability_gwpayments](https://moodle.org/plugins/availability_gwpayments))
 
 
 Возможности:
