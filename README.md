@@ -9,7 +9,7 @@ https://robokassa.com
 Возможности:
 ------------
 + Можно использовать пароль или кнопку для обхода платежа.
-+ Сохраняет в базе номер курса и группу студента.
++ Сохраняет в базе номер курса и группы студента.
 + Можно указать рекомендуемую цену.
 + Можно ограничить максимальную цену.
 + Перед оплатой записи в курс отображается продолжительность обучения, если она установлена.
@@ -39,4 +39,4 @@ Download the latest paygw_robokassa.zip and unzip the contents into the /payment
 6. Add the 'Enrolment on Payment' method to your chosen course
 7. Set the payment account, enrolment fee, and currency
 
-The plugin supports only basic functionality, but everything changes someday...
+This plugin supports only basic functionality, but everything changes someday...
