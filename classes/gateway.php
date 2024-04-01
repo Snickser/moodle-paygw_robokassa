@@ -87,10 +87,8 @@ class gateway extends \core_payment\gateway {
         $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
 
         $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'));
-        $mform->setType('suggest', PARAM_FLOAT);
 
         $mform->addElement('float', 'maxcost', get_string('maxcost', 'paygw_robokassa'));
-        $mform->setType('maxcost', PARAM_FLOAT);
 
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
