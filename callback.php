@@ -59,8 +59,8 @@ if(isset($mrh_pass2))
 	}
 
 	// Deliver course
-	$fee = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('robokassa'));
-	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $fee, $payable->get_currency(), 'robokassa');
+	//$fee = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('robokassa'));
+	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $cost, $payable->get_currency(), 'robokassa');
 	helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
 	// write to DB
