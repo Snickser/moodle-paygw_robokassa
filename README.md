@@ -14,18 +14,6 @@ https://robokassa.com
 + Можно ограничить максимальную цену.
 + Перед оплатой записи в курс отображается продолжительность обучения, если она установлена.
 
-Рекомендации:
-------------
-+ Для записи в курс подходит стандарный плагин "Зачисление за оплату" (enrol_fee).
-+ Для контрольного задания используйте модуль "[Gateway Payments](https://moodle.org/plugins/mod_gwpayments)" ([mod_gwpayments](https://github.com/Snickser/moodle-mod_gwpayments/tree/dev)), он правда глючный, но других нет.
-+ Для ограничения доступности используйте модуль "[PaymentS availability condition for paid access](https://moodle.org/plugins/availability_gwpayments)" ([availability_gwpayments](https://github.com/Snickser/moodle-availability_gwpayments/tree/dev)).
-
-Рекомендации:
-------------
-+ Для записи в курс подходит стандарный плагин "Зачисление за оплату" (enrol_fee).
-+ Для контрольного задания используйте модуль "[Gateway Payments](https://moodle.org/plugins/mod_gwpayments)" (мои правки [mod_gwpayments](https://github.com/Snickser/moodle-mod_gwpayments/tree/dev)), он правда глючный, но других нет.
-+ Для ограничения доступности используйте модуль "[PaymentS availability condition for paid access](https://moodle.org/plugins/availability_gwpayments)" (мои правки [availability_gwpayments](https://github.com/Snickser/moodle-availability_gwpayments/tree/dev)).
-
 
 INSTALLATION
 ------------
