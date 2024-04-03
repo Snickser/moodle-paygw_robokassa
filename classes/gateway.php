@@ -49,22 +49,22 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('text', 'merchant_login', get_string('merchant_login', 'paygw_robokassa'));
         $mform->setType('merchant_login', PARAM_TEXT);
 
-        $mform->addElement('text', 'password1', get_string('password1', 'paygw_robokassa'));
+        $mform->addElement('text', 'password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('password1', PARAM_TEXT);
         $mform->disabledIf('password1', 'istestmode', "neq", 0);
 
-        $mform->addElement('text', 'password2', get_string('password2', 'paygw_robokassa'));
+        $mform->addElement('text', 'password2', get_string('password2', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('password2', PARAM_TEXT);
         $mform->disabledIf('password2', 'istestmode', "neq", 0);
 
         $mform->addElement('advcheckbox', 'istestmode', get_string('istestmode', 'paygw_robokassa'), '0');
         $mform->setType('istestmode', PARAM_TEXT);
 
-        $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'));
+        $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('test_password1', PARAM_TEXT);
         $mform->disabledIf('test_password1', 'istestmode');
 
-        $mform->addElement('text', 'test_password2', get_string('password2', 'paygw_robokassa'));
+        $mform->addElement('text', 'test_password2', get_string('password2', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
 
@@ -76,7 +76,7 @@ class gateway extends \core_payment\gateway {
         $mform->setType('passwordmode', PARAM_TEXT);
         $mform->disabledIf('passwordmode', 'skipmode', "neq", 0);
 
-        $mform->addElement('text', 'password', get_string('password', 'paygw_robokassa'));
+        $mform->addElement('text', 'password', get_string('password', 'paygw_robokassa'), ['size' => 20]);
         $mform->setType('password', PARAM_TEXT);
         $mform->disabledIf('password', 'passwordmode');
         $mform->disabledIf('password', 'skipmode', "neq", 0);
@@ -84,6 +84,7 @@ class gateway extends \core_payment\gateway {
 
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
+        $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
 
         $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
