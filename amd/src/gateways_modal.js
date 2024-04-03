@@ -14,20 +14,45 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This module is responsible for paymob content in the gateways modal.
+ * This module is responsible for PayNL content in the gateways modal.
  *
- * @module     paygw_paymob/gateway_modal
- * @copyright  2022 Mohammad Farouk <phun.for.physics@gmail.com>
+ * @module     paygw_paynl/gateways_modal
+ * @copyright  2021 Ing. R.J. van Dongen <rogier@sebsoft.nl>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+import Templates from 'core/templates';
+import ModalFactory from 'core/modal_factory';
+
+/**
+ * Show modal with the PayNL placeholder.
+ *
+ * @returns {Promise}
+ */
+const showModalWithPlaceholder = async() => {
+    const modal = await ModalFactory.create({
+        body: await Templates.render('paygw_robokassa/button_placeholder', {})
+    });
+    modal.show();
+};
+
+/**
+ * Process.
+ *
+ * @param {String} component
+ * @param {String} paymentArea
+ * @param {String} itemId
+ * @param {String} description
+ * @returns {Promise<>}
+ */
 export const process = (component, paymentArea, itemId, description) => {
-    return () => {
+    return showModalWithPlaceholder()
+        .then(() => {
             location.href = M.cfg.wwwroot + '/payment/gateway/robokassa/method.php?' +
                 'component=' + component +
                 '&paymentarea=' + paymentArea +
                 '&itemid=' + itemId +
                 '&description=' + description;
-            return 'Redirecting...';
-        };
+            return new Promise(() => null);
+        });
 };
