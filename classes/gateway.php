@@ -82,13 +82,13 @@ class gateway extends \core_payment\gateway {
         $mform->disabledIf('password', 'skipmode', "neq", 0);
         $mform->addHelpButton('password', 'password', 'paygw_robokassa');
 
-        $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'));
+        $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
         $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
 
-        $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'));
+        $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
 
-        $mform->addElement('float', 'maxcost', get_string('maxcost', 'paygw_robokassa'));
+        $mform->addElement('float', 'maxcost', get_string('maxcost', 'paygw_robokassa'), ['size' => 10]);
 
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');

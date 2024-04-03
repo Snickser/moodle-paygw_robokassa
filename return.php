@@ -23,11 +23,11 @@ $paymentarea = $robokassatx->paymentarea;
 $component   = $robokassatx->component;
 $itemid      = $robokassatx->itemid;
 
-// get config
-$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
-
 // build redirect
 $url = helper::get_success_url($component, $paymentarea, $itemid);
+
+// get config
+$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 
 // check test-mode
 if($config->istestmode){
@@ -39,8 +39,9 @@ if($config->istestmode){
 // build own CRC
 $crc =  strtoupper(md5("$out_summ:$inv_id:$mrh_pass1"));
 
-if ($signature !== $crc) {
-    redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
-} else {
+// check crc and redirect
+if ($signature === $crc) {
     redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
+} else {
+    redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
 }
