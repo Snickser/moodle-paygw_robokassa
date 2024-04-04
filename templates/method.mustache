@@ -60,14 +60,36 @@ size="7" step="0.01">
 <p><h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4></p>
 {{/enrolperiod}}
 
-<br>
-
 <img src="{{{image}}}" alt="Robokassa" height="60">
 
         </div>
     </div>
 
-<br><br>
+<br>
+
+
+<div style="text-align: center;">
+
+    <p><b>{{# str }} paymentinstant {{/ str}}</b></p>
+    <button type="submit" class="btn btn-primary" id="robokassa-modal-submit-btn">{{# str }} sendpaymentbutton, paygw_robokassa {{/ str }}</button>
+    </p><br>
+
+{{#skipmode}}
+<p>
+{{# str }} skipmode_text, paygw_robokassa {{/ str}} <br>
+<button type="submit" id="skipmode" name="skipmode" value="1" class="btn btn-secondary btn-paygw-skipmode" id="robokassa-modal-submit-btn">{{# str }} skippaymentbutton, paygw_robokassa {{/ str }}</button>
+</p>
+{{/skipmode}}
+{{^skipmode}}
+{{#passwordmode}}
+<p>
+{{# str }} password_text, paygw_robokassa {{/ str}} <br>
+{{# str }} password {{/ str}}: <input type="password" id="password" name="password" value="" autocomplete="off">
+</p>
+{{/passwordmode}}
+{{/skipmode}}
+
+</div>
 
     <div class="hidden-inputs">
         <input type="hidden" class="hidden-inputs" id="component" name="component" value="{{component}}">
@@ -76,27 +98,4 @@ size="7" step="0.01">
         <input type="hidden" class="hidden-inputs" id="description" name="description" value="{{{description}}}">
     </div>
 
-    <div style="text-align: center;">
-
-{{#skipmode}}
-<p>
-{{# str }} skipmode_text, paygw_robokassa {{/ str}} <br>
-<button type="submit" id="skipmode" name="skipmode" value="1" class="btn btn-secondary btn-paygw-skipmode" id="robokassa-modal-submit-btn">{{# str }} skippaymentbutton, paygw_robokassa {{/ str }}</button>
-</p><br>
-{{/skipmode}}
-
-{{^skipmode}}
-{{#passwordmode}}
-<p>
-{{# str }} password_text, paygw_robokassa {{/ str}} <br>
-{{# str }} password {{/ str}}: <input type="password" id="password" name="password" value="" autocomplete="off">
-</p><br>
-{{/passwordmode}}
-{{/skipmode}}
-
-
-<p><b>{{# str }} paymentinstant {{/ str}}</b></p>
-
-    <button type="submit" class="btn btn-primary" id="robokassa-modal-submit-btn">{{# str }} sendpaymentbutton, paygw_robokassa {{/ str }}</button>
-    </div>
 </form>
