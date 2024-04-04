@@ -55,8 +55,15 @@ $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 // get course info
 $enrolperiod='';
 $enrolperiod_desc='';
-if($instance = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentarea])){
-    $enrolperiod = $instance->enrolperiod;
+// check area
+if( $component == "enrol_fee" ){
+    $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentarea]);
+    $enrolperiod = $cs->enrolperiod;
+} else if( $component == "mod_gwpayments" ) {
+    $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
+    $enrolperiod = $cs->costduration;
+}
+
     if( $enrolperiod > 0 ){
         if($enrolperiod>=86400){
 	    $enrolperiod_desc = get_string('days');
@@ -71,7 +78,7 @@ if($instance = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentare
 	    $enrolperiod_desc = get_string('seconds');
 	}
     }
-}
+
 
 // Set the context of the page.
 $PAGE->set_context(context_system::instance());
@@ -93,8 +100,12 @@ $templatedata->paymentarea = $paymentarea;
 $templatedata->itemid      = $itemid;
 $templatedata->fee         = $fee;
 $templatedata->currency    = $currency;
-$templatedata->enrolperiod = $enrolperiod;
-$templatedata->enrolperiod_desc = $enrolperiod_desc;
+
+if($config->showduration){
+    $templatedata->enrolperiod = $enrolperiod;
+    $templatedata->enrolperiod_desc = $enrolperiod_desc;
+}
+
 $templatedata->passwordmode = $config->passwordmode;
 $templatedata->suggest = $config->suggest;
 $templatedata->maxcost = $config->maxcost;

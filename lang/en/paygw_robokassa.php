@@ -51,6 +51,7 @@ $string['skipmode_help'] = 'This setting allows a payment bypass button, which c
 $string['skipmode_text'] = 'If you are not able to make a donation through the payment system, you can click on this button.';
 $string['fixdesc'] = 'Fixed payment comment';
 $string['fixdesc_help'] = 'This setting sets a fixed comment for all payments.';
+$string['showduration'] = 'Show duration of training';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Payment system';
