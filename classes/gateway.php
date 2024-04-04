@@ -87,6 +87,8 @@ class gateway extends \core_payment\gateway {
         $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
 
+        $mform->addElement('advcheckbox', 'showduration', get_string('showduration', 'paygw_robokassa'));
+
         $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
 
         $mform->addElement('float', 'maxcost', get_string('maxcost', 'paygw_robokassa'), ['size' => 10]);
