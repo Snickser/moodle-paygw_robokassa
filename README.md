@@ -1,5 +1,4 @@
-Support me with a donation 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/snickser)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/snickser) support me with a donation.
 
 
 # Robokassa payment gateway plugin for Moodle.
