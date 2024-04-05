@@ -40,7 +40,7 @@ if($config->istestmode){
 $crc =  strtoupper(md5("$out_summ:$inv_id:$mrh_pass1"));
 
 // check crc and redirect
-if ($signature === $crc) {
+if ($signature === $crc && $robokassatx->success) {
     redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
 } else {
     redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
