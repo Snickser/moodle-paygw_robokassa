@@ -1,3 +1,5 @@
+Support me with a donation 
+
 # Robokassa payment gateway plugin for Moodle.
 
 Version 0.7
