@@ -10,10 +10,10 @@ defined('MOODLE_INTERNAL') || die();
 require_login();
 
 $inv_id    = required_param('InvId', PARAM_ALPHANUMEXT);
-$out_summ  = required_param('OutSum', PARAM_RAW);
-$signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
-$signature = strtoupper($signature);  // force uppercase
+$out_summ  = optional_param('OutSum', null, PARAM_FLOAT);
+$signature = optional_param('SignatureValue', null, PARAM_ALPHANUMEXT);
+
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', array('id' => $inv_id))) {
     die('FAIL. Not a valid transaction id');
@@ -26,6 +26,10 @@ $itemid      = $robokassatx->itemid;
 // build redirect
 $url = helper::get_success_url($component, $paymentarea, $itemid);
 
+if(!$signature){
+    redirect($url, '', 0, '');
+}
+
 // get config
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 
@@ -36,8 +40,10 @@ if($config->istestmode){
     $mrh_pass1 = $config->password1;      // merchant pass2 here
 }
 
+$signature = strtoupper($signature);  // force uppercase
+
 // build own CRC
-$crc =  strtoupper(md5("$out_summ:$inv_id:$mrh_pass1"));
+$crc = strtoupper(md5("$out_summ:$inv_id:$mrh_pass1"));
 
 // check crc and redirect
 if ($signature === $crc && $robokassatx->success) {
