@@ -24,6 +24,7 @@
 use core_payment\helper;
 
 require_once(__DIR__ . '/../../../config.php');
+
 require_login();
 
 global $CFG, $USER, $DB;
@@ -34,6 +35,10 @@ $component   = required_param('component', PARAM_ALPHANUMEXT);
 $paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
 $itemid      = required_param('itemid', PARAM_INT);
 $description = required_param('description', PARAM_TEXT);
+
+$password    = optional_param('password', null, PARAM_TEXT);
+$skipmode    = optional_param('skipmode', null, PARAM_TEXT);
+$costself    = optional_param('costself', null, PARAM_TEXT);
 
 $description = json_decode("\"$description\"");
 
@@ -46,8 +51,8 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
 // check self cost
-if ( !empty($_REQUEST['cost_self']) ) {
-    $cost = $_REQUEST['cost_self'];
+if ( !empty($costself) ) {
+    $cost = $costself;
 }
 // check maxcost
 if ( $config->maxcost && $cost > $config->maxcost ) {
@@ -105,13 +110,13 @@ if($config->istestmode){
 }
 
 // check password mode and skipmode
-if ( !empty($_REQUEST['password']) || !empty($_REQUEST['skipmode']) ){
+if ( !empty($password) || !empty($skipmode) ){
     // build redirect
     $url = helper::get_success_url($component, $paymentarea, $itemid);
 
-    if(isset($_REQUEST['skipmode'])) $_REQUEST['password'] = $config->password;
+    if(isset($skipmode)) $password = $config->password;
     // check password
-    if( $_REQUEST['password'] == $config->password ){
+    if( $password === $config->password ){
 	// make fake pay
 	$cost = 0;
 	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $cost, $payable->get_currency(), 'robokassa');
