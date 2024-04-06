@@ -26,8 +26,9 @@ $itemid      = $robokassatx->itemid;
 // build redirect
 $url = helper::get_success_url($component, $paymentarea, $itemid);
 
-if(!$signature){
+if(!isset($signature)){
     redirect($url, '', 0, '');
+    die;
 }
 
 // get config
