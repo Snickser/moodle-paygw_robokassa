@@ -9,10 +9,10 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$inv_id    = required_param('InvId', PARAM_ALPHANUMEXT);
+$inv_id    = required_param('InvId', PARAM_TEXT);
 
-$out_summ  = optional_param('OutSum', null, PARAM_FLOAT);
-$signature = optional_param('SignatureValue', null, PARAM_ALPHANUMEXT);
+$out_summ  = optional_param('OutSum', null, PARAM_TEXT);
+$signature = optional_param('SignatureValue', null, PARAM_TEXT);
 
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', array('id' => $inv_id))) {
@@ -47,7 +47,7 @@ $signature = strtoupper($signature);  // force uppercase
 $crc = strtoupper(md5("$out_summ:$inv_id:$mrh_pass1"));
 
 // check crc and redirect
-if ($signature === $crc && $robokassatx->success) {
+if ($signature == $crc && $robokassatx->success) {
     redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
 } else {
     redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
