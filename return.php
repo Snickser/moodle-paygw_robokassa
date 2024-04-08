@@ -9,7 +9,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$inv_id    = required_param('InvId', PARAM_ALPHANUMEXT);
+$inv_id    = required_param('InvId', PARAM_TEXT);
 
 $out_summ  = optional_param('OutSum', null, PARAM_TEXT);
 $signature = optional_param('SignatureValue', null, PARAM_TEXT);
