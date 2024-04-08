@@ -17,13 +17,13 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package paygw_robokassa
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     paygw_robokassa
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024040401;
+$plugin->version = 2024040402;
 $plugin->requires = 2023100400;
 $plugin->component = 'paygw_robokassa';
 $plugin->release = '0.7';
