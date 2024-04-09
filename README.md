@@ -25,7 +25,7 @@ https://robokassa.com
 + Для ограничения доступности используйте модуль "[PaymentS availability condition for paid access](https://moodle.org/plugins/availability_gwpayments)" (мои правки [availability_gwpayments](https://github.com/Snickser/moodle-availability_gwpayments/tree/dev)).
 
 
-INSTALLATION
+Installation
 ------------
 Download the latest paygw_robokassa.zip and unzip the contents into the /payment/gateway directory. Or upload it from Moodle plugins adminnistration interface.
 
