@@ -19,7 +19,7 @@
  *
  * @package     paygw_robokassa
  * @category    admin
- * @copyright   2023 Mohammad Farouk <phun.for.physics@gmail.com>
+ * @copyright   2024 Alex Orlov <snickser@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

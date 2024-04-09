@@ -18,6 +18,7 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     paygw_robokassa
+ * @copyright   2024 Alex Orlov <snickser@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

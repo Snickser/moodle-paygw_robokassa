@@ -16,8 +16,8 @@
 /**
  * This module is responsible for PayNL content in the gateways modal.
  *
- * @module     paygw_paynl/gateways_modal
- * @copyright  2021 Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @module     paygw_robokassa/gateways_modal
+ * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
