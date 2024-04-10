@@ -18,6 +18,7 @@
  * Contains class for robokassa payment gateway.
  *
  * @package    paygw_robokassa
+ * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

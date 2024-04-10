@@ -18,6 +18,7 @@
  * Redirects user to the payment page
  *
  * @package   paygw_robokassa
+ * @copyright 2024 Alex Orlov <snickser@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -142,20 +143,27 @@ $inv_id    = $transaction_id;          // shop's invoice number
 $inv_desc  = $description;  // invoice desc
 $out_summ  = $cost;  // invoice summ
 
-// build CRC value
-$crc = strtoupper(md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1"));
 
-//	OutSumCurrency=$currency&
+$outsumcurrency = null;
+$currencyarg = null;
+if( $currency != 'RUB' ){
+    $outsumcurrency = "OutSumCurrency=$currency&";
+    $currencyarg = ":$currency";
+}
+
+// Build CRC value
+$crc = strtoupper(md5("$mrh_login:$out_summ:$inv_id".$currencyarg.":$mrh_pass1"));
+
 
 $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
 
 redirect($paymenturl."
-	MerchantLogin=$mrh_login&
-	OutSum=$out_summ&
-	InvId=$inv_id&
-	Description=".urlencode($inv_desc)."&
-	SignatureValue=$crc&
-	Culture=".current_language()."&
-	Email=".urlencode($USER->email)."&
-	IsTest=".$config->istestmode."
+MerchantLogin=$mrh_login&
+OutSum=$out_summ&$outsumcurrency
+InvId=$inv_id&
+Description=".urlencode($inv_desc)."&
+SignatureValue=$crc&
+Culture=".current_language()."&
+Email=".urlencode($USER->email)."&
+IsTest=".$config->istestmode."
 ");

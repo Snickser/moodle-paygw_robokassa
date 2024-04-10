@@ -1,4 +1,26 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Plugin administration pages are defined here.
+ *
+ * @package     paygw_robokassa
+ * @copyright   2024 Alex Orlov <snickser@gmail.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 use core_payment\helper;
 
@@ -54,10 +76,11 @@ if(isset($mrh_pass2))
 	$cost = number_format($cost, 2, '.', '');
 	$out_summ = number_format($out_summ, 2, '.', '');
 
+    if ( $robokassatx->currency == 'RUB' ) {
 	if ($out_summ !== $cost) {
 		die('FAIL. Amount does not match.');
 	}
-
+    }
 	// Deliver course
 	//$fee = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('robokassa'));
 	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $cost, $payable->get_currency(), 'robokassa');
