@@ -51,11 +51,11 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 // TODO: Check if currency is IDR. If not, then something went really wrong in config.
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
-// Check self cost
+// check self cost
 if ( !empty($costself) ) {
     $cost = $costself;
 }
-// Check maxcost
+// check maxcost
 if ( $config->maxcost && $cost > $config->maxcost ) {
     $cost = $config->maxcost;
 }
@@ -85,7 +85,7 @@ if( $cs->course ){
 }
 
 
-// Write tx to db
+// write tx to db
 $paygwdata = new stdClass();
 $paygwdata->userid = $userid;
 $paygwdata->component = $component;
@@ -101,16 +101,16 @@ if (!$transaction_id = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     print_error('error_txdatabase', 'paygw_robokassa');
 }
 
-// Your registration data
+// your registration data
 $mrh_login = $config->merchant_login;  // your login here
-// Check test-mode
+// check test-mode
 if($config->istestmode){
     $mrh_pass1 = $config->test_password1; // merchant test_pass1 here
 } else {
     $mrh_pass1 = $config->password1;      // merchant pass1 here
 }
 
-// Check password mode and skipmode
+// check password mode and skipmode
 if ( !empty($password) || !empty($skipmode) ){
     // build redirect
     $url = helper::get_success_url($component, $paymentarea, $itemid);
@@ -134,27 +134,36 @@ if ( !empty($password) || !empty($skipmode) ){
     } else {
 	redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
-    die; // Never
+    die; // never
 }
 
-// Order properties
+// order properties
 $inv_id    = $transaction_id;          // shop's invoice number
 // (unique for shop's lifetime)
 $inv_desc  = $description;  // invoice desc
 $out_summ  = $cost;  // invoice summ
 
+
+$outsumcurrency = null;
+$currencyarg = null;
+if( $currency != 'RUB' ){
+    $outsumcurrency = "OutSumCurrency=$currency&";
+    $currencyarg = ":$currency";
+}
+
 // Build CRC value
-$crc = strtoupper(md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1"));
+$crc = strtoupper(md5("$mrh_login:$out_summ:$inv_id".$currencyarg.":$mrh_pass1"));
+
 
 $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
 
 redirect($paymenturl."
-	MerchantLogin=$mrh_login&
-	OutSum=$out_summ&
-	InvId=$inv_id&
-	Description=".urlencode($inv_desc)."&
-	SignatureValue=$crc&
-	Culture=".current_language()."&
-	Email=".urlencode($USER->email)."&
-	IsTest=".$config->istestmode."
+MerchantLogin=$mrh_login&
+OutSum=$out_summ&$outsumcurrency
+InvId=$inv_id&
+Description=".urlencode($inv_desc)."&
+SignatureValue=$crc&
+Culture=".current_language()."&
+Email=".urlencode($USER->email)."&
+IsTest=".$config->istestmode."
 ");
