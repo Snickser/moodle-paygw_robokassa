@@ -76,10 +76,11 @@ if(isset($mrh_pass2))
 	$cost = number_format($cost, 2, '.', '');
 	$out_summ = number_format($out_summ, 2, '.', '');
 
+    if ( $robokassatx->currency == 'RUB' ) {
 	if ($out_summ !== $cost) {
 		die('FAIL. Amount does not match.');
 	}
-
+    }
 	// Deliver course
 	//$fee = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('robokassa'));
 	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $cost, $payable->get_currency(), 'robokassa');

@@ -51,11 +51,11 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 // TODO: Check if currency is IDR. If not, then something went really wrong in config.
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
-// check self cost
+// Check self cost
 if ( !empty($costself) ) {
     $cost = $costself;
 }
-// check maxcost
+// Check maxcost
 if ( $config->maxcost && $cost > $config->maxcost ) {
     $cost = $config->maxcost;
 }
@@ -85,7 +85,7 @@ if( $cs->course ){
 }
 
 
-// write tx to db
+// Write tx to db
 $paygwdata = new stdClass();
 $paygwdata->userid = $userid;
 $paygwdata->component = $component;
@@ -101,16 +101,16 @@ if (!$transaction_id = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     print_error('error_txdatabase', 'paygw_robokassa');
 }
 
-// your registration data
+// Your registration data
 $mrh_login = $config->merchant_login;  // your login here
-// check test-mode
+// Check test-mode
 if($config->istestmode){
     $mrh_pass1 = $config->test_password1; // merchant test_pass1 here
 } else {
     $mrh_pass1 = $config->password1;      // merchant pass1 here
 }
 
-// check password mode and skipmode
+// Check password mode and skipmode
 if ( !empty($password) || !empty($skipmode) ){
     // build redirect
     $url = helper::get_success_url($component, $paymentarea, $itemid);
@@ -134,19 +134,17 @@ if ( !empty($password) || !empty($skipmode) ){
     } else {
 	redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
-    die; // never
+    die; // Never
 }
 
-// order properties
+// Order properties
 $inv_id    = $transaction_id;          // shop's invoice number
 // (unique for shop's lifetime)
 $inv_desc  = $description;  // invoice desc
 $out_summ  = $cost;  // invoice summ
 
-// build CRC value
+// Build CRC value
 $crc = strtoupper(md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1"));
-
-//	OutSumCurrency=$currency&
 
 $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
 
