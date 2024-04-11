@@ -111,6 +111,10 @@ $templatedata->suggest = $config->suggest;
 $templatedata->maxcost = $config->maxcost;
 $templatedata->skipmode = $config->skipmode;
 
+if($config->skipmode || $config->passwordmode){
+    $templatedata->usedetails = $config->usedetails;
+}
+
 if(!empty($config->fixdesc)){
     $templatedata->description = $config->fixdesc;
     $templatedata->fixdesc = 1;

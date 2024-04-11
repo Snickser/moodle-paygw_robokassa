@@ -59,7 +59,7 @@ class gateway extends \core_payment\gateway {
         $mform->disabledIf('password2', 'istestmode', "neq", 0);
 
         $mform->addElement('advcheckbox', 'istestmode', get_string('istestmode', 'paygw_robokassa'), get_string('istestmode', 'paygw_robokassa'));
-        $mform->setType('istestmode', PARAM_TEXT);
+        $mform->setType('istestmode', PARAM_INT);
 
         $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('test_password1', PARAM_TEXT);
@@ -70,11 +70,11 @@ class gateway extends \core_payment\gateway {
         $mform->disabledIf('test_password2', 'istestmode');
 
         $mform->addElement('advcheckbox', 'skipmode', get_string('skipmode', 'paygw_robokassa'), get_string('skipmode', 'paygw_robokassa'));
-        $mform->setType('skipmode', PARAM_TEXT);
+        $mform->setType('skipmode', PARAM_INT);
         $mform->addHelpButton('skipmode', 'skipmode', 'paygw_robokassa');
 
         $mform->addElement('advcheckbox', 'passwordmode', get_string('passwordmode', 'paygw_robokassa'), get_string('passwordmode', 'paygw_robokassa'));
-        $mform->setType('passwordmode', PARAM_TEXT);
+        $mform->setType('passwordmode', PARAM_INT);
         $mform->disabledIf('passwordmode', 'skipmode', "neq", 0);
 
         $mform->addElement('text', 'password', get_string('password', 'paygw_robokassa'), ['size' => 20]);
@@ -83,16 +83,23 @@ class gateway extends \core_payment\gateway {
         $mform->disabledIf('password', 'skipmode', "neq", 0);
         $mform->addHelpButton('password', 'password', 'paygw_robokassa');
 
+        $mform->addElement('advcheckbox', 'usedetails', get_string('usedetails', 'paygw_robokassa'), get_string('usedetails', 'paygw_robokassa'));
+        $mform->setType('usedetails', PARAM_INT);
+        $mform->addHelpButton('usedetails', 'usedetails', 'paygw_robokassa');
+
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
         $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
 
         $mform->addElement('advcheckbox', 'showduration', get_string('showduration', 'paygw_robokassa'), get_string('showduration', 'paygw_robokassa'));
+        $mform->setType('showduration', PARAM_INT);
 
         $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
+        $mform->setType('suggest', PARAM_FLOAT);
 
         $mform->addElement('float', 'maxcost', get_string('maxcost', 'paygw_robokassa'), ['size' => 10]);
+        $mform->setType('maxcost', PARAM_FLOAT);
 
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
