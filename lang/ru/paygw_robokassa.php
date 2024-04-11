@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['sendpaymentbutton'] = 'Пожертвовать!';
-$string['skippaymentbutton'] = 'Не могу :(';
+$string['skippaymentbutton'] = 'Не имею :(';
 $string['paymore'] = 'Если вы хотите пожертвовать больше, то просто впишите свою сумму вместо указанной.';
 $string['payment'] = 'Пожертвование';
 $string['abouttopay'] = 'Вы собираетесь пожертвовать на';
