@@ -53,6 +53,9 @@ $string['skipmode_text'] = 'If you are not able to make a donation through the p
 $string['fixdesc'] = 'Fixed payment comment';
 $string['fixdesc_help'] = 'This setting sets a fixed comment for all payments.';
 $string['showduration'] = 'Show duration of training';
+$string['usedetails'] = 'Make it collapsible';
+$string['usedetails_help'] = 'Display a button or password in a collapsed block.';
+$string['usedetails_text'] = 'Click here if you are unable to donate.';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Payment system';

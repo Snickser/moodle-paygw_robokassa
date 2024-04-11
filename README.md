@@ -9,7 +9,7 @@ https://robokassa.com
 
 ![alt text](https://raw.githubusercontent.com/Snickser/moodle-paygw_robokassa/da4ffeef22702ad4e087ca6ed78133f6c48dde65/pix/img.svg)
 
-Возможности:
+Возможности
 ------------
 + Можно использовать пароль или кнопку для обхода платежа.
 + Сохраняет в базе номер курса и название группы студента.
@@ -21,9 +21,8 @@ https://robokassa.com
 В планах
 ---
 + передача номенклатуры
-+ поддержка внешних ККТ
 
-Рекомендации:
+Рекомендации
 ------------
 + Для записи в курс подходит стандарный плагин "Зачисление за оплату" (enrol_fee).
 + Для контрольного задания используйте модуль "[Gateway Payments](https://moodle.org/plugins/mod_gwpayments)" (мои правки [mod_gwpayments](https://github.com/Snickser/moodle-mod_gwpayments/tree/dev)), он правда глючный, но других нет.
