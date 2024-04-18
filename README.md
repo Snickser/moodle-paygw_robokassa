@@ -11,7 +11,6 @@ https://robokassa.com
 
 Возможности
 ------------
-+ Тестировалось только с moodoe 4.3+
 + Можно использовать пароль или кнопку для обхода платежа.
 + Сохраняет в базе номер курса и название группы студента.
 + Можно указать рекомендуемую цену.
@@ -25,6 +24,7 @@ https://robokassa.com
 
 Рекомендации
 ------------
++ Тестировалось только с moodoe 4.3+
 + Для записи в курс подходит стандарный плагин "Зачисление за оплату" (enrol_fee).
 + Для контрольного задания используйте модуль "[Gateway Payments](https://moodle.org/plugins/mod_gwpayments)" (мои правки [mod_gwpayments](https://github.com/Snickser/moodle-mod_gwpayments/tree/dev)), он правда глючный, но других нет.
 + Для ограничения доступности используйте модуль "[PaymentS availability condition for paid access](https://moodle.org/plugins/availability_gwpayments)" (мои правки [availability_gwpayments](https://github.com/Snickser/moodle-availability_gwpayments/tree/dev)).
