@@ -62,25 +62,25 @@ if ( $config->maxcost && $cost > $config->maxcost ) {
 $cost = number_format($cost, 2, '.', '');
 
 // get course and groups for user
-if( $paymentarea == "fee" ){
+if ( $component == "enrol_fee" ) {
     $cs = $DB->get_record('enrol', ['id' => $itemid]);
     $cs->course = $cs->courseid;
-} else if( $paymentarea == "cmfee" ) {
+} else if ( $paymentarea == "cmfee" ) {
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
-} else if( $paymentarea == "sectionfee" ) {
+} else if ( $paymentarea == "sectionfee" ) {
     $cs = $DB->get_record('course_sections', ['id' => $itemid]);
-} else if( $paymentarea == "unlockfee" ) {
+} else if ( $component == "mod_gwpayments" ) {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
-$group_names = '';
+$groupnames = '';
 $courseid = '';
-if( $cs->course ){
+if ( $cs->course ) {
     $courseid = $cs->course;
-    if ($gs = groups_get_all_groups($cs->course, $userid)){
-        foreach($gs as $g){
-	    $groups[] = $g->name;
+    if ($gs = groups_get_all_groups($cs->course, $userid)) {
+        foreach ($gs as $g) {
+            $groups[] = $g->name;
         }
-        $group_names = implode(',', $groups);
+        $groupnames = implode(',', $groups);
     }
 }
 
@@ -95,73 +95,76 @@ $paygwdata->cost = $cost;
 $paygwdata->currency = $currency;
 $paygwdata->date_created = date("Y-m-d H:i:s");
 $paygwdata->courseid = $courseid;
-$paygwdata->group_names = $group_names;
+$paygwdata->group_names = $groupnames;
 
-if (!$transaction_id = $DB->insert_record('paygw_robokassa', $paygwdata)) {
-    print_error('error_txdatabase', 'paygw_robokassa');
+if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
+    die( get_string('error_txdatabase', 'paygw_robokassa') );
 }
 
 // your registration data
-$mrh_login = $config->merchant_login;  // your login here
+$mrhlogin = $config->merchant_login;  // your login here
 // check test-mode
-if($config->istestmode){
-    $mrh_pass1 = $config->test_password1; // merchant test_pass1 here
+if ($config->istestmode) {
+    $mrhpass1 = $config->test_password1; // merchant test_pass1 here
 } else {
-    $mrh_pass1 = $config->password1;      // merchant pass1 here
+    $mrhpass1 = $config->password1;      // merchant pass1 here
 }
 
 // check password mode and skipmode
-if ( !empty($password) || !empty($skipmode) ){
+if ( !empty($password) || !empty($skipmode) ) {
     // build redirect
     $url = helper::get_success_url($component, $paymentarea, $itemid);
 
-    if(isset($skipmode)) $password = $config->password;
+    if (isset($skipmode)) {
+        $password = $config->password;
+    }
     // check password
-    if( $password === $config->password ){
-	// make fake pay
-	$cost = 0;
-	$paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid, $cost, $payable->get_currency(), 'robokassa');
-	helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
+    if ( $password === $config->password ) {
+        // make fake pay
+        $cost = 0;
+        $paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid,
+                                          $cost, $payable->get_currency(), 'robokassa');
+        helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
-	// write to DB
-	$data = new stdClass();
-	$data->id = $transaction_id;
-	$data->success = 2;
-	$data->cost = 0;
-	$DB->update_record('paygw_robokassa', $data);
+        // write to DB
+        $data = new stdClass();
+        $data->id = $transactionid;
+        $data->success = 2;
+        $data->cost = 0;
+        $DB->update_record('paygw_robokassa', $data);
 
-	redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
+        redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
     } else {
-	redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
+        redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
     die; // never
 }
 
 // order properties
-$inv_id    = $transaction_id;          // shop's invoice number
+$invid    = $transactionid;          // shop's invoice number
 // (unique for shop's lifetime)
-$inv_desc  = $description;  // invoice desc
-$out_summ  = $cost;  // invoice summ
+$invdesc  = $description;  // invoice desc
+$outsumm  = $cost;  // invoice summ
 
 
 $outsumcurrency = null;
 $currencyarg = null;
-if( $currency != 'RUB' ){
+if ( $currency != 'RUB' ) {
     $outsumcurrency = "OutSumCurrency=$currency&";
     $currencyarg = ":$currency";
 }
 
 // Build CRC value
-$crc = strtoupper(md5("$mrh_login:$out_summ:$inv_id".$currencyarg.":$mrh_pass1"));
+$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid".$currencyarg.":$mrhpass1"));
 
 
 $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
 
 redirect($paymenturl."
-MerchantLogin=$mrh_login&
-OutSum=$out_summ&$outsumcurrency
-InvId=$inv_id&
-Description=".urlencode($inv_desc)."&
+MerchantLogin=$mrhlogin&
+OutSum=$outsumm&$outsumcurrency
+InvId=$invid&
+Description=".urlencode($invdesc)."&
 SignatureValue=$crc&
 Culture=".current_language()."&
 Email=".urlencode($USER->email)."&
