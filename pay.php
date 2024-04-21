@@ -62,14 +62,14 @@ if ( $config->maxcost && $cost > $config->maxcost ) {
 $cost = number_format($cost, 2, '.', '');
 
 // get course and groups for user
-if( $paymentarea == "fee" ){
+if( $component == "enrol_fee" ){
     $cs = $DB->get_record('enrol', ['id' => $itemid]);
     $cs->course = $cs->courseid;
 } else if( $paymentarea == "cmfee" ) {
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
 } else if( $paymentarea == "sectionfee" ) {
     $cs = $DB->get_record('course_sections', ['id' => $itemid]);
-} else if( $paymentarea == "unlockfee" ) {
+} else if( $componet == "mod_gwpayments" ) {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
 $group_names = '';
