@@ -55,8 +55,10 @@ $payable = helper::get_payable($component, $paymentarea, $itemid);
 // check test-mode
 if ($config->istestmode) {
     $mrhpass2 = $config->test_password2; // merchant test_pass2 here
+    $robokassatx->success = 3;
 } else {
     $mrhpass2 = $config->password2;      // merchant pass2 here
+    $robokassatx->success = 1;
 }
 
 if (isset($mrhpass2)) {
@@ -87,7 +89,6 @@ if (isset($mrhpass2)) {
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
     // Write to DB
-    $robokassatx->success = 1;
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
     } else {
