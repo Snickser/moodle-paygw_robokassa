@@ -95,11 +95,11 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('advcheckbox', 'showduration', get_string('showduration', 'paygw_robokassa'), get_string('showduration', 'paygw_robokassa'));
         $mform->setType('showduration', PARAM_INT);
 
-        $mform->addElement('float', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
-        $mform->setType('suggest', PARAM_FLOAT);
+        $mform->addElement('text', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
+        $mform->setType('suggest', PARAM_TEXT);
 
-        $mform->addElement('float', 'maxcost', get_string('maxcost', 'paygw_robokassa'), ['size' => 10]);
-        $mform->setType('maxcost', PARAM_FLOAT);
+        $mform->addElement('text', 'maxcost', get_string('maxcost', 'paygw_robokassa'), ['size' => 10]);
+        $mform->setType('maxcost', PARAM_TEXT);
 
         global $CFG;
         $mform->addElement('html', '<span class="label-callback">'.get_string('callback_url', 'paygw_robokassa').'</span><br>');
