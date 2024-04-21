@@ -52,48 +52,48 @@ $currency = $payable->get_currency();
 $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
 $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 
-// get course info
-$enrolperiod='';
-$enrolperiod_desc='';
-// check area
-if( $component == "enrol_fee" ){
+// Get course info
+$enrolperiod = '';
+$enrolperioddesc = '';
+// Check area
+if ( $component == "enrol_fee" ) {
     $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentarea]);
     $enrolperiod = $cs->enrolperiod;
-} else if( $component == "mod_gwpayments" ) {
+} else if ( $component == "mod_gwpayments" ) {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
     $enrolperiod = $cs->costduration;
 }
 
-    if( $enrolperiod > 0 ){
-        if($enrolperiod>=86400*7){
-            $enrolperiod_desc = get_string('weeks');
-            $enrolperiod = $enrolperiod/(86400*7);
-        } else if($enrolperiod>=86400){
-	    $enrolperiod_desc = get_string('days');
-	    $enrolperiod = round($enrolperiod/86400);
-	} else if($enrolperiod>=3600) {
-	    $enrolperiod_desc = get_string('hours');
-	    $enrolperiod = round($enrolperiod/3600);
-	} else if($enrolperiod>=60) {
-	    $enrolperiod_desc = get_string('minutes');
-	    $enrolperiod = round($enrolperiod/60);
-	} else {
-	    $enrolperiod_desc = get_string('seconds');
-	}
+if ( $enrolperiod > 0 ) {
+    if ($enrolperiod >= 86400 * 7) {
+        $enrolperioddesc = get_string('weeks');
+        $enrolperiod = $enrolperiod / (86400 * 7);
+    } else if ($enrolperiod >= 86400) {
+        $enrolperioddesc = get_string('days');
+        $enrolperiod = round($enrolperiod / 86400);
+    } else if ($enrolperiod >= 3600) {
+        $enrolperioddesc = get_string('hours');
+        $enrolperiod = round($enrolperiod / 3600);
+    } else if ($enrolperiod >= 60) {
+        $enrolperioddesc = get_string('minutes');
+        $enrolperiod = round($enrolperiod / 60);
+    } else {
+        $enrolperioddesc = get_string('seconds');
     }
+}
 
 
 // Set the context of the page.
 $PAGE->set_context(context_system::instance());
 
 $PAGE->set_url('/payment/gateway/robokassa/method.php', $params);
-$string = get_string('payment','paygw_robokassa');
+$string = get_string('payment', 'paygw_robokassa');
 $PAGE->set_title(format_string( $string ));
 $PAGE->set_heading(format_string( $string ));
 
 // Set the appropriate headers for the page.
 $PAGE->set_cacheable(false);
-//$PAGE->set_pagelayout('standard');
+// $PAGE->set_pagelayout('standard');
 
 echo $OUTPUT->header();
 
@@ -104,9 +104,9 @@ $templatedata->itemid      = $itemid;
 $templatedata->fee         = $fee;
 $templatedata->currency    = $currency;
 
-if($config->showduration){
+if ($config->showduration) {
     $templatedata->enrolperiod = $enrolperiod;
-    $templatedata->enrolperiod_desc = $enrolperiod_desc;
+    $templatedata->enrolperiod_desc = $enrolperioddesc;
 }
 
 $templatedata->passwordmode = $config->passwordmode;
@@ -114,18 +114,18 @@ $templatedata->suggest = $config->suggest;
 $templatedata->maxcost = $config->maxcost;
 $templatedata->skipmode = $config->skipmode;
 
-if($config->skipmode || $config->passwordmode){
+if ($config->skipmode || $config->passwordmode) {
     $templatedata->usedetails = $config->usedetails;
 }
 
-if(!empty($config->fixdesc)){
+if (!empty($config->fixdesc)) {
     $templatedata->description = $config->fixdesc;
     $templatedata->fixdesc = 1;
 } else {
     $templatedata->description = $description;
 }
 
-$templatedata->image       = $OUTPUT->image_url('img','paygw_robokassa');
+$templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
 
 echo $OUTPUT->render_from_template('paygw_robokassa/method', $templatedata);
 
