@@ -74,11 +74,13 @@ if ( $component == "enrol_fee" ) {
 }
 $groupnames = '';
 $courseid = '';
-if ( $cs->course ) {
+if ( isset($cs->course) ) {
     $courseid = $cs->course;
-    if ($gs = groups_get_all_groups($cs->course, $userid)) {
-        foreach ($gs as $g) {
-            $groups[] = $g->name;
+    if ($gs = groups_get_user_groups($cs->course, $userid, true)) {
+        foreach ($gs as $gr) {
+            foreach($gr as $g){
+              $groups[] = groups_get_group_name($g);
+            }
         }
         $groupnames = implode(',', $groups);
     }
