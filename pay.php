@@ -69,7 +69,7 @@ if( $component == "enrol_fee" ){
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
 } else if( $paymentarea == "sectionfee" ) {
     $cs = $DB->get_record('course_sections', ['id' => $itemid]);
-} else if( $componet == "mod_gwpayments" ) {
+} else if( $component == "mod_gwpayments" ) {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
 $group_names = '';

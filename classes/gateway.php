@@ -33,7 +33,7 @@ class gateway extends \core_payment\gateway {
     public static function get_supported_currencies(): array {
         // 3-character ISO-4217: https://en.wikipedia.org/wiki/ISO_4217#Active_codes.
         return [
-            'RUB', 'USD', 'EUR', 'KZT'
+            'RUB', 'USD', 'EUR', 'KZT',
         ];
     }
 
@@ -58,7 +58,8 @@ class gateway extends \core_payment\gateway {
         $mform->setType('password2', PARAM_TEXT);
         $mform->disabledIf('password2', 'istestmode', "neq", 0);
 
-        $mform->addElement('advcheckbox', 'istestmode', get_string('istestmode', 'paygw_robokassa'), get_string('istestmode', 'paygw_robokassa'));
+        $mform->addElement('advcheckbox', 'istestmode', get_string('istestmode', 'paygw_robokassa'),
+                           get_string('istestmode', 'paygw_robokassa'));
         $mform->setType('istestmode', PARAM_INT);
 
         $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
@@ -69,11 +70,13 @@ class gateway extends \core_payment\gateway {
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
 
-        $mform->addElement('advcheckbox', 'skipmode', get_string('skipmode', 'paygw_robokassa'), get_string('skipmode', 'paygw_robokassa'));
+        $mform->addElement('advcheckbox', 'skipmode', get_string('skipmode', 'paygw_robokassa'),
+                           get_string('skipmode', 'paygw_robokassa'));
         $mform->setType('skipmode', PARAM_INT);
         $mform->addHelpButton('skipmode', 'skipmode', 'paygw_robokassa');
 
-        $mform->addElement('advcheckbox', 'passwordmode', get_string('passwordmode', 'paygw_robokassa'), get_string('passwordmode', 'paygw_robokassa'));
+        $mform->addElement('advcheckbox', 'passwordmode', get_string('passwordmode', 'paygw_robokassa'),
+                           get_string('passwordmode', 'paygw_robokassa'));
         $mform->setType('passwordmode', PARAM_INT);
         $mform->disabledIf('passwordmode', 'skipmode', "neq", 0);
 
@@ -83,7 +86,8 @@ class gateway extends \core_payment\gateway {
         $mform->disabledIf('password', 'skipmode', "neq", 0);
         $mform->addHelpButton('password', 'password', 'paygw_robokassa');
 
-        $mform->addElement('advcheckbox', 'usedetails', get_string('usedetails', 'paygw_robokassa'), get_string('usedetails', 'paygw_robokassa'));
+        $mform->addElement('advcheckbox', 'usedetails', get_string('usedetails', 'paygw_robokassa'),
+                           get_string('usedetails', 'paygw_robokassa'));
         $mform->setType('usedetails', PARAM_INT);
         $mform->addHelpButton('usedetails', 'usedetails', 'paygw_robokassa');
 
@@ -92,7 +96,8 @@ class gateway extends \core_payment\gateway {
         $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
 
-        $mform->addElement('advcheckbox', 'showduration', get_string('showduration', 'paygw_robokassa'), get_string('showduration', 'paygw_robokassa'));
+        $mform->addElement('advcheckbox', 'showduration', get_string('showduration', 'paygw_robokassa'),
+                           get_string('showduration', 'paygw_robokassa'));
         $mform->setType('showduration', PARAM_INT);
 
         $mform->addElement('text', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
