@@ -77,8 +77,9 @@ $courseid = '';
 if ( isset($cs->course) ) {
     $courseid = $cs->course;
     if ($gs = groups_get_user_groups($cs->course, $userid, true)) {
+        $groups = array();
         foreach ($gs as $gr) {
-            foreach($gr as $g){
+            foreach ($gr as $g) {
               $groups[] = groups_get_group_name($g);
             }
         }
