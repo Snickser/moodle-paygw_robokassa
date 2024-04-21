@@ -1,13 +1,13 @@
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/snickser) support me with a donation.
 
-
 # Robokassa payment gateway plugin for Moodle.
 
-Version 0.8
+Version 0.9
 
 https://robokassa.com
 
 ![alt text](https://raw.githubusercontent.com/Snickser/moodle-paygw_robokassa/da4ffeef22702ad4e087ca6ed78133f6c48dde65/pix/img.svg)
+
 
 Возможности
 ------------
@@ -18,9 +18,11 @@ https://robokassa.com
 + Отображание продолжительности обучения (для enrol_fee и mod_gwpaymets), если она установлена.
 + Конвертация валют на стороне банка (usd, eur, kzt).
 
+
 В планах
 ---
 + передача номенклатуры платежа
+
 
 Рекомендации
 ------------
