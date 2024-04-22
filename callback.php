@@ -48,11 +48,11 @@ $paymentarea = $robokassatx->paymentarea;
 $itemid      = $robokassatx->itemid;
 $userid      = $robokassatx->userid;
 
-// get config
+// Get config
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 $payable = helper::get_payable($component, $paymentarea, $itemid);
 
-// check test-mode
+// Check test-mode
 if ($config->istestmode) {
     $mrhpass2 = $config->test_password2; // merchant test_pass2 here
     $robokassatx->success = 3;
@@ -68,7 +68,7 @@ if (isset($mrhpass2)) {
     }
 
     // Check that amount paid is the correct amount
-    if ( (float) $robokassatx->cost <= 0 ) {
+    if ((float) $robokassatx->cost <= 0) {
         $cost = (float) $payable->get_amount();
     } else {
         $cost = (float) $robokassatx->cost;
@@ -77,22 +77,30 @@ if (isset($mrhpass2)) {
     $cost = number_format($cost, 2, '.', '');
     $outsumm = number_format($outsumm, 2, '.', '');
 
-    if ( $robokassatx->currency == 'RUB' ) {
+    if ($robokassatx->currency == 'RUB') {
         if ($outsumm !== $cost) {
             die('FAIL. Amount does not match.');
         }
     }
     // Deliver course
     // $fee = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('robokassa'));
-    $paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid,
-                                      $cost, $payable->get_currency(), 'robokassa');
+    $paymentid = helper::save_payment(
+        $payable->get_account_id(),
+        $component,
+        $paymentarea,
+        $itemid,
+        $userid,
+        $cost,
+        $payable->get_currency(),
+        'robokassa'
+    );
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
     // Write to DB
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
     } else {
-        die("OK".$invid);
+        die("OK" . $invid);
     }
 } else {
     die('FAIL');

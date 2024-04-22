@@ -56,15 +56,15 @@ $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 $enrolperiod = '';
 $enrolperioddesc = '';
 // Check area
-if ( $component == "enrol_fee" ) {
+if ($component == "enrol_fee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentarea]);
     $enrolperiod = $cs->enrolperiod;
-} else if ( $component == "mod_gwpayments" ) {
+} else if ($component == "mod_gwpayments") {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
     $enrolperiod = $cs->costduration;
 }
 
-if ( $enrolperiod > 0 ) {
+if ($enrolperiod > 0) {
     if ($enrolperiod >= 86400 * 7) {
         $enrolperioddesc = get_string('weeks');
         $enrolperiod = $enrolperiod / (86400 * 7);
@@ -88,8 +88,8 @@ $PAGE->set_context(context_system::instance());
 
 $PAGE->set_url('/payment/gateway/robokassa/method.php', $params);
 $string = get_string('payment', 'paygw_robokassa');
-$PAGE->set_title(format_string( $string ));
-$PAGE->set_heading(format_string( $string ));
+$PAGE->set_title(format_string($string));
+$PAGE->set_heading(format_string($string));
 
 // Set the appropriate headers for the page.
 $PAGE->set_cacheable(false);
@@ -97,7 +97,7 @@ $PAGE->set_cacheable(false);
 
 echo $OUTPUT->header();
 
-$templatedata = new stdClass;
+$templatedata = new stdClass();
 $templatedata->component   = $component;
 $templatedata->paymentarea = $paymentarea;
 $templatedata->itemid      = $itemid;
