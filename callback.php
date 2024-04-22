@@ -48,11 +48,11 @@ $paymentarea = $robokassatx->paymentarea;
 $itemid      = $robokassatx->itemid;
 $userid      = $robokassatx->userid;
 
-// get config
+// Get config
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 $payable = helper::get_payable($component, $paymentarea, $itemid);
 
-// check test-mode
+// Check test-mode
 if ($config->istestmode) {
     $mrhpass2 = $config->test_password2; // merchant test_pass2 here
     $robokassatx->success = 3;

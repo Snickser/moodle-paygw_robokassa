@@ -107,6 +107,7 @@ if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
 
 // Your registration data
 $mrhlogin = $config->merchant_login;  // Your login here
+
 // Check test-mode
 if ($config->istestmode) {
     $mrhpass1 = $config->test_password1; // Merchant test_pass1 here
@@ -153,12 +154,11 @@ if (!empty($password) || !empty($skipmode)) {
 }
 
 // Order properties
-$invid    = $transactionid;          // Shop's invoice number
-// (unique for shop's lifetime)
+$invid    = $transactionid;  // Shop's invoice number
 $invdesc  = $description;  // Invoice desc
 $outsumm  = $cost;  // Invoice summ
 
-
+// For non-RUB pay
 $outsumcurrency = null;
 $currencyarg = null;
 if ($currency != 'RUB') {
@@ -171,6 +171,7 @@ $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$mrhpass1")
 
 
 $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
+
 
 redirect($paymenturl . "
 MerchantLogin=$mrhlogin&
