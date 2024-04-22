@@ -52,42 +52,42 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
 // Check self cost
-if ( !empty($costself) ) {
+if (!empty($costself)) {
     $cost = $costself;
 }
 // Check maxcost
-if ( $config->maxcost && $cost > $config->maxcost ) {
+if ($config->maxcost && $cost > $config->maxcost) {
     $cost = $config->maxcost;
 }
 $cost = number_format($cost, 2, '.', '');
 
 // Get course and groups for user
-if ( $component == "enrol_fee" ) {
+if ($component == "enrol_fee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid]);
     $cs->course = $cs->courseid;
-} else if ( $paymentarea == "cmfee" ) {
+} else if ($paymentarea == "cmfee") {
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
-} else if ( $paymentarea == "sectionfee" ) {
+} else if ($paymentarea == "sectionfee") {
     $cs = $DB->get_record('course_sections', ['id' => $itemid]);
-} else if ( $component == "mod_gwpayments" ) {
+} else if ($component == "mod_gwpayments") {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
-$groupnames = '';
-$courseid = '';
-if ( isset($cs->course) ) {
+if (!empty($cs->course)) {
     $courseid = $cs->course;
-    if ($gs = groups_get_user_groups($cs->course, $userid, true)) {
+    if ($gs = groups_get_user_groups($courseid, $userid, true)) {
         foreach ($gs as $gr) {
             foreach ($gr as $g) {
                 $groups[] = groups_get_group_name($g);
             }
         }
-        if ( isset($groups) ) {
+        if (isset($groups)) {
             $groupnames = implode(',', $groups);
         }
     }
+} else {
+    $groupnames = '';
+    $courseid = '';
 }
-
 
 // Write tx to db
 $paygwdata = new stdClass();
@@ -102,7 +102,7 @@ $paygwdata->courseid = $courseid;
 $paygwdata->group_names = $groupnames;
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
-    die( get_string('error_txdatabase', 'paygw_robokassa') );
+    die(get_string('error_txdatabase', 'paygw_robokassa'));
 }
 
 // Your registration data
@@ -115,7 +115,7 @@ if ($config->istestmode) {
 }
 
 // Check password mode and skipmode
-if ( !empty($password) || !empty($skipmode) ) {
+if (!empty($password) || !empty($skipmode)) {
     // Build redirect
     $url = helper::get_success_url($component, $paymentarea, $itemid);
 
@@ -123,11 +123,19 @@ if ( !empty($password) || !empty($skipmode) ) {
         $password = $config->password;
     }
     // Check password
-    if ( $password === $config->password ) {
+    if ($password === $config->password) {
         // Make fake pay
         $cost = 0;
-        $paymentid = helper::save_payment($payable->get_account_id(), $component, $paymentarea, $itemid, $userid,
-                                          $cost, $payable->get_currency(), 'robokassa');
+        $paymentid = helper::save_payment(
+            $payable->get_account_id(),
+            $component,
+            $paymentarea,
+            $itemid,
+            $userid,
+            $cost,
+            $payable->get_currency(),
+            'robokassa'
+        );
         helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
         // Write to DB
@@ -153,24 +161,24 @@ $outsumm  = $cost;  // Invoice summ
 
 $outsumcurrency = null;
 $currencyarg = null;
-if ( $currency != 'RUB' ) {
+if ($currency != 'RUB') {
     $outsumcurrency = "OutSumCurrency=$currency&";
     $currencyarg = ":$currency";
 }
 
 // Build CRC value
-$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid".$currencyarg.":$mrhpass1"));
+$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$mrhpass1"));
 
 
 $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
 
-redirect($paymenturl."
+redirect($paymenturl . "
 MerchantLogin=$mrhlogin&
 OutSum=$outsumm&$outsumcurrency
 InvId=$invid&
-Description=".urlencode($invdesc)."&
+Description=" . urlencode($invdesc) . "&
 SignatureValue=$crc&
-Culture=".current_language()."&
-Email=".urlencode($USER->email)."&
-IsTest=".$config->istestmode."
+Culture=" . current_language() . "&
+Email=" . urlencode($USER->email) . "&
+IsTest=" . $config->istestmode . "
 ");
