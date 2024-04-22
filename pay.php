@@ -65,12 +65,12 @@ $cost = number_format($cost, 2, '.', '');
 if ($component == "enrol_fee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid]);
     $cs->course = $cs->courseid;
+} else if ($component == "mod_gwpayments") {
+    $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 } else if ($paymentarea == "cmfee") {
     $cs = $DB->get_record('course_modules', ['id' => $itemid]);
 } else if ($paymentarea == "sectionfee") {
     $cs = $DB->get_record('course_sections', ['id' => $itemid]);
-} else if ($component == "mod_gwpayments") {
-    $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
 }
 if (!empty($cs->course)) {
     $courseid = $cs->course;
