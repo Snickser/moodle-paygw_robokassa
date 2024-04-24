@@ -34,7 +34,7 @@ https://robokassa.com
 
 INSTALLATION
 ------------
-Download the latest **paygw_robokassa.zip** and unzip the contents into the **/payment/gateway directory**. Or upload it from Moodle plugins adminnistration interface.
+Download the latest **paygw_robokassa.zip** and unzip the contents into the **$CFG->dataroot/payment/gateway** directory. Or upload it from Moodle plugins adminnistration interface.
 
 1. Install the plugin
 2. Enable the Robokassa payment gateway
