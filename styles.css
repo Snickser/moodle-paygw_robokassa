@@ -1,4 +1,5 @@
 .core_payment_gateways_modal .robokassa .icon {
     height: 40px;
     width: auto;
+    max-width: none;
 }
