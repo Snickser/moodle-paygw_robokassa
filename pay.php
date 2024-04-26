@@ -115,16 +115,22 @@ if ($config->istestmode) {
     $mrhpass1 = $config->password1;      // Merchant pass1 here
 }
 
-// Check password mode and skipmode
-if (!empty($password) || !empty($skipmode)) {
-    // Build redirect
-    $url = helper::get_success_url($component, $paymentarea, $itemid);
+// Build redirect
+$url = helper::get_success_url($component, $paymentarea, $itemid);
 
-    if (isset($skipmode)) {
-        $password = $config->password;
-    }
+// Check passwordmode or skipmode
+if (!empty($password) || $skipmode) {
+    $success = false;
+    if ($config->skipmode) {
+        $success = true;
+    } else if ($config->passwordmode && !empty($config->password)) {
     // Check password
-    if ($password === $config->password) {
+        if ($password === $config->password) {
+            $success = true;
+        }
+    }
+
+    if ($success) {
         // Make fake pay
         $cost = 0;
         $paymentid = helper::save_payment(
