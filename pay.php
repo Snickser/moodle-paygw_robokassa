@@ -187,13 +187,10 @@ $items->items = [
 ];
 $receipt = json_encode($items);
 
-// file_put_contents("/tmp/xxxx", serialize($receipt)."\n", FILE_APPEND);
-
 // Build CRC value
 $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
-// redirect(
-// "https://auth.robokassa.ru/Merchant/Index.aspx?" .
+// Request params
 $request = "MerchantLogin=$mrhlogin" .
     "&OutSum=$outsumm$outsumcurrency" .
     "&InvId=$invid" .
@@ -204,6 +201,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&IsTest=" . $config->istestmode .
     "&Receipt=" . urlencode($receipt);
 
+// Get invoiceID
 $curlhandler = curl_init();
 curl_setopt_array($curlhandler, [
      CURLOPT_URL => 'https://auth.robokassa.ru/Merchant/Indexjson.aspx',
@@ -215,8 +213,6 @@ curl_setopt($curlhandler, CURLOPT_POSTFIELDS, $request);
 $jsonresponse = curl_exec($curlhandler);
 
 $response = json_decode($jsonresponse);
-
-// file_put_contents("/tmp/xxxx", serialize($response) . "\n", FILE_APPEND);
 
 if ($response->errorCode) {
     redirect($url, get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)", 0, 'error');

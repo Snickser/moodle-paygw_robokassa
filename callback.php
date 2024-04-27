@@ -29,12 +29,9 @@ global $CFG, $USER, $DB;
 
 defined('MOODLE_INTERNAL') || die();
 
-// file_put_contents("/tmp/xxxx", serialize($_REQUEST) . "\n", FILE_APPEND);
-
 $invid    = required_param('InvId', PARAM_ALPHANUMEXT);
 $outsumm  = required_param('OutSum', PARAM_RAW);
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
-
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['id' => $invid])) {
     die('FAIL. Not a valid transaction id');
