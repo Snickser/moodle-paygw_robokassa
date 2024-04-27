@@ -219,14 +219,8 @@ $response = json_decode($jsonresponse);
 // file_put_contents("/tmp/xxxx", serialize($response) . "\n", FILE_APPEND);
 
 if ($response->errorCode) {
-    $error = $response->errorMessage;
     redirect($url, get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)", 0, 'error');
     die;
 }
-
-$data = new stdClass();
-$data->id = $transactionid;
-$data->invoiceid = $response->invoiceID;
-$DB->update_record('paygw_robokassa', $data);
 
 redirect('https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID);
