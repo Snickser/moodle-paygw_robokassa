@@ -29,6 +29,7 @@ global $CFG, $USER, $DB;
 
 defined('MOODLE_INTERNAL') || die();
 
+// file_put_contents("/tmp/xxxx", serialize($_REQUEST) . "\n", FILE_APPEND);
 
 $invid    = required_param('InvId', PARAM_ALPHANUMEXT);
 $outsumm  = required_param('OutSum', PARAM_RAW);
