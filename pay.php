@@ -192,9 +192,9 @@ $receipt = json_encode($items);
 // Build CRC value
 $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
-Header(
-    "Location: https://auth.robokassa.ru/Merchant/Index.aspx?" .
-    "MerchantLogin=$mrhlogin" .
+// redirect(
+// "https://auth.robokassa.ru/Merchant/Index.aspx?" .
+$request = "MerchantLogin=$mrhlogin" .
     "&OutSum=$outsumm$outsumcurrency" .
     "&InvId=$invid" .
     "&Description=" . urlencode($invdesc) .
@@ -202,20 +202,31 @@ Header(
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
-    "&Receipt=" . urlencode($receipt)
-);
+    "&Receipt=" . urlencode($receipt);
 
-/*
-$paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
+$curlhandler = curl_init();
+curl_setopt_array($curlhandler, [
+     CURLOPT_URL => 'https://auth.robokassa.ru/Merchant/Indexjson.aspx',
+     CURLOPT_RETURNTRANSFER => true,
+]);
+curl_setopt($curlhandler, CURLOPT_POST, true);
+curl_setopt($curlhandler, CURLOPT_POSTFIELDS, $request);
 
-redirect($paymenturl . "
-MerchantLogin=$mrhlogin&
-OutSum=$outsumm&$outsumcurrency
-InvId=$invid&
-Description=" . urlencode($invdesc) . "&
-SignatureValue=$crc&
-Culture=" . current_language() . "&
-Email=" . urlencode($USER->email) . "&
-IsTest=" . $config->istestmode . "
-");
-*/
+$jsonresponse = curl_exec($curlhandler);
+
+$response = json_decode($jsonresponse);
+
+// file_put_contents("/tmp/xxxx", serialize($response) . "\n", FILE_APPEND);
+
+if ($response->errorCode) {
+    $error = $response->errorMessage;
+    redirect($url, get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)", 0, 'error');
+    die;
+}
+
+$data = new stdClass();
+$data->id = $transactionid;
+$data->invoiceid = $response->invoiceID;
+$DB->update_record('paygw_robokassa', $data);
+
+redirect('https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID);
