@@ -74,6 +74,39 @@ class gateway extends \core_payment\gateway {
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
 
+	$options = [
+		'osn' => 1,
+		'usn_income' => 2,
+		'usn_income_outcome' => 3,
+		'esn' => 4,
+		'patent' => 5,
+	];
+	$mform->addElement(
+		'select',
+		'sno',
+		get_string('sno', 'paygw_robokassa'),
+		$options
+	);
+        $mform->setType('sno', PARAM_TEXT);
+        $mform->addHelpButton('sno', 'sno', 'paygw_robokassa');
+
+	$options = [
+		'none' => get_string('no'),
+		'vat0' => "0%",
+		'vat10' => "10%",
+		'vat110' => "10/110",
+		'vat20' => "20%",
+		'vat220' => "20/120",
+	];
+	$mform->addElement(
+		'select',
+		'tax',
+		get_string('tax', 'paygw_robokassa'),
+		$options,
+	);
+        $mform->setType('tax', PARAM_TEXT);
+        $mform->addHelpButton('tax', 'tax', 'paygw_robokassa');
+
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
         $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
