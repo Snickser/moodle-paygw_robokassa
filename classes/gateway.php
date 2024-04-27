@@ -74,6 +74,13 @@ class gateway extends \core_payment\gateway {
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
 
+        $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
+        $mform->setType('fixdesc', PARAM_TEXT);
+        $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
+        $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
+
+        $mform->addElement('static');
+
         $mform->addElement(
             'advcheckbox',
             'skipmode',
@@ -106,11 +113,6 @@ class gateway extends \core_payment\gateway {
         );
         $mform->setType('usedetails', PARAM_INT);
         $mform->addHelpButton('usedetails', 'usedetails', 'paygw_robokassa');
-
-        $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
-        $mform->setType('fixdesc', PARAM_TEXT);
-        $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->addHelpButton('fixdesc', 'fixdesc', 'paygw_robokassa');
 
         $mform->addElement(
             'advcheckbox',
