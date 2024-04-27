@@ -168,16 +168,45 @@ $outsumm  = $cost;  // Invoice summ
 $outsumcurrency = null;
 $currencyarg = null;
 if ($currency != 'RUB') {
-    $outsumcurrency = "OutSumCurrency=$currency&";
+    $outsumcurrency = "&OutSumCurrency=$currency";
     $currencyarg = ":$currency";
 }
 
+// Nomenclatura
+$items = new stdClass();
+$items->sno = $config->sno;
+$items->items = [
+    [
+    "name" => $description,
+    "quantity" => 1,
+    "sum" => $cost,
+    "payment_method" => "full_payment",
+    "payment_object" => "payment",
+    "tax" => $config->tax,
+    ],
+];
+$receipt = json_encode($items);
+
+// file_put_contents("/tmp/xxxx", serialize($receipt)."\n", FILE_APPEND);
+
 // Build CRC value
-$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$mrhpass1"));
+$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
+Header(
+    "Location: https://auth.robokassa.ru/Merchant/Index.aspx?" .
+    "MerchantLogin=$mrhlogin" .
+    "&OutSum=$outsumm$outsumcurrency" .
+    "&InvId=$invid" .
+    "&Description=" . urlencode($invdesc) .
+    "&SignatureValue=$crc" .
+    "&Culture=" . current_language() .
+    "&Email=" . urlencode($USER->email) .
+    "&IsTest=" . $config->istestmode .
+    "&Receipt=" . urlencode($receipt)
+);
 
+/*
 $paymenturl = "https://auth.robokassa.ru/Merchant/Index.aspx?";
-
 
 redirect($paymenturl . "
 MerchantLogin=$mrhlogin&
@@ -189,3 +218,4 @@ Culture=" . current_language() . "&
 Email=" . urlencode($USER->email) . "&
 IsTest=" . $config->istestmode . "
 ");
+*/

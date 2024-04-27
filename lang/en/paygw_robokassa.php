@@ -89,3 +89,13 @@ $string['sbp'] = 'SBP';
 
 $string['internalerror'] = 'An internal error has occurred. Please contact us.';
 $string['privacy:metadata'] = 'The Robokassa plugin does not store any personal data.';
+
+$string['tax'] = 'VAT rate';
+$string['tax_help'] = 'VAT rate according to YooKass documentation.';
+$string['sno'] = 'Tax type';
+$string['sno_help'] = 'Type of tax system for generating checks:<br>
+1 - General taxation system<br>
+2 - Simplified (STS, income)<br>
+3 - Simplified (STS, income minus expenses)<br>
+4 - Unified Agricultural Tax (UST)<br>
+5 - Patent taxation system';
