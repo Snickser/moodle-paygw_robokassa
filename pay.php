@@ -190,7 +190,7 @@ $receipt = json_encode($items);
 // Build CRC value
 $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
-// Request params
+// Params
 $request = "MerchantLogin=$mrhlogin" .
     "&OutSum=$outsumm$outsumcurrency" .
     "&InvId=$invid" .

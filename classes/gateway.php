@@ -74,36 +74,36 @@ class gateway extends \core_payment\gateway {
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
 
-	$options = [
-		'osn' => 1,
-		'usn_income' => 2,
-		'usn_income_outcome' => 3,
-		'esn' => 4,
-		'patent' => 5,
-	];
-	$mform->addElement(
-		'select',
-		'sno',
-		get_string('sno', 'paygw_robokassa'),
-		$options
-	);
+        $options = [
+        'osn' => 1,
+        'usn_income' => 2,
+        'usn_income_outcome' => 3,
+        'esn' => 4,
+        'patent' => 5,
+        ];
+        $mform->addElement(
+            'select',
+            'sno',
+            get_string('sno', 'paygw_robokassa'),
+            $options
+        );
         $mform->setType('sno', PARAM_TEXT);
         $mform->addHelpButton('sno', 'sno', 'paygw_robokassa');
 
-	$options = [
-		'none' => get_string('no'),
-		'vat0' => "0%",
-		'vat10' => "10%",
-		'vat110' => "10/110",
-		'vat20' => "20%",
-		'vat220' => "20/120",
-	];
-	$mform->addElement(
-		'select',
-		'tax',
-		get_string('tax', 'paygw_robokassa'),
-		$options,
-	);
+        $options = [
+        'none' => get_string('no'),
+        'vat0' => "0%",
+        'vat10' => "10%",
+        'vat110' => "10/110",
+        'vat20' => "20%",
+        'vat220' => "20/120",
+        ];
+        $mform->addElement(
+            'select',
+            'tax',
+            get_string('tax', 'paygw_robokassa'),
+            $options,
+        );
         $mform->setType('tax', PARAM_TEXT);
         $mform->addHelpButton('tax', 'tax', 'paygw_robokassa');
 
@@ -162,11 +162,12 @@ class gateway extends \core_payment\gateway {
         $mform->setType('maxcost', PARAM_TEXT);
 
         global $CFG;
-        $mform->addElement('html', '<span class="label-callback">' . get_string('callback_url', 'paygw_robokassa') . '</span><br>');
-        $mform->addElement('html', '<span class="callback_url">' . $CFG->wwwroot . '/payment/gateway/robokassa/callback.php</span><br>');
-        $mform->addElement('html', '<span class="label-return">' . get_string('return_url', 'paygw_robokassa') . '</span><br>');
-        $mform->addElement('html', '<span class="return_url">' . $CFG->wwwroot . '/payment/gateway/robokassa/return.php</span><br>');
-        $mform->addElement('html', '<span class="label-callback">' . get_string('callback_help', 'paygw_robokassa') . '</span><br><br>');
+        $mform->addElement('html', '<div class="label-callback" style="background: #F2EFE6; padding: 15px;">' .
+                                    get_string('callback_url', 'paygw_robokassa') . '</span><br>');
+        $mform->addElement('html', $CFG->wwwroot . '/payment/gateway/robokassa/callback.php<br>');
+        $mform->addElement('html', get_string('return_url', 'paygw_robokassa') . '<br>');
+        $mform->addElement('html', $CFG->wwwroot . '/payment/gateway/robokassa/return.php<br>');
+        $mform->addElement('html', get_string('callback_help', 'paygw_robokassa') . '</div><br>');
     }
 
     /**
