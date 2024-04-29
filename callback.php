@@ -79,6 +79,9 @@ if (isset($mrhpass2)) {
         if ($outsumm !== $cost) {
             die('FAIL. Amount does not match.');
         }
+    } else {
+        $robokassatx->cost = $outsumm;
+        $robokassatx->currency = 'RUB';
     }
     // Deliver course
     // $fee = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('robokassa'));
@@ -88,8 +91,8 @@ if (isset($mrhpass2)) {
         $paymentarea,
         $itemid,
         $userid,
-        $cost,
-        $payable->get_currency(),
+        $outsumm,
+        'RUB',
         'robokassa'
     );
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
