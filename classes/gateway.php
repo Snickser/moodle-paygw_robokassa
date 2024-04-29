@@ -106,7 +106,20 @@ class gateway extends \core_payment\gateway {
         );
         $mform->setType('tax', PARAM_TEXT);
         $mform->addHelpButton('tax', 'tax', 'paygw_robokassa');
-
+/*
+        $options = [
+        '' => get_string('default'),
+        'BankCard' => get_string('plastic', 'paygw_robokassa'),
+        'SBP' => get_string('sbp', 'paygw_robokassa'),
+        ];
+        $mform->addElement(
+            'select',
+            'inccurrlabel',
+            get_string('inccurrlabel', 'paygw_robokassa'),
+            $options,
+        );
+        $mform->setType('inccurrlabel', PARAM_TEXT);
+*/
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
         $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');

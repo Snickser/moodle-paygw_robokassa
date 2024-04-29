@@ -62,36 +62,12 @@ $string['showduration'] = 'Показывать длительность обу�
 $string['usedetails'] = 'Показывать свёрнутым';
 $string['usedetails_help'] = 'Прячет кнопку или пароль под сворачиваемый блок, если они включены.';
 $string['usedetails_text'] = 'Нажмите тут если у вас нет возможности совершить пожертвование';
+$string['inccurrlabel'] = 'Метод платежа';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Платежная система';
 $string['robokassa'] = 'Robokassa';
-$string['banktransfer'] = 'Банковский перевод';
-$string['ciberpay'] = 'CiberPay';
-$string['comepay'] = 'Comepay';
-$string['contact'] = 'Contact';
-$string['elecsnet'] = 'Элекснет';
-$string['euroset'] = 'Евросеть, Связной';
-$string['forward'] = 'Forward Mobile';
-$string['gorod'] = 'Федеральная система ГОРОД';
-$string['mcb'] = 'МосКредитБанк';
-$string['moneta'] = 'Moneta.ru';
-$string['moneymail'] = 'Money Mail';
-$string['novoplat'] = 'NovoPlat';
 $string['plastic'] = 'VISA, MasterCard, МИР';
-$string['platika'] = 'PLATiKA';
-$string['post'] = 'ФГУП Почта Росии';
-$string['wallet'] = 'Wallet One';
-$string['webmoney'] = 'WebMoney';
-$string['yandex'] = 'Yandex.Money';
-$string['additionalparameters'] = 'Дополнительные параметры';
-$string['eurosetrapidaphone'] = 'Номер телефона';
-$string['moneymailemail'] = 'Email в Money Mail';
-$string['mailofrussiasenderindex'] = 'Индекс отправителя';
-$string['mailofrussiasenderregion'] = 'Регион отправителя';
-$string['mailofrussiasenderaddress'] = 'Адрес отправителя';
-$string['mailofrussiasendername'] = 'Имя отправителя';
-$string['webmoneyaccountid'] = 'Источник оплаты';
 $string['sbp'] = 'СБП';
 
 $string['tax'] = 'Ставка НДС';
