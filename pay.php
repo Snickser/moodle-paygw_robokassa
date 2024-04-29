@@ -180,8 +180,8 @@ $items->items = [
     "name" => $description,
     "quantity" => 1,
     "sum" => $cost,
-//    "payment_method" => "full_payment",
-//    "payment_object" => "service",
+// "payment_method" => "full_payment",
+// "payment_object" => "service",
     "tax" => $config->tax,
     ],
 ];
@@ -195,7 +195,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&OutSum=$outsumm$outsumcurrency" .
     "&InvId=$invid" .
     "&Description=" . urlencode($invdesc) .
-//    "&IncCurrLabel=" . $config->inccurrlabel .
+// "&IncCurrLabel=" . $config->inccurrlabel .
     "&SignatureValue=$crc" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
