@@ -180,25 +180,27 @@ $items->items = [
     "name" => $description,
     "quantity" => 1,
     "sum" => $cost,
-    "payment_method" => "full_payment",
-    "payment_object" => "payment",
+//    "payment_method" => "full_payment",
+//    "payment_object" => "service",
     "tax" => $config->tax,
     ],
 ];
 $receipt = json_encode($items);
 
 // Build CRC value
-$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
+$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$USER->lastip:$receipt:$mrhpass1"));
 
-// Request params
+// Params
 $request = "MerchantLogin=$mrhlogin" .
     "&OutSum=$outsumm$outsumcurrency" .
     "&InvId=$invid" .
     "&Description=" . urlencode($invdesc) .
+//    "&IncCurrLabel=" . $config->inccurrlabel .
     "&SignatureValue=$crc" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
+    "&UserIp=" . $USER->lastip .
     "&Receipt=" . urlencode($receipt);
 
 // Get invoiceID

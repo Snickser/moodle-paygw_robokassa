@@ -56,35 +56,13 @@ $string['showduration'] = 'Show duration of training';
 $string['usedetails'] = 'Make it collapsible';
 $string['usedetails_help'] = 'Display a button or password in a collapsed block.';
 $string['usedetails_text'] = 'Click here if you are unable to donate.';
+$string['inccurrlabel'] = 'Payment method';
 
 /* Payment systems */
 $string['paymentsystem'] = 'Payment system';
 $string['robokassa'] = 'Robokassa';
-$string['banktransfer'] = 'Bank transfer';
-$string['ciberpay'] = 'CiberPay';
-$string['comepay'] = 'Comepay';
-$string['contact'] = 'Contact';
-$string['elecsnet'] = 'Elecsnet';
-$string['euroset'] = 'Euroset, Svyaznoi';
-$string['forward'] = 'Forward Mobile';
-$string['gorod'] = 'Federal System GOROD';
-$string['mcb'] = 'MoscowCreditBank';
-$string['moneta'] = 'Moneta.ru';
-$string['moneymail'] = 'Money Mail';
-$string['novoplat'] = 'NovoPlat';
 $string['plastic'] = 'VISA, MasterCard, MIR';
-$string['platika'] = 'PLATiKA';
-$string['post'] = 'Russian Post Transfer';
 $string['wallet'] = 'Wallet One';
-$string['webmoney'] = 'WebMoney';
-$string['yandex'] = 'Yandex.Money';
-$string['additionalparameters'] = 'Additional parameters';
-$string['eurosetrapidaphone'] = 'Phone number';
-$string['moneymailemail'] = 'Email in Money Mail';
-$string['mailofrussiasenderindex'] = 'Sender ZIP';
-$string['mailofrussiasenderaddress'] = 'Sender address';
-$string['mailofrussiasendername'] = 'Sender name';
-$string['webmoneyaccountid'] = 'Payment method';
 $string['sbp'] = 'SBP';
 
 $string['internalerror'] = 'An internal error has occurred. Please contact us.';
@@ -99,3 +77,4 @@ $string['sno_help'] = 'Type of tax system for generating checks:<br>
 3 - Simplified (STS, income minus expenses)<br>
 4 - Unified Agricultural Tax (UST)<br>
 5 - Patent taxation system';
+
