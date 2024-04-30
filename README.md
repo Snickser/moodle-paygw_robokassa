@@ -2,7 +2,7 @@
 
 # Robokassa payment gateway plugin for Moodle.
 
-Version 0.12
+Version 0.13
 
 https://robokassa.com
 
@@ -17,6 +17,7 @@ https://robokassa.com
 + Можно ограничить максимальную цену.
 + Отображание продолжительности обучения (для enrol_fee и mod_gwpaymets), если она установлена.
 + Конвертация валют на стороне банка (usd, eur, kzt).
++ Поддержка пароля из модуля курса.
 
 
 Рекомендации
