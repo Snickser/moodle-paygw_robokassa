@@ -31,19 +31,23 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$invid    = required_param('InvId', PARAM_TEXT);
+$invid = required_param('InvId', PARAM_TEXT);
 
-$outsumm  = optional_param('OutSum', null, PARAM_TEXT);
+$outsumm   = optional_param('OutSum', null, PARAM_TEXT);
 $signature = optional_param('SignatureValue', null, PARAM_TEXT);
 
 
-if (!$robokassatx = $DB->get_record('paygw_robokassa', ['id' => $invid])) {
+if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
     die('FAIL. Not a valid transaction id');
 }
 
-$paymentarea = $robokassatx->paymentarea;
-$component   = $robokassatx->component;
-$itemid      = $robokassatx->itemid;
+if (!$payment = $DB->get_record('payments', ['id' => $robokassatx->paymentid])) {
+    die('FAIL. Not a valid payment.');
+}
+
+$paymentarea = $payment->paymentarea;
+$component   = $payment->component;
+$itemid      = $payment->itemid;
 
 // Build redirect.
 $url = helper::get_success_url($component, $paymentarea, $itemid);

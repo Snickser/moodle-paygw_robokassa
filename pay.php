@@ -90,19 +90,13 @@ if (!empty($cs->course)) {
 
 // Write tx to db.
 $paygwdata = new stdClass();
-$paygwdata->userid = $userid;
-$paygwdata->component = $component;
-$paygwdata->paymentarea = $paymentarea;
-$paygwdata->itemid = $itemid;
-$paygwdata->cost = $cost;
-$paygwdata->currency = $currency;
-$paygwdata->date_created = date("Y-m-d H:i:s");
 $paygwdata->courseid = $courseid;
-$paygwdata->group_names = $groupnames;
+$paygwdata->groupnames = $groupnames;
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     die(get_string('error_txdatabase', 'paygw_robokassa'));
 }
+$paygwdata->id = $transactionid;
 
 // Your registration data.
 $mrhlogin = $config->merchant_login;  // Your login here.
@@ -136,25 +130,22 @@ if (!empty($password) || $skipmode) {
 
     if ($success) {
         // Make fake pay.
-        $cost = 0;
         $paymentid = helper::save_payment(
             $payable->get_account_id(),
             $component,
             $paymentarea,
             $itemid,
             $userid,
-            $cost,
+            0,
             $payable->get_currency(),
             'robokassa'
         );
         helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
         // Write to DB.
-        $data = new stdClass();
-        $data->id = $transactionid;
-        $data->success = 2;
-        $data->cost = 0;
-        $DB->update_record('paygw_robokassa', $data);
+        $paygwdata->success = 2;
+        $paygwdata->paymentid = $paymentid;
+        $DB->update_record('paygw_robokassa', $paygwdata);
 
         redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
     } else {
@@ -163,10 +154,22 @@ if (!empty($password) || $skipmode) {
     die; // Never.
 }
 
+// Save payment.
+$paymentid = helper::save_payment(
+    $payable->get_account_id(),
+    $component,
+    $paymentarea,
+    $itemid,
+    $userid,
+    $cost,
+    $payable->get_currency(),
+    'robokassa'
+);
+
 // Order properties.
-$invid    = $transactionid;  // Shop's invoice number.
+$invid    = $paymentid;    // Shop's invoice number.
 $invdesc  = $description;  // Invoice desc.
-$outsumm  = $cost;  // Invoice summ.
+$outsumm  = $cost;         // Invoice summ.
 
 // For non-RUB pay.
 $outsumcurrency = null;
@@ -217,9 +220,18 @@ $jsonresponse = curl_exec($curlhandler);
 
 $response = json_decode($jsonresponse);
 
+if (!isset($response->errorCode)) {
+    redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (response error)", 0, 'error');
+}
+
 if ($response->errorCode) {
     redirect($url, get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)", 0, 'error');
     die;
 }
+
+// Write to DB.
+$paygwdata->paymentid = $paymentid;
+$paygwdata->invoiceid = $response->invoiceID;
+$DB->update_record('paygw_robokassa', $paygwdata);
 
 redirect('https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID);
