@@ -67,7 +67,6 @@ if (isset($mrhpass2)) {
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
     // Write to DB.
-    $robokassatx->success = 1;
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
     } else {
