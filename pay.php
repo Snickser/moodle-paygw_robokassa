@@ -48,20 +48,19 @@ $config = (object) helper::get_gateway_configuration($component, $paymentarea, $
 $payable = helper::get_payable($component, $paymentarea, $itemid);// Get currency and payment amount.
 $currency = $payable->get_currency();
 $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
-// TODO: Check if currency is IDR. If not, then something went really wrong in config.
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
-// Check self cost
+// Check self cost.
 if (!empty($costself)) {
     $cost = $costself;
 }
-// Check maxcost
+// Check maxcost.
 if ($config->maxcost && $cost > $config->maxcost) {
     $cost = $config->maxcost;
 }
 $cost = number_format($cost, 2, '.', '');
 
-// Get course and groups for user
+// Get course and groups for user.
 if ($component == "enrol_fee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid]);
     $cs->course = $cs->courseid;
@@ -89,7 +88,7 @@ if (!empty($cs->course)) {
     $courseid = '';
 }
 
-// Write tx to db
+// Write tx to db.
 $paygwdata = new stdClass();
 $paygwdata->userid = $userid;
 $paygwdata->component = $component;
@@ -105,38 +104,38 @@ if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     die(get_string('error_txdatabase', 'paygw_robokassa'));
 }
 
-// Your registration data
-$mrhlogin = $config->merchant_login;  // Your login here
+// Your registration data.
+$mrhlogin = $config->merchant_login;  // Your login here.
 
-// Check test-mode
+// Check test-mode.
 if ($config->istestmode) {
-    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here
+    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
 } else {
-    $mrhpass1 = $config->password1;      // Merchant pass1 here
+    $mrhpass1 = $config->password1;      // Merchant pass1 here.
 }
 
-// Build redirect
+// Build redirect.
 $url = helper::get_success_url($component, $paymentarea, $itemid);
 
-// Check passwordmode or skipmode
+// Check passwordmode or skipmode.
 if (!empty($password) || $skipmode) {
     $success = false;
     if ($config->skipmode) {
         $success = true;
     } else if (isset($cs->password) && !empty($cs->password)) {
-        // Check module password
+        // Check module password.
         if ($password === $cs->password) {
             $success = true;
         }
     } else if ($config->passwordmode && !empty($config->password)) {
-        // Check payment password
+        // Check payment password.
         if ($password === $config->password) {
             $success = true;
         }
     }
 
     if ($success) {
-        // Make fake pay
+        // Make fake pay.
         $cost = 0;
         $paymentid = helper::save_payment(
             $payable->get_account_id(),
@@ -150,7 +149,7 @@ if (!empty($password) || $skipmode) {
         );
         helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
-        // Write to DB
+        // Write to DB.
         $data = new stdClass();
         $data->id = $transactionid;
         $data->success = 2;
@@ -161,15 +160,15 @@ if (!empty($password) || $skipmode) {
     } else {
         redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
-    die; // Never
+    die; // Never.
 }
 
-// Order properties
-$invid    = $transactionid;  // Shop's invoice number
-$invdesc  = $description;  // Invoice desc
-$outsumm  = $cost;  // Invoice summ
+// Order properties.
+$invid    = $transactionid;  // Shop's invoice number.
+$invdesc  = $description;  // Invoice desc.
+$outsumm  = $cost;  // Invoice summ.
 
-// For non-RUB pay
+// For non-RUB pay.
 $outsumcurrency = null;
 $currencyarg = null;
 if ($currency != 'RUB') {
@@ -177,7 +176,7 @@ if ($currency != 'RUB') {
     $currencyarg = ":$currency";
 }
 
-// Nomenclatura
+// Nomenclatura.
 $items = new stdClass();
 $items->sno = $config->sno;
 $items->items = [
@@ -185,22 +184,19 @@ $items->items = [
     "name" => $description,
     "quantity" => 1,
     "sum" => $cost,
-// "payment_method" => "full_payment",
-// "payment_object" => "service",
     "tax" => $config->tax,
     ],
 ];
 $receipt = json_encode($items);
 
-// Build CRC value
+// Build CRC value.
 $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$USER->lastip:$receipt:$mrhpass1"));
 
-// Params
+// Params.
 $request = "MerchantLogin=$mrhlogin" .
     "&OutSum=$outsumm$outsumcurrency" .
     "&InvId=$invid" .
     "&Description=" . urlencode($invdesc) .
-// "&IncCurrLabel=" . $config->inccurrlabel .
     "&SignatureValue=$crc" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
@@ -208,7 +204,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&UserIp=" . $USER->lastip .
     "&Receipt=" . urlencode($receipt);
 
-// Get invoiceID
+// Get invoiceID.
 $curlhandler = curl_init();
 curl_setopt_array($curlhandler, [
      CURLOPT_URL => 'https://auth.robokassa.ru/Merchant/Indexjson.aspx',

@@ -46,16 +46,16 @@ $paymentarea = $robokassatx->paymentarea;
 $itemid      = $robokassatx->itemid;
 $userid      = $robokassatx->userid;
 
-// Get config
+// Get config.
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 $payable = helper::get_payable($component, $paymentarea, $itemid);
 
-// Check test-mode
+// Check test-mode.
 if ($config->istestmode) {
-    $mrhpass2 = $config->test_password2; // merchant test_pass2 here
+    $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
     $robokassatx->success = 3;
 } else {
-    $mrhpass2 = $config->password2;      // merchant pass2 here
+    $mrhpass2 = $config->password2;      // Merchant pass2 here.
     $robokassatx->success = 1;
 }
 
@@ -65,7 +65,7 @@ if (isset($mrhpass2)) {
         die('FAIL. Signature does not match.');
     }
 
-    // Check that amount paid is the correct amount
+    // Check that amount paid is the correct amount.
     if ((float) $robokassatx->cost <= 0) {
         $cost = (float) $payable->get_amount();
     } else {
@@ -83,8 +83,7 @@ if (isset($mrhpass2)) {
         $robokassatx->cost = $outsumm;
         $robokassatx->currency = 'RUB';
     }
-    // Deliver course
-    // $fee = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), helper::get_gateway_surcharge('robokassa'));
+    // Deliver course.
     $paymentid = helper::save_payment(
         $payable->get_account_id(),
         $component,
@@ -97,7 +96,7 @@ if (isset($mrhpass2)) {
     );
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
-    // Write to DB
+    // Write to DB.
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
     } else {
