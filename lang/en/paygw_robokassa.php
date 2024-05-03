@@ -78,3 +78,13 @@ $string['sno_help'] = 'Type of tax system for generating checks:<br>
 4 - Unified Agricultural Tax (UST)<br>
 5 - Patent taxation system';
 
+$string['privacy:metadata'] = 'The robokassa plugin store some personal data.';
+$string['privacy:metadata:paygw_robokassa:paygw_robokassa'] = 'Store some data';
+$string['privacy:metadata:paygw_robokassa:shopid'] = 'Shopid';
+$string['privacy:metadata:paygw_robokassa:apikey'] = 'ApiKey';
+$string['privacy:metadata:paygw_robokassa:email'] = 'Email';
+$string['privacy:metadata:paygw_robokassa:robokassa_plus'] = 'Send json data';
+$string['privacy:metadata:paygw_robokassa:invoiceid'] = 'Invoice id';
+$string['privacy:metadata:paygw_robokassa:courceid'] = 'Cource id';
+$string['privacy:metadata:paygw_robokassa:groupnames'] = 'Group names';
+$string['privacy:metadata:paygw_robokassa:success'] = 'Status';

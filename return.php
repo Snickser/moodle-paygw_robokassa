@@ -31,21 +31,25 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$invid    = required_param('InvId', PARAM_TEXT);
+$invid = required_param('InvId', PARAM_TEXT);
 
-$outsumm  = optional_param('OutSum', null, PARAM_TEXT);
+$outsumm   = optional_param('OutSum', null, PARAM_TEXT);
 $signature = optional_param('SignatureValue', null, PARAM_TEXT);
 
 
-if (!$robokassatx = $DB->get_record('paygw_robokassa', ['id' => $invid])) {
+if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
     die('FAIL. Not a valid transaction id');
 }
 
-$paymentarea = $robokassatx->paymentarea;
-$component   = $robokassatx->component;
-$itemid      = $robokassatx->itemid;
+if (!$payment = $DB->get_record('payments', ['id' => $robokassatx->paymentid])) {
+    die('FAIL. Not a valid payment.');
+}
 
-// Build redirect
+$paymentarea = $payment->paymentarea;
+$component   = $payment->component;
+$itemid      = $payment->itemid;
+
+// Build redirect.
 $url = helper::get_success_url($component, $paymentarea, $itemid);
 
 if (!isset($signature)) {
@@ -53,22 +57,22 @@ if (!isset($signature)) {
     die;
 }
 
-// Get config
+// Get config.
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 
-// Check test-mode
+// Check test-mode.
 if ($config->istestmode) {
-    $mrhpass1 = $config->test_password1; // Merchant test_pass2 here
+    $mrhpass1 = $config->test_password1; // Merchant test_pass2 here.
 } else {
-    $mrhpass1 = $config->password1;      // Merchant pass2 here
+    $mrhpass1 = $config->password1;      // Merchant pass2 here.
 }
 
-$signature = strtoupper($signature);  // Force uppercase
+$signature = strtoupper($signature);  // Force uppercase.
 
-// Build own CRC
+// Build own CRC.
 $crc = strtoupper(md5("$outsumm:$invid:$mrhpass1"));
 
-// Check crc and redirect
+// Check crc and redirect.
 if ($signature == $crc && $robokassatx->success) {
     redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
 } else {

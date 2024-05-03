@@ -30,6 +30,9 @@ namespace paygw_robokassa;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class gateway extends \core_payment\gateway {
+    /**
+     * Configuration form for currency
+     */
     public static function get_supported_currencies(): array {
         // 3-character ISO-4217: https://en.wikipedia.org/wiki/ISO_4217#Active_codes.
         return [
@@ -106,20 +109,7 @@ class gateway extends \core_payment\gateway {
         );
         $mform->setType('tax', PARAM_TEXT);
         $mform->addHelpButton('tax', 'tax', 'paygw_robokassa');
-/*
-        $options = [
-        '' => get_string('default'),
-        'BankCard' => get_string('plastic', 'paygw_robokassa'),
-        'SBP' => get_string('sbp', 'paygw_robokassa'),
-        ];
-        $mform->addElement(
-            'select',
-            'inccurrlabel',
-            get_string('inccurrlabel', 'paygw_robokassa'),
-            $options,
-        );
-        $mform->setType('inccurrlabel', PARAM_TEXT);
-*/
+
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
         $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');

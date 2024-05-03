@@ -31,6 +31,7 @@ global $CFG, $USER, $DB;
 defined('MOODLE_INTERNAL') || die();
 
 require_login();
+require_sesskey();
 
 $component   = required_param('component', PARAM_ALPHANUMEXT);
 $paymentarea = required_param('paymentarea', PARAM_ALPHANUMEXT);
@@ -52,10 +53,10 @@ $currency = $payable->get_currency();
 $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
 $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 
-// Get course info
+// Get course info.
 $enrolperiod = '';
 $enrolperioddesc = '';
-// Check area
+// Check area.
 if ($component == "enrol_fee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentarea]);
     $enrolperiod = $cs->enrolperiod;
@@ -93,7 +94,7 @@ $PAGE->set_heading(format_string($string));
 
 // Set the appropriate headers for the page.
 $PAGE->set_cacheable(false);
-// $PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('standard');
 
 echo $OUTPUT->header();
 
@@ -110,7 +111,14 @@ if ($config->showduration) {
 }
 
 $templatedata->passwordmode = $config->passwordmode;
+
 $templatedata->suggest = $config->suggest;
+if ($config->suggest < $fee) {
+    $templatedata->suggest = $fee;
+} else {
+    $templatedata->suggest = $config->suggest;
+}
+
 $templatedata->maxcost = $config->maxcost;
 $templatedata->skipmode = $config->skipmode;
 
