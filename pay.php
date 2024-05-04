@@ -208,19 +208,6 @@ $request = "MerchantLogin=$mrhlogin" .
     "&UserIp=" . $USER->lastip .
     "&Receipt=" . urlencode($receipt);
 
-/*
-// Get invoiceID.
-$curlhandler = curl_init();
-curl_setopt_array($curlhandler, [
-     CURLOPT_URL => 'https://auth.robokassa.ru/Merchant/Indexjson.aspx',
-     CURLOPT_RETURNTRANSFER => true,
-]);
-curl_setopt($curlhandler, CURLOPT_POST, true);
-curl_setopt($curlhandler, CURLOPT_POSTFIELDS, $request);
-
-$jsonresponse = curl_exec($curlhandler);
-*/
-
 // Make payment.
 $location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';
 $options = [
@@ -231,7 +218,6 @@ $options = [
 ];
 $curl = new curl();
 $jsonresponse = $curl->post($location, $request, $options);
-
 $response = json_decode($jsonresponse);
 
 if (!isset($response->errorCode)) {
