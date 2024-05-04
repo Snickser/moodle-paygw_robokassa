@@ -48,9 +48,10 @@ class provider implements \core_privacy\local\request\data_provider, paygw_provi
         $collection->add_external_location_link(
             'robokassa.plus',
             [
-                'shopid'   => 'privacy:metadata:paygw_robokassa:shopid',
-                'apikey'   => 'privacy:metadata:paygw_robokassa:apikey',
-                'email'    => 'privacy:metadata:paygw_robokassa:email',
+                'shopid'    => 'privacy:metadata:paygw_robokassa:shopid',
+                'paymentid' => 'privacy:metadata:paygw_robokassa:paymentid',
+                'email'     => 'privacy:metadata:paygw_robokassa:email',
+                'userip'    => 'privacy:metadata:paygw_robokassa:userip',
             ],
             'privacy:metadata:paygw_robokassa:robokassa_plus'
         );
