@@ -25,6 +25,7 @@
 use core_payment\helper;
 
 require_once(__DIR__ . '/../../../config.php');
+require_once($CFG->libdir . '/filelib.php');
 
 require_login();
 
@@ -207,6 +208,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&UserIp=" . $USER->lastip .
     "&Receipt=" . urlencode($receipt);
 
+/*
 // Get invoiceID.
 $curlhandler = curl_init();
 curl_setopt_array($curlhandler, [
@@ -217,6 +219,18 @@ curl_setopt($curlhandler, CURLOPT_POST, true);
 curl_setopt($curlhandler, CURLOPT_POSTFIELDS, $request);
 
 $jsonresponse = curl_exec($curlhandler);
+*/
+
+// Make payment.
+$location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';
+$options = [
+    'CURLOPT_RETURNTRANSFER' => true,
+    'CURLOPT_TIMEOUT' => 30,
+    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+];
+$curl = new curl();
+$jsonresponse = $curl->post($location, $request, $options);
 
 $response = json_decode($jsonresponse);
 
