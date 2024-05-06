@@ -22,7 +22,7 @@ https://robokassa.com
 
 ## Рекомендации
 
-+ Тестировалось только с Moodle 4.3.3, но гипотетически должно работать на всей 4.3+ версии, и на 4.4 тоже.
++ Moodle 4.3+
 + Для записи в курс подходит стандарный плагин "Зачисление за оплату" (enrol_fee).
 + Для контрольного задания используйте модуль "[Gateway Payments](https://moodle.org/plugins/mod_gwpayments)" (мои правки [mod_gwpayments](https://github.com/Snickser/moodle-mod_gwpayments/tree/dev)), он правда глючный, но других пока нет.
 + Для ограничения доступности используйте модуль "[PaymentS availability condition for paid access](https://moodle.org/plugins/availability_gwpayments)" (мои правки [availability_gwpayments](https://github.com/Snickser/moodle-availability_gwpayments/tree/dev)).
