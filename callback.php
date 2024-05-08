@@ -23,6 +23,7 @@
  */
 
 use core_payment\helper;
+use paygw_yookassa\notifications;
 
 require("../../../config.php");
 global $CFG, $USER, $DB;
@@ -65,6 +66,15 @@ if (isset($mrhpass2)) {
     }
 
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
+
+    // Notify user.
+    notifications::notify(
+        $userid,
+        $payment->amount,
+        $payment->currency,
+        $paymentid,
+        'Success completed'
+    );
 
     // Write to DB.
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {

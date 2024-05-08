@@ -52,11 +52,11 @@
  * @return boolean
  */
 function xmldb_paygw_robokassa_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $DB;
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2024050303) {
+    if ($oldversion < 2024050302) {
         // Define field to be renamed.
         $table = new xmldb_table('paygw_robokassa');
         $field = new xmldb_field('group_names', XMLDB_TYPE_TEXT, null, null, null, null, null, 'courseid');
@@ -142,7 +142,7 @@ function xmldb_paygw_robokassa_upgrade($oldversion) {
         }
 
         // Robokassa savepoint reached.
-        upgrade_plugin_savepoint(true, 2024050303, 'paygw', 'robokassa');
+        upgrade_plugin_savepoint(true, 2024050302, 'paygw', 'robokassa');
     }
 
     return true;
