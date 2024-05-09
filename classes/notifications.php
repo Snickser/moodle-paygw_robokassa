@@ -54,14 +54,13 @@ class notifications {
             return false;
         }
 
-        $userfullanme = fullname($user);
-
         // Set the object wiht all informations to notify the user.
         $a = (object)[
-            'fee'      => $fee, // The original cost.
-            'currency' => $currency,
-            'orderid'  => $orderid,
-            'fullname' => $userfullanme,
+            'fee'       => $fee, // The original cost.
+            'currency'  => $currency,
+            'orderid'   => $orderid,
+            'firstname' => $user->firstname,
+            'fullname'  => fullname($user),
         ];
 
         $message = new \core\message\message();

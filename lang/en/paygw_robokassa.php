@@ -91,7 +91,7 @@ $string['privacy:metadata:paygw_robokassa:groupnames'] = 'Group names';
 $string['privacy:metadata:paygw_robokassa:success'] = 'Status';
 
 $string['messagesubject'] = 'Payment notification ({$a})';
-$string['message_success_completed'] = 'Hello {$a->fullname},
+$string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->fee} {$a->currency} is successfully completed.
 If the item is not accessable please contact the administrator.';
 $string['messageprovider:payment_receipt'] = 'Payment receipt';
