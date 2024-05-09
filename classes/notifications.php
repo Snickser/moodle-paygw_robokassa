@@ -59,8 +59,8 @@ class notifications {
             'fee'       => $fee, // The original cost.
             'currency'  => $currency,
             'orderid'   => $orderid,
-            'fullname'  => fullname($user),
             'firstname' => $user->firstname,
+            'fullname'  => fullname($user),
         ];
 
         $message = new \core\message\message();
