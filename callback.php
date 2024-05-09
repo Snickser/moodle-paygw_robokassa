@@ -23,7 +23,7 @@
  */
 
 use core_payment\helper;
-use paygw_yookassa\notifications;
+use paygw_robokassa\notifications;
 
 require("../../../config.php");
 global $CFG, $USER, $DB;
@@ -66,7 +66,7 @@ if (isset($mrhpass2)) {
     }
 
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
-/*
+
     // Notify user.
     notifications::notify(
         $userid,
@@ -75,7 +75,7 @@ if (isset($mrhpass2)) {
         $paymentid,
         'Success completed'
     );
-*/
+
     // Write to DB.
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
