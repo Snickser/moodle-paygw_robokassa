@@ -53,6 +53,7 @@ $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(
 if (!empty($costself)) {
     $cost = $costself;
 }
+
 // Check maxcost.
 if ($config->maxcost && $cost > $config->maxcost) {
     $cost = $config->maxcost;
@@ -220,6 +221,7 @@ $response = json_decode($jsonresponse);
 
 if (!isset($response->errorCode)) {
     redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (response error)", 0, 'error');
+    die;
 }
 
 if ($response->errorCode) {
