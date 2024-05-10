@@ -193,7 +193,7 @@ $items->items = [
 $receipt = json_encode($items);
 
 // Build CRC value.
-$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$USER->lastip:$receipt:$mrhpass1"));
+$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
 // Params.
 $request = "MerchantLogin=$mrhlogin" .
@@ -204,7 +204,6 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
-    "&UserIp=" . $USER->lastip .
     "&Receipt=" . urlencode($receipt);
 
 // Make payment.
