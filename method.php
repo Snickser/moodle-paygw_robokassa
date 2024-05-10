@@ -53,10 +53,9 @@ $currency = $payable->get_currency();
 $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
 $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 
-// Get course info.
+// Get course info and check area.
 $enrolperiod = '';
 $enrolperioddesc = '';
-// Check area.
 if ($component == "enrol_fee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => $paymentarea]);
     $enrolperiod = $cs->enrolperiod;
@@ -65,6 +64,7 @@ if ($component == "enrol_fee") {
     $enrolperiod = $cs->costduration;
 }
 
+// Set enrolperiod.
 if ($enrolperiod > 0) {
     if ($enrolperiod >= 86400 * 7) {
         $enrolperioddesc = get_string('weeks');
@@ -83,7 +83,6 @@ if ($enrolperiod > 0) {
     }
 }
 
-
 // Set the context of the page.
 $PAGE->set_context(context_system::instance());
 
@@ -98,6 +97,7 @@ $PAGE->set_pagelayout('standard');
 
 echo $OUTPUT->header();
 
+// Create template.
 $templatedata = new stdClass();
 $templatedata->component   = $component;
 $templatedata->paymentarea = $paymentarea;
@@ -113,7 +113,6 @@ if ($config->showduration) {
 
 $templatedata->passwordmode = $config->passwordmode;
 
-$templatedata->suggest = $config->suggest;
 if ($config->suggest < $fee) {
     $templatedata->suggest = $fee;
 } else {
@@ -132,6 +131,7 @@ if (!empty($config->fixdesc)) {
     $templatedata->fixdesc = 1;
 } else {
     $templatedata->description = $description;
+    $templatedata->fixdesc = 0;
 }
 
 $templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
