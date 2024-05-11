@@ -40,7 +40,7 @@ $itemid      = required_param('itemid', PARAM_INT);
 $description = required_param('description', PARAM_TEXT);
 
 $password    = optional_param('password', null, PARAM_TEXT);
-$skipmode    = optional_param('skipmode', null, PARAM_TEXT);
+$skipmode    = optional_param('skipmode', null, PARAM_INT);
 $costself    = optional_param('costself', null, PARAM_TEXT);
 
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
