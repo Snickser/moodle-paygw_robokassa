@@ -30,8 +30,8 @@ global $CFG, $USER, $DB;
 
 defined('MOODLE_INTERNAL') || die();
 
-$invid     = required_param('InvId', PARAM_ALPHANUMEXT);
-$outsumm   = required_param('OutSum', PARAM_RAW);
+$invid     = required_param('InvId', PARAM_INT);
+$outsumm   = required_param('OutSum', PARAM_TEXT);
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
@@ -65,6 +65,7 @@ if (isset($mrhpass2)) {
         die('FAIL. Signature does not match.');
     }
 
+    // Deliver order.
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
     // Notify user.

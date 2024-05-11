@@ -40,7 +40,7 @@ $itemid      = required_param('itemid', PARAM_INT);
 $description = required_param('description', PARAM_TEXT);
 
 $password    = optional_param('password', null, PARAM_TEXT);
-$skipmode    = optional_param('skipmode', null, PARAM_TEXT);
+$skipmode    = optional_param('skipmode', 0, PARAM_INT);
 $costself    = optional_param('costself', null, PARAM_TEXT);
 
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
@@ -172,11 +172,12 @@ $invdesc  = $description;  // Invoice desc.
 $outsumm  = $cost;         // Invoice summ.
 
 // For non-RUB pay.
-$outsumcurrency = null;
-$currencyarg = null;
 if ($currency != 'RUB') {
     $outsumcurrency = "&OutSumCurrency=$currency";
     $currencyarg = ":$currency";
+} else {
+    $outsumcurrency = null;
+    $currencyarg = null;
 }
 
 // Nomenclatura.
@@ -197,7 +198,7 @@ $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$m
 
 // Params.
 $request = "MerchantLogin=$mrhlogin" .
-    "&OutSum=$outsumm$outsumcurrency" .
+    "&OutSum=$outsumm" . $outsumcurrency .
     "&InvId=$invid" .
     "&Description=" . urlencode($invdesc) .
     "&SignatureValue=$crc" .
