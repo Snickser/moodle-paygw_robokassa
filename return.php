@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$invid = required_param('InvId', PARAM_TEXT);
+$invid = required_param('InvId', PARAM_INT);
 
 $outsumm   = optional_param('OutSum', null, PARAM_TEXT);
 $signature = optional_param('SignatureValue', null, PARAM_TEXT);
