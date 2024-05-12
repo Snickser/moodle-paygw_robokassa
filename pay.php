@@ -190,6 +190,7 @@ $xmlresponse = $curl->get($location, $options);
 $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', $reporterrors = true);
 $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
 if ($err != 3) {
+    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
     redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (Invoice ID check error $err)", 0, 'error');
 }
 
