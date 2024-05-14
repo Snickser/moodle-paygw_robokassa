@@ -104,8 +104,10 @@ $mrhlogin = $config->merchant_login;  // Your login here.
 // Check test-mode.
 if ($config->istestmode) {
     $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
+    $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
 } else {
     $mrhpass1 = $config->password1;      // Merchant pass1 here.
+    $mrhpass2 = $config->password2;      // Merchant pass2 here.
 }
 
 // Build redirect.
@@ -129,7 +131,7 @@ if (!empty($password) || $skipmode) {
     }
 
     if ($success) {
-        // Make fake pay.
+        // Make fake payment.
         $paymentid = helper::save_payment(
             $payable->get_account_id(),
             $component,
@@ -161,7 +163,7 @@ $paymentid = helper::save_payment(
     $paymentarea,
     $itemid,
     $userid,
-    $cost,
+    0,
     $payable->get_currency(),
     'robokassa'
 );
@@ -170,6 +172,28 @@ $paymentid = helper::save_payment(
 $invid    = $paymentid;    // Shop's invoice number.
 $invdesc  = $description;  // Invoice desc.
 $outsumm  = $cost;         // Invoice summ.
+
+// Checks if invoiceid already exist.
+$location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+$crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
+$location .= "?MerchantLogin=$mrhlogin" .
+    "&InvoiceID=$invid" .
+    "&SignatureValue=$crc";
+$options = [
+    'CURLOPT_RETURNTRANSFER' => true,
+    'CURLOPT_TIMEOUT' => 30,
+    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+];
+$curl = new curl();
+$xmlresponse = $curl->get($location, $options);
+$response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', $reporterrors = true);
+$err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
+$err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
+if ($err != 3) {
+    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+    redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (Invoice ID check error $err)", 0, 'error');
+}
 
 // For non-RUB pay.
 if ($currency != 'RUB') {
