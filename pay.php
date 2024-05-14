@@ -131,7 +131,7 @@ if (!empty($password) || $skipmode) {
     }
 
     if ($success) {
-        // Make fake pay.
+        // Make fake payment.
         $paymentid = helper::save_payment(
             $payable->get_account_id(),
             $component,
