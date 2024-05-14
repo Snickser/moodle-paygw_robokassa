@@ -72,7 +72,7 @@ if (isset($mrhpass2)) {
     }
 
     // Update payment.
-    $DB->update_record('payments', $payment);
+    $DB->update_record('payments', $payment)){
 
     // Deliver order.
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
@@ -90,7 +90,7 @@ if (isset($mrhpass2)) {
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
     } else {
-        die("OK" . $invid);
+        die('OK' . $invid);
     }
 } else {
     die('FAIL');
