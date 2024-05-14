@@ -31,7 +31,7 @@ global $CFG, $USER, $DB;
 defined('MOODLE_INTERNAL') || die();
 
 $invid     = required_param('InvId', PARAM_INT);
-$outsumm   = required_param('OutSum', PARAM_TEXT);
+$outsumm   = required_param('OutSum', PARAM_FLOAT);
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
@@ -54,9 +54,11 @@ $config = (object) helper::get_gateway_configuration($component, $paymentarea, $
 if ($config->istestmode) {
     $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
     $robokassatx->success = 3;
+    $payment->amount = 0;
 } else {
     $mrhpass2 = $config->password2;      // Merchant pass2 here.
     $robokassatx->success = 1;
+    $payment->amount = $outsumm;
 }
 
 if (isset($mrhpass2)) {
@@ -64,6 +66,9 @@ if (isset($mrhpass2)) {
     if ($signature !== $crc) {
         die('FAIL. Signature does not match.');
     }
+
+    // Update payment.
+    $DB->update_record('payments', $payment);
 
     // Deliver order.
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
