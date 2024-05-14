@@ -54,15 +54,15 @@ $config = (object) helper::get_gateway_configuration($component, $paymentarea, $
 if ($config->istestmode) {
     $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
     $robokassatx->success = 3;
-    $payment->amount = 0;
 } else {
     $mrhpass2 = $config->password2;      // Merchant pass2 here.
     $robokassatx->success = 1;
-    // For currency conversion.
-    if ($payment->currency !== 'RUB') {
-        $payment->currency = 'RUB';
-    }
-    $payment->amount = $outsumm;
+}
+
+// For currency conversion.
+$payment->amount = $outsumm;
+if ($payment->currency !== 'RUB') {
+    $payment->currency = 'RUB';
 }
 
 if (isset($mrhpass2)) {
