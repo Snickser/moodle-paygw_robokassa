@@ -59,10 +59,10 @@ if ($config->istestmode) {
     $mrhpass2 = $config->password2;      // Merchant pass2 here.
     $robokassatx->success = 1;
     // For currency conversion.
-    if ($payment->currency != 'RUB') {
+    if ($payment->currency !== 'RUB') {
         $payment->currency = 'RUB';
-        $payment->amount   = $outsumm;
     }
+    $payment->amount = $outsumm;
 }
 
 if (isset($mrhpass2)) {
