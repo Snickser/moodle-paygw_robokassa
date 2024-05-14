@@ -60,10 +60,10 @@ if ($config->istestmode) {
 }
 
 // For currency conversion.
+$payment->amount = $outsumm;
 if ($payment->currency !== 'RUB') {
     $payment->currency = 'RUB';
 }
-$payment->amount = $outsumm;
 
 if (isset($mrhpass2)) {
     $crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
