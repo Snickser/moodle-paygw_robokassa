@@ -58,7 +58,11 @@ if ($config->istestmode) {
 } else {
     $mrhpass2 = $config->password2;      // Merchant pass2 here.
     $robokassatx->success = 1;
-    $payment->amount = $outsumm;
+    // For currency conversion.
+    if ($payment->currency != 'RUB') {
+        $payment->currency = 'RUB';
+        $payment->amount   = $outsumm;
+    }
 }
 
 if (isset($mrhpass2)) {
@@ -82,7 +86,7 @@ if (isset($mrhpass2)) {
         'Success completed'
     );
 
-    // Write to DB.
+    // Update paygw.
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
     } else {
