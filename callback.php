@@ -72,7 +72,7 @@ if (isset($mrhpass2)) {
     }
 
     // Update payment.
-    $DB->update_record('payments', $payment)){
+    $DB->update_record('payments', $payment);
 
     // Deliver order.
     helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
