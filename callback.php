@@ -59,14 +59,15 @@ if ($config->istestmode) {
     $robokassatx->success = 1;
 }
 
-if (isset($mrhpass2)) {
+if (!empty($mrhpass2)) {
+    // Check crc.
     $crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
     if ($signature !== $crc) {
         die('FAIL. Signature does not match.');
     }
 
     // For currency conversion.
-    $payment->amount = $outsumm;
+    $payment->amount = (float)$outsumm;
     if ($payment->currency !== 'RUB') {
         $payment->currency = 'RUB';
     }
