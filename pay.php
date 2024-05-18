@@ -98,16 +98,6 @@ if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
 }
 $paygwdata->id = $transactionid;
 
-// Your registration data.
-$mrhlogin = $config->merchant_login;  // Your login here.
-
-// Check test-mode.
-if ($config->istestmode) {
-    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
-} else {
-    $mrhpass1 = $config->password1;      // Merchant pass1 here.
-}
-
 // Build redirect.
 $url = helper::get_success_url($component, $paymentarea, $itemid);
 
@@ -171,9 +161,20 @@ $invid    = $paymentid;    // Shop's invoice number.
 $invdesc  = $description;  // Invoice desc.
 $outsumm  = $cost;         // Invoice summ.
 
+// Your registration data.
+$mrhlogin = $config->merchant_login;  // Your login here.
+
+// Check test-mode.
+if ($config->istestmode) {
+    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
+    $mrhpass2 = $config->test_password2;
+} else {
+    $mrhpass1 = $config->password1;      // Merchant pass1 here.
+    $mrhpass2 = $config->password2;
+}
+
 // Checks if invoiceid already exist.
 $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
-$mrhpass2 = $config->password2;
 $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
 $location .= "?MerchantLogin=$mrhlogin" .
     "&InvoiceID=$invid" .
@@ -186,7 +187,7 @@ $options = [
 ];
 $curl = new curl();
 $xmlresponse = $curl->get($location, $options);
-$response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', $reporterrors = true);
+$response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', true);
 $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
 if ($err != 3) {
     $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
