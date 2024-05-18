@@ -104,10 +104,8 @@ $mrhlogin = $config->merchant_login;  // Your login here.
 // Check test-mode.
 if ($config->istestmode) {
     $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
-    $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
 } else {
     $mrhpass1 = $config->password1;      // Merchant pass1 here.
-    $mrhpass2 = $config->password2;      // Merchant pass2 here.
 }
 
 // Build redirect.
@@ -175,10 +173,11 @@ $outsumm  = $cost;         // Invoice summ.
 
 // Checks if invoiceid already exist.
 $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+$mrhpass2 = $config->password2;
 $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
 $location .= "?MerchantLogin=$mrhlogin" .
     "&InvoiceID=$invid" .
-    "&SignatureValue=$crc";
+    "&Signature=$crc";
 $options = [
     'CURLOPT_RETURNTRANSFER' => true,
     'CURLOPT_TIMEOUT' => 30,
