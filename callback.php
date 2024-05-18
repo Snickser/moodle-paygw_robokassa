@@ -31,7 +31,7 @@ global $CFG, $USER, $DB;
 defined('MOODLE_INTERNAL') || die();
 
 $invid     = required_param('InvId', PARAM_INT);
-$outsumm   = required_param('OutSum', PARAM_TEXT);
+$outsumm   = required_param('OutSum', PARAM_TEXT); // TEXT only!
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
