@@ -61,6 +61,7 @@ class notifications {
             'orderid'   => $orderid,
             'firstname' => $user->firstname,
             'fullname'  => fullname($user),
+            'localizedcost' => \core_payment\helper::get_cost_as_string($fee, $currency),
         ];
 
         $message = new \core\message\message();
