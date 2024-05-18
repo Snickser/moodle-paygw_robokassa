@@ -30,6 +30,10 @@ global $CFG, $USER, $DB;
 
 defined('MOODLE_INTERNAL') || die();
 
+/*
+file_put_contents("/tmp/xxxx", serialize($_REQUEST)."\n\n", FILE_APPEND|LOCK_EX);
+*/
+
 $invid     = required_param('InvId', PARAM_INT);
 $outsumm   = required_param('OutSum', PARAM_TEXT); // TEXT only!
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
@@ -57,6 +61,27 @@ if ($config->istestmode) {
 } else {
     $mrhpass2 = $config->password2;      // Merchant pass2 here.
     $robokassatx->success = 1;
+}
+
+// Checks invoice.
+$mrhlogin = $config->merchant_login;
+$location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+$crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
+$location .= "?MerchantLogin=$mrhlogin" .
+    "&InvoiceID=$invid" .
+    "&SignatureValue=$crc";
+$options = [
+    'CURLOPT_RETURNTRANSFER' => true,
+    'CURLOPT_TIMEOUT' => 30,
+    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+];
+$curl = new curl();
+$xmlresponse = $curl->get($location, $options);
+$response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', $reporterrors = true);
+$err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
+if ($err != 3) {
+    die('FAIL. Invoice not paid.');
 }
 
 if (!empty($mrhpass2)) {
