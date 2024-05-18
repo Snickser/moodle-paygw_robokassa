@@ -31,7 +31,7 @@ global $CFG, $USER, $DB;
 defined('MOODLE_INTERNAL') || die();
 
 $invid     = required_param('InvId', PARAM_INT);
-$outsumm   = required_param('OutSum', PARAM_FLOAT);
+$outsumm   = required_param('OutSum', PARAM_TEXT);
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
@@ -59,16 +59,16 @@ if ($config->istestmode) {
     $robokassatx->success = 1;
 }
 
-// For currency conversion.
-$payment->amount = $outsumm;
-if ($payment->currency !== 'RUB') {
-    $payment->currency = 'RUB';
-}
-
 if (isset($mrhpass2)) {
     $crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
     if ($signature !== $crc) {
         die('FAIL. Signature does not match.');
+    }
+
+    // For currency conversion.
+    $payment->amount = $outsumm;
+    if ($payment->currency !== 'RUB') {
+        $payment->currency = 'RUB';
     }
 
     // Update payment.
