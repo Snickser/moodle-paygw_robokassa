@@ -93,34 +93,34 @@ if ($err) {
 */
 
 if (!empty($mrhpass2)) {
-        // Check crc.
-        $crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
+    // Check crc.
+    $crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
     if ($signature !== $crc) {
         die('FAIL. Signature does not match.');
     }
 
-        // For currency conversion.
-        $payment->amount = (float)$outsumm;
+    // For currency conversion.
+    $payment->amount = (float)$outsumm;
     if ($payment->currency !== 'RUB') {
         $payment->currency = 'RUB';
     }
 
-        // Update payment.
-        $DB->update_record('payments', $payment);
+    // Update payment.
+    $DB->update_record('payments', $payment);
 
-        // Deliver order.
-        helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
+    // Deliver order.
+    helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
-        // Notify user.
-        notifications::notify(
-            $userid,
-            $payment->amount,
-            $payment->currency,
-            $paymentid,
-            'Success completed'
-        );
+    // Notify user.
+    notifications::notify(
+        $userid,
+        $payment->amount,
+        $payment->currency,
+        $paymentid,
+        'Success completed'
+    );
 
-        // Update paygw.
+    // Update paygw.
     if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
         die('FAIL. Update db error.');
     } else {
