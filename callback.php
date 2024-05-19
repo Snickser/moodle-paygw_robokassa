@@ -84,15 +84,15 @@ if ($config->checkinvoice && !$config->istestmode) {
     $xmlresponse = $curl->get($location, $options);
     $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', false);
 
-    file_put_contents("/tmp/xxxx", serialize($response) . "\n\n", FILE_APPEND | LOCK_EX);
+    file_put_contents("/tmp/yyyy", serialize($response) . "\n\n", FILE_APPEND | LOCK_EX);
 
     $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
     if ($err) {
         die('FAIL. Invoice result error.');
     }
     $err = $response['OperationStateResponse']['#']['State'][0]['#']['Code'][0]['#'];
-    if ($err !== 100) {
-        die('FAIL. Invoice state error.');
+    if ($err !== "100") {
+        die('FAIL. Invoice not paid.');
     }
 }
 
