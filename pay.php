@@ -94,7 +94,7 @@ $paygwdata->courseid = $courseid;
 $paygwdata->groupnames = $groupnames;
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
-    die(get_string('error_txdatabase', 'paygw_robokassa'));
+    throw new Exception(get_string('error_txdatabase', 'paygw_robokassa'));
 }
 $paygwdata->id = $transactionid;
 
@@ -192,7 +192,7 @@ if ($config->checkinvoice) {
     $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
     if ($err != 3) {
         $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-        redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (Invoice ID check error $err)", 0, 'error');
+        throw new Exception("Invoice ID check error $err");
     }
 }
 

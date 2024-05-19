@@ -91,7 +91,7 @@ if ($config->checkinvoice && !$config->istestmode) {
         die('FAIL. Invoice result error.');
     }
     $err = $response['OperationStateResponse']['#']['State'][0]['#']['Code'][0]['#'];
-    if ($err !== "100") {
+    if ($err !== '100') {
         die('FAIL. Invoice not paid.');
     }
 }
