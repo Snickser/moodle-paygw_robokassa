@@ -246,13 +246,13 @@ $jsonresponse = $curl->post($location, $request, $options);
 $response = json_decode($jsonresponse);
 
 if (!isset($response->errorCode)) {
-    redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (response error)", 0, 'error');
-    die;
+    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (response error)");
 }
 
 if ($response->errorCode) {
-    redirect($url, get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)", 0, 'error');
-    die;
+    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)");
 }
 
 // Write to DB.
