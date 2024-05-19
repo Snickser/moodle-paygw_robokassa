@@ -77,6 +77,15 @@ class gateway extends \core_payment\gateway {
         $mform->setType('test_password2', PARAM_TEXT);
         $mform->disabledIf('test_password2', 'istestmode');
 
+        $mform->addElement(
+            'advcheckbox',
+            'checkinvoice',
+            get_string('checkinvoice', 'paygw_robokassa'),
+            get_string('checkinvoice', 'paygw_robokassa')
+        );
+        $mform->setType('checkinvoice', PARAM_INT);
+        $mform->addHelpButton('checkinvoice', 'checkinvoice', 'paygw_robokassa');
+
         $options = [
         'osn' => 1,
         'usn_income' => 2,
