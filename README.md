@@ -2,7 +2,7 @@
 
 # Robokassa payment gateway plugin for Moodle.
 
-Version 0.18
+Version 0.19
 
 https://robokassa.com
 
@@ -22,6 +22,7 @@ https://robokassa.com
 + Конвертация валют на стороне банка (usd, eur, kzt).
 + Поддержка пароля из модуля курса (mod_gwpaymets).
 + Оповещение пользователя при успешном платеже.
++ Режим дополнительных проверок платежа.
 
 ## Рекомендации
 

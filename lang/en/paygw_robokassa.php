@@ -90,8 +90,13 @@ $string['privacy:metadata:paygw_robokassa:courceid'] = 'Cource id';
 $string['privacy:metadata:paygw_robokassa:groupnames'] = 'Group names';
 $string['privacy:metadata:paygw_robokassa:success'] = 'Status';
 
-$string['messagesubject'] = 'Payment notification ({$a})';
+$string['messagesubject'] = 'Payment notification';
 $string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->fee} {$a->currency} is successfully completed.
 If the item is not accessable please contact the administrator.';
 $string['messageprovider:payment_receipt'] = 'Payment receipt';
+
+$string['checkinvoice'] = 'Check invoice';
+$string['checkinvoice_help'] = 'This option includes additional verification of the invoice in Robokassa when creating and receiving a payment.
+When creating, it is checked that such payment does not exist.
+And upon receipt of payment, a request is made to verify payment of the invoice.';

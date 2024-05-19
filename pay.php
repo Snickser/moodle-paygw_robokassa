@@ -94,21 +94,9 @@ $paygwdata->courseid = $courseid;
 $paygwdata->groupnames = $groupnames;
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
-    die(get_string('error_txdatabase', 'paygw_robokassa'));
+    throw new Error(get_string('error_txdatabase', 'paygw_robokassa'));
 }
 $paygwdata->id = $transactionid;
-
-// Your registration data.
-$mrhlogin = $config->merchant_login;  // Your login here.
-
-// Check test-mode.
-if ($config->istestmode) {
-    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
-    $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
-} else {
-    $mrhpass1 = $config->password1;      // Merchant pass1 here.
-    $mrhpass2 = $config->password2;      // Merchant pass2 here.
-}
 
 // Build redirect.
 $url = helper::get_success_url($component, $paymentarea, $itemid);
@@ -163,7 +151,7 @@ $paymentid = helper::save_payment(
     $paymentarea,
     $itemid,
     $userid,
-    0,
+    $cost,
     $payable->get_currency(),
     'robokassa'
 );
@@ -173,25 +161,39 @@ $invid    = $paymentid;    // Shop's invoice number.
 $invdesc  = $description;  // Invoice desc.
 $outsumm  = $cost;         // Invoice summ.
 
+// Your registration data.
+$mrhlogin = $config->merchant_login;  // Your login here.
+
+// Check test-mode.
+if ($config->istestmode) {
+    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
+    $mrhpass2 = $config->test_password2;
+} else {
+    $mrhpass1 = $config->password1;      // Merchant pass1 here.
+    $mrhpass2 = $config->password2;
+}
+
 // Checks if invoiceid already exist.
-$location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
-$crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
-$location .= "?MerchantLogin=$mrhlogin" .
-    "&InvoiceID=$invid" .
-    "&SignatureValue=$crc";
-$options = [
-    'CURLOPT_RETURNTRANSFER' => true,
-    'CURLOPT_TIMEOUT' => 30,
-    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
-    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
-];
-$curl = new curl();
-$xmlresponse = $curl->get($location, $options);
-$response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', $reporterrors = true);
-$err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
-if ($err != 3) {
-    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (Invoice ID check error $err)", 0, 'error');
+if ($config->checkinvoice) {
+    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+    $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
+    $location .= "?MerchantLogin=$mrhlogin" .
+        "&InvoiceID=$invid" .
+        "&Signature=$crc";
+    $options = [
+        'CURLOPT_RETURNTRANSFER' => true,
+        'CURLOPT_TIMEOUT' => 30,
+        'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+        'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+    ];
+    $curl = new curl();
+    $xmlresponse = $curl->get($location, $options);
+    $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', true);
+    $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
+    if ($err != 3) {
+        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+        throw new Error("Invoice ID check error $err");
+    }
 }
 
 // For non-RUB pay.
@@ -244,13 +246,13 @@ $jsonresponse = $curl->post($location, $request, $options);
 $response = json_decode($jsonresponse);
 
 if (!isset($response->errorCode)) {
-    redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (response error)", 0, 'error');
-    die;
+    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (response error)");
 }
 
 if ($response->errorCode) {
-    redirect($url, get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)", 0, 'error');
-    die;
+    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)");
 }
 
 // Write to DB.

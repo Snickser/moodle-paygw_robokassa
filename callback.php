@@ -27,6 +27,7 @@ use paygw_robokassa\notifications;
 
 require("../../../config.php");
 global $CFG, $USER, $DB;
+require_once($CFG->libdir . '/filelib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -59,40 +60,66 @@ if ($config->istestmode) {
     $robokassatx->success = 1;
 }
 
-if (!empty($mrhpass2)) {
-    // Check crc.
-    $crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
-    if ($signature !== $crc) {
-        die('FAIL. Signature does not match.');
+// Check crc.
+$crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
+if ($signature !== $crc) {
+    die('FAIL. Signature does not match.');
+}
+
+// Check invoice.
+if ($config->checkinvoice && !$config->istestmode) {
+    $mrhlogin = $config->merchant_login;
+    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+    $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
+    $location .= "?MerchantLogin=$mrhlogin" .
+        "&InvoiceID=$invid" .
+        "&Signature=$crc";
+    $options = [
+       'CURLOPT_RETURNTRANSFER' => true,
+       'CURLOPT_TIMEOUT' => 30,
+       'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+       'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+       ];
+    $curl = new curl();
+    $xmlresponse = $curl->get($location, $options);
+    $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', false);
+
+    file_put_contents("/tmp/yyyy", serialize($response) . "\n\n", FILE_APPEND | LOCK_EX);
+
+    $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
+    if ($err) {
+        die('FAIL. Invoice result error.');
     }
-
-    // For currency conversion.
-    $payment->amount = (float)$outsumm;
-    if ($payment->currency !== 'RUB') {
-        $payment->currency = 'RUB';
+    $err = $response['OperationStateResponse']['#']['State'][0]['#']['Code'][0]['#'];
+    if ($err !== '100') {
+        die('FAIL. Invoice not paid.');
     }
+}
 
-    // Update payment.
-    $DB->update_record('payments', $payment);
+// For currency conversion.
+$payment->amount = (float)$outsumm;
+if ($payment->currency !== 'RUB') {
+    $payment->currency = 'RUB';
+}
 
-    // Deliver order.
-    helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
+// Update payment.
+$DB->update_record('payments', $payment);
 
-    // Notify user.
-    notifications::notify(
-        $userid,
-        $payment->amount,
-        $payment->currency,
-        $paymentid,
-        'Success completed'
-    );
+// Deliver order.
+helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
-    // Update paygw.
-    if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
-        die('FAIL. Update db error.');
-    } else {
-        die('OK' . $invid);
-    }
+// Notify user.
+notifications::notify(
+    $userid,
+    $payment->amount,
+    $payment->currency,
+    $paymentid,
+    'Success completed'
+);
+
+// Update paygw.
+if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
+    die('FAIL. Update db error.');
 } else {
-    die('FAIL');
+    die('OK' . $invid);
 }
