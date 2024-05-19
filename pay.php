@@ -94,7 +94,7 @@ $paygwdata->courseid = $courseid;
 $paygwdata->groupnames = $groupnames;
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
-    throw new Exception(get_string('error_txdatabase', 'paygw_robokassa'));
+    throw new Error(get_string('error_txdatabase', 'paygw_robokassa'));
 }
 $paygwdata->id = $transactionid;
 
@@ -151,7 +151,7 @@ $paymentid = helper::save_payment(
     $paymentarea,
     $itemid,
     $userid,
-    0,
+    $cost,
     $payable->get_currency(),
     'robokassa'
 );
@@ -192,7 +192,7 @@ if ($config->checkinvoice) {
     $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
     if ($err != 3) {
         $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-        throw new Exception("Invoice ID check error $err");
+        throw new Error("Invoice ID check error $err");
     }
 }
 

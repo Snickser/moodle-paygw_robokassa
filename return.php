@@ -38,11 +38,11 @@ $signature = optional_param('SignatureValue', null, PARAM_TEXT);
 
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
-    throw new Exception('FAIL. Not a valid transaction id');
+    throw new Error('FAIL. Not a valid transaction id');
 }
 
 if (!$payment = $DB->get_record('payments', ['id' => $robokassatx->paymentid])) {
-    throw new Exception('FAIL. Not a valid payment.');
+    throw new Error('FAIL. Not a valid payment.');
 }
 
 $paymentarea = $payment->paymentarea;
