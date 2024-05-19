@@ -79,7 +79,7 @@ if ($config->checkinvoice && !$config->istestmode) {
        'CURLOPT_TIMEOUT' => 30,
        'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
        'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
-    ];
+       ];
     $curl = new curl();
     $xmlresponse = $curl->get($location, $options);
     $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', false);
