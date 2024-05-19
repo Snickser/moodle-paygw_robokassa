@@ -174,24 +174,26 @@ if ($config->istestmode) {
 }
 
 // Checks if invoiceid already exist.
-$location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
-$crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
-$location .= "?MerchantLogin=$mrhlogin" .
-    "&InvoiceID=$invid" .
-    "&Signature=$crc";
-$options = [
-    'CURLOPT_RETURNTRANSFER' => true,
-    'CURLOPT_TIMEOUT' => 30,
-    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
-    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
-];
-$curl = new curl();
-$xmlresponse = $curl->get($location, $options);
-$response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', true);
-$err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
-if ($err != 3) {
-    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (Invoice ID check error $err)", 0, 'error');
+if ($config->checkinvoice) {
+    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+    $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
+    $location .= "?MerchantLogin=$mrhlogin" .
+        "&InvoiceID=$invid" .
+        "&Signature=$crc";
+    $options = [
+        'CURLOPT_RETURNTRANSFER' => true,
+        'CURLOPT_TIMEOUT' => 30,
+        'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+        'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+    ];
+    $curl = new curl();
+    $xmlresponse = $curl->get($location, $options);
+    $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', true);
+    $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
+    if ($err != 3) {
+        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+        redirect($url, get_string('payment_error', 'paygw_cryptocloud') . " (Invoice ID check error $err)", 0, 'error');
+    }
 }
 
 // For non-RUB pay.
