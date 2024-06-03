@@ -159,6 +159,5 @@ function xmldb_paygw_robokassa_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024060300, 'paygw', 'robokassa');
     }
 
-
     return true;
 }
