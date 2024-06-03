@@ -138,9 +138,9 @@ if (!empty($password) || $skipmode) {
         $paygwdata->success = 2;
         $paygwdata->paymentid = $paymentid;
         $DB->update_record('paygw_robokassa', $paygwdata);
-
         redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
     } else {
+        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
         redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
     die; // Never.
