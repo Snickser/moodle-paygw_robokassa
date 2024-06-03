@@ -231,7 +231,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
-    "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 600) .
+    "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 3600) .
     "&Receipt=" . urlencode($receipt);
 
 // Make payment.
