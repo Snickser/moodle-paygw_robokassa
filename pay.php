@@ -235,7 +235,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 3600) .
     "&Receipt=" . urlencode($receipt);
 
-// Make payment.
+// Make invoice.
 $location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';
 $options = [
     'CURLOPT_RETURNTRANSFER' => true,
