@@ -94,6 +94,10 @@ $string['messagesubject'] = 'Payment notification';
 $string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->fee} {$a->currency} is successfully completed.
 If the item is not accessable please contact the administrator.';
+$string['message_invoice_created'] = 'Hello {$a->firstname}!
+Your payment link {$a->orderid} to {$a->fee} {$a->currency} has been successfully created.
+You can pay it within an hour.';
+
 $string['messageprovider:payment_receipt'] = 'Payment receipt';
 
 $string['checkinvoice'] = 'Check invoice';

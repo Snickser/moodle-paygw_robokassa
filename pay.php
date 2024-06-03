@@ -23,6 +23,7 @@
  */
 
 use core_payment\helper;
+use paygw_robokassa\notifications;
 
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir . '/filelib.php');
@@ -90,8 +91,9 @@ if (!empty($cs->course)) {
 
 // Write tx to db.
 $paygwdata = new stdClass();
-$paygwdata->courseid = $courseid;
-$paygwdata->groupnames = $groupnames;
+$paygwdata->courseid    = $courseid;
+$paygwdata->groupnames  = $groupnames;
+$paygwdata->timecreated = time();
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     throw new Error(get_string('error_txdatabase', 'paygw_robokassa'));
@@ -136,9 +138,9 @@ if (!empty($password) || $skipmode) {
         $paygwdata->success = 2;
         $paygwdata->paymentid = $paymentid;
         $DB->update_record('paygw_robokassa', $paygwdata);
-
         redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
     } else {
+        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
         redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
     }
     die; // Never.
@@ -230,10 +232,10 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
-    "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 600) .
+    "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 3600) .
     "&Receipt=" . urlencode($receipt);
 
-// Make payment.
+// Make invoice.
 $location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';
 $options = [
     'CURLOPT_RETURNTRANSFER' => true,
@@ -260,4 +262,17 @@ $paygwdata->paymentid = $paymentid;
 $paygwdata->invoiceid = $response->invoiceID;
 $DB->update_record('paygw_robokassa', $paygwdata);
 
-redirect('https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID);
+$url = 'https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID;
+
+if ($config->istestmode) {
+    // Notify user.
+    notifications::notify(
+        $userid,
+        $cost,
+        $currency,
+        $url,
+        'Invoice created'
+    );
+}
+
+redirect($url);
