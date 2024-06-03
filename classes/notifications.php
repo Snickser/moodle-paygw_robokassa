@@ -74,6 +74,9 @@ class notifications {
             case 'Success completed':
                 $messagebody = get_string('message_success_completed', 'paygw_robokassa', $a);
                 break;
+            case 'Invoice created':
+                $messagebody = get_string('message_invoice_created', 'paygw_robokassa', $a);
+                break;
         }
 
         $message->fullmessage       = $messagebody;

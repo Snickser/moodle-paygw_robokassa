@@ -23,6 +23,7 @@
  */
 
 use core_payment\helper;
+use paygw_robokassa\notifications;
 
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir . '/filelib.php');
@@ -261,4 +262,15 @@ $paygwdata->paymentid = $paymentid;
 $paygwdata->invoiceid = $response->invoiceID;
 $DB->update_record('paygw_robokassa', $paygwdata);
 
-redirect('https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID);
+$url = 'https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID;
+
+// Notify user.
+notifications::notify(
+    $userid,
+    $cost,
+    $currency,
+    $url,
+    'Invoice created'
+);
+
+redirect($url);
