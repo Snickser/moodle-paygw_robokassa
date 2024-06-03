@@ -145,5 +145,20 @@ function xmldb_paygw_robokassa_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050302, 'paygw', 'robokassa');
     }
 
+    if ($oldversion < 2024060300) {
+        // Define field timecreated to be added to paygw_robokassa.
+        $table = new xmldb_table('paygw_robokassa');
+        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '18', null, null, null, null, 'success');
+
+        // Conditionally launch add field timecreated.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Robokassa savepoint reached.
+        upgrade_plugin_savepoint(true, 2024060300, 'paygw', 'robokassa');
+    }
+
+
     return true;
 }

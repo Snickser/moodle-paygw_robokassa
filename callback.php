@@ -101,6 +101,7 @@ if ($payment->currency !== 'RUB') {
 }
 
 // Update payment.
+$payment->timemodified = time();
 $DB->update_record('payments', $payment);
 
 // Deliver order.

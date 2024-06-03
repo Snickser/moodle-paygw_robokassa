@@ -90,8 +90,9 @@ if (!empty($cs->course)) {
 
 // Write tx to db.
 $paygwdata = new stdClass();
-$paygwdata->courseid = $courseid;
-$paygwdata->groupnames = $groupnames;
+$paygwdata->courseid    = $courseid;
+$paygwdata->groupnames  = $groupnames;
+$paygwdata->timecreated = time();
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
     throw new Error(get_string('error_txdatabase', 'paygw_robokassa'));
