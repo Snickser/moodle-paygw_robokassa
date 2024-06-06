@@ -86,6 +86,15 @@ class gateway extends \core_payment\gateway {
         $mform->setType('checkinvoice', PARAM_INT);
         $mform->addHelpButton('checkinvoice', 'checkinvoice', 'paygw_robokassa');
 
+        $mform->addElement(
+            'advcheckbox',
+            'sendlinkmsg',
+            get_string('sendlinkmsg', 'paygw_robokassa'),
+            get_string('sendlinkmsg', 'paygw_robokassa')
+        );
+        $mform->setType('sendlinkmsg', PARAM_INT);
+        $mform->addHelpButton('sendlinkmsg', 'sendlinkmsg', 'paygw_robokassa');
+
         $options = [
         'osn' => 1,
         'usn_income' => 2,

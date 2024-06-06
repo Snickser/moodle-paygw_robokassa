@@ -104,3 +104,6 @@ $string['checkinvoice'] = 'Check invoice';
 $string['checkinvoice_help'] = 'This option includes additional verification of the invoice in Robokassa when creating and receiving a payment.
 When creating, it is checked that such payment does not exist.
 And upon receipt of payment, a request is made to verify payment of the invoice.';
+
+$string['sendlinkmsg'] = 'Duplicate payment link by email';
+$string['sendlinkmsg_help'] = 'If enabled, a link to the invoice for payment will be sent to the users email.';
