@@ -265,14 +265,12 @@ $DB->update_record('paygw_robokassa', $paygwdata);
 $url = 'https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID;
 
 // Notify user.
-if ($config->istestmode) {
-    notifications::notify(
-        $userid,
-        $cost,
-        $currency,
-        $url,
-        'Invoice created'
-    );
-}
+notifications::notify(
+    $userid,
+    $cost,
+    $currency,
+    $url,
+    'Invoice created'
+);
 
 redirect($url);
