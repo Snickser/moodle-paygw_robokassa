@@ -35,6 +35,7 @@ $invid     = required_param('InvId', PARAM_INT);
 $outsumm   = required_param('OutSum', PARAM_TEXT); // TEXT only!
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
+
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
     die('FAIL. Not a valid transaction id');
 }
@@ -50,6 +51,10 @@ $userid      = $payment->userid;
 
 // Get config.
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
+
+if ($config->savedebugdata) {
+    file_put_contents('/tmp/xxxx', $_REQUEST . "\n\n", FILE_APPEND | LOCK_EX);
+}
 
 // Check test-mode.
 if ($config->istestmode) {

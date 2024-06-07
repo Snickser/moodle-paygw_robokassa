@@ -235,7 +235,9 @@ $request = "MerchantLogin=$mrhlogin" .
     "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 3600) .
     "&Receipt=" . urlencode($receipt);
 
-file_put_contents('/tmp/xxxx', "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1" . "\n" . $request . "\n\n", FILE_APPEND | LOCK_EX);
+if ($config->savedebugdata) {
+    file_put_contents('/tmp/xxxx', "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1" . "\n" . $request . "\n\n", FILE_APPEND | LOCK_EX);
+}
 
 // Make invoice.
 $location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';

@@ -105,5 +105,8 @@ $string['checkinvoice_help'] = 'This option includes additional verification of 
 When creating, it is checked that such payment does not exist.
 And upon receipt of payment, a request is made to verify payment of the invoice.';
 
-$string['sendlinkmsg'] = 'Duplicate payment link by email';
+$string['sendlinkmsg'] = 'Send payment link by email';
 $string['sendlinkmsg_help'] = 'If enabled, a link to the invoice for payment will be sent to the users email.';
+
+$string['savedebugdata'] = 'Save debug log';
+$string['savedebugdata_help'] = 'Bank request and response data will be saved in /tmp/xxxx';
