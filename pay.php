@@ -177,7 +177,7 @@ if ($config->istestmode) {
 
 // Checks if invoiceid already exist.
 if ($config->checkinvoice) {
-    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+    $location = 'https://11auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
     $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
     $location .= "?MerchantLogin=$mrhlogin" .
         "&InvoiceID=$invid" .
@@ -190,6 +190,12 @@ if ($config->checkinvoice) {
     ];
     $curl = new curl();
     $xmlresponse = $curl->get($location, $options);
+
+    if (!empty($curl->errno)) {
+        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+        throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
+    }
+
     $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', true);
     $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
     if ($err != 3) {
@@ -250,6 +256,12 @@ $options = [
 ];
 $curl = new curl();
 $jsonresponse = $curl->post($location, $request, $options);
+
+if (!empty($curl->errno)) {
+    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
+    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
+}
+
 $response = json_decode($jsonresponse);
 
 if (!isset($response->errorCode)) {
