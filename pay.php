@@ -232,7 +232,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
-    "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 3600) .
+    "&ExpirationDate=" . date("Y-m-d\\TH:i:s", time() + 900) .
     "&Receipt=" . urlencode($receipt);
 
 if ($config->savedebugdata) {
