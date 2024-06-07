@@ -235,6 +235,11 @@ $request = "MerchantLogin=$mrhlogin" .
     "&ExpirationDate=" . date(DATE_RFC3339_EXTENDED, time() + 3600) .
     "&Receipt=" . urlencode($receipt);
 
+if ($config->savedebugdata) {
+    file_put_contents('/tmp/xxxx', "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1" . "\n" .
+    $request . "\n\n", FILE_APPEND | LOCK_EX);
+}
+
 // Make invoice.
 $location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';
 $options = [
@@ -264,8 +269,8 @@ $DB->update_record('paygw_robokassa', $paygwdata);
 
 $url = 'https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID;
 
-if ($config->istestmode) {
-    // Notify user.
+// Notify user.
+if ($config->sendlinkmsg) {
     notifications::notify(
         $userid,
         $cost,

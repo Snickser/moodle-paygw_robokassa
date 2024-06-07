@@ -61,31 +61,6 @@ class gateway extends \core_payment\gateway {
         $mform->setType('password2', PARAM_TEXT);
         $mform->disabledIf('password2', 'istestmode', "neq", 0);
 
-        $mform->addElement(
-            'advcheckbox',
-            'istestmode',
-            get_string('istestmode', 'paygw_robokassa'),
-            get_string('istestmode', 'paygw_robokassa')
-        );
-        $mform->setType('istestmode', PARAM_INT);
-
-        $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
-        $mform->setType('test_password1', PARAM_TEXT);
-        $mform->disabledIf('test_password1', 'istestmode');
-
-        $mform->addElement('text', 'test_password2', get_string('password2', 'paygw_robokassa'), ['size' => 24]);
-        $mform->setType('test_password2', PARAM_TEXT);
-        $mform->disabledIf('test_password2', 'istestmode');
-
-        $mform->addElement(
-            'advcheckbox',
-            'checkinvoice',
-            get_string('checkinvoice', 'paygw_robokassa'),
-            get_string('checkinvoice', 'paygw_robokassa')
-        );
-        $mform->setType('checkinvoice', PARAM_INT);
-        $mform->addHelpButton('checkinvoice', 'checkinvoice', 'paygw_robokassa');
-
         $options = [
         'osn' => 1,
         'usn_income' => 2,
@@ -118,6 +93,49 @@ class gateway extends \core_payment\gateway {
         );
         $mform->setType('tax', PARAM_TEXT);
         $mform->addHelpButton('tax', 'tax', 'paygw_robokassa');
+
+        $mform->addElement(
+            'advcheckbox',
+            'istestmode',
+            get_string('istestmode', 'paygw_robokassa'),
+            get_string('istestmode', 'paygw_robokassa')
+        );
+        $mform->setType('istestmode', PARAM_INT);
+
+        $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
+        $mform->setType('test_password1', PARAM_TEXT);
+        $mform->disabledIf('test_password1', 'istestmode');
+
+        $mform->addElement('text', 'test_password2', get_string('password2', 'paygw_robokassa'), ['size' => 24]);
+        $mform->setType('test_password2', PARAM_TEXT);
+        $mform->disabledIf('test_password2', 'istestmode');
+
+        $mform->addElement(
+            'advcheckbox',
+            'checkinvoice',
+            get_string('checkinvoice', 'paygw_robokassa'),
+            get_string('checkinvoice', 'paygw_robokassa')
+        );
+        $mform->setType('checkinvoice', PARAM_INT);
+        $mform->addHelpButton('checkinvoice', 'checkinvoice', 'paygw_robokassa');
+
+        $mform->addElement(
+            'advcheckbox',
+            'sendlinkmsg',
+            get_string('sendlinkmsg', 'paygw_robokassa'),
+            get_string('sendlinkmsg', 'paygw_robokassa')
+        );
+        $mform->setType('sendlinkmsg', PARAM_INT);
+        $mform->addHelpButton('sendlinkmsg', 'sendlinkmsg', 'paygw_robokassa');
+
+        $mform->addElement(
+            'advcheckbox',
+            'savedebugdata',
+            get_string('savedebugdata', 'paygw_robokassa'),
+            get_string('savedebugdata', 'paygw_robokassa')
+        );
+        $mform->setType('savedebugdata', PARAM_INT);
+        $mform->addHelpButton('savedebugdata', 'savedebugdata', 'paygw_robokassa');
 
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);

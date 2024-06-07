@@ -92,7 +92,7 @@ $string['privacy:metadata:paygw_robokassa:success'] = 'Status';
 
 $string['messagesubject'] = 'Payment notification';
 $string['message_success_completed'] = 'Hello {$a->firstname},
-You transaction of payment id {$a->orderid} with cost of {$a->fee} {$a->currency} is successfully completed.
+You transaction of payment id {$a->orderid} with cost of {$a->localizedcost} is successfully completed.
 If the item is not accessable please contact the administrator.';
 $string['message_invoice_created'] = 'Hello {$a->firstname}!
 Your payment link {$a->orderid} to {$a->fee} {$a->currency} has been successfully created.
@@ -104,3 +104,9 @@ $string['checkinvoice'] = 'Check invoice';
 $string['checkinvoice_help'] = 'This option includes additional verification of the invoice in Robokassa when creating and receiving a payment.
 When creating, it is checked that such payment does not exist.
 And upon receipt of payment, a request is made to verify payment of the invoice.';
+
+$string['sendlinkmsg'] = 'Send payment link by email';
+$string['sendlinkmsg_help'] = 'If enabled, a link to the invoice for payment will be sent to the users email.';
+
+$string['savedebugdata'] = 'Save debug log';
+$string['savedebugdata_help'] = 'Bank request and response data will be saved in /tmp/xxxx';

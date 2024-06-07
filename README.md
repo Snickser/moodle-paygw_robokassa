@@ -2,7 +2,7 @@
 
 # Robokassa payment gateway plugin for Moodle.
 
-Version 0.20
+Version 0.21
 
 https://robokassa.com
 
@@ -30,6 +30,7 @@ https://robokassa.com
 + Для записи в курс подходит стандарный плагин "Зачисление за оплату" (enrol_fee).
 + Для контрольного задания используйте пропатченный мной плагин по ссылке [mod_gwpayments](https://github.com/Snickser/moodle-mod_gwpayments/tree/dev).
 + Для ограничения доступности используйте пропатченный мной плагин по ссылке [availability_gwpayments](https://github.com/Snickser/moodle-availability_gwpayments/tree/dev).
++ Плагин просмотра отчётов платежей (работает совместно с mod_gwpayments) [report_payments](https://github.com/Snickser/moodle-report_payments/tree/dev).
 
 ## INSTALLATION
 
