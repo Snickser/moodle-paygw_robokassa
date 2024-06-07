@@ -96,7 +96,7 @@ You transaction of payment id {$a->orderid} with cost of {$a->localizedcost} is 
 If the item is not accessable please contact the administrator.';
 $string['message_invoice_created'] = 'Hello {$a->firstname}!
 Your payment link {$a->orderid} to {$a->fee} {$a->currency} has been successfully created.
-You can pay it within an hour.';
+You can make a payment using this link within 15 minutes.';
 
 $string['messageprovider:payment_receipt'] = 'Payment receipt';
 
