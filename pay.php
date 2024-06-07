@@ -236,7 +236,8 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Receipt=" . urlencode($receipt);
 
 if ($config->savedebugdata) {
-    file_put_contents('/tmp/xxxx', "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1" . "\n" . $request . "\n\n", FILE_APPEND | LOCK_EX);
+    file_put_contents('/tmp/xxxx', "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1" . "\n" .
+    $request . "\n\n", FILE_APPEND | LOCK_EX);
 }
 
 // Make invoice.
