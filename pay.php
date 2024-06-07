@@ -177,7 +177,7 @@ if ($config->istestmode) {
 
 // Checks if invoiceid already exist.
 if ($config->checkinvoice) {
-    $location = 'https://11auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
     $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
     $location .= "?MerchantLogin=$mrhlogin" .
         "&InvoiceID=$invid" .
