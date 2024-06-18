@@ -121,10 +121,9 @@ if (!$config->fixcost) {
     } else {
         $templatedata->suggest = $config->suggest;
     }
-    if ($config->maxcost > $templatedata->suggest) {
+    // Check max cost
+    if ($config->maxcost && $config->maxcost > $templatedata->suggest) {
         $templatedata->maxcost = $config->maxcost;
-    } else {
-        $templatedata->maxcost = $templatedata->suggest;
     }
 } else {
     $templatedata->localizedcost = \core_payment\helper::get_cost_as_string($fee, $currency);
