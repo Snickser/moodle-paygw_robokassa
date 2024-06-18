@@ -227,5 +227,8 @@ class gateway extends \core_payment\gateway {
         if ($data->enabled && empty($data->merchant_login)) {
             $errors['enabled'] = get_string('gatewaycannotbeenabled', 'payment');
         }
+        if ($data->maxcost && $data->maxcost < $data->suggest) {
+            $errors['maxcost'] = get_string('maxcosterror', 'paygw_robokassa');
+        }
     }
 }

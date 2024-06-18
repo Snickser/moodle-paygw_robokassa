@@ -112,3 +112,4 @@ $string['savedebugdata'] = 'Save debug log';
 $string['savedebugdata_help'] = 'Bank request and response data will be saved in /tmp/xxxx';
 
 $string['fixcost'] = 'Fixed price mode';
+$string['maxcosterror'] = 'The maximum price must be higher than the recommended price';
