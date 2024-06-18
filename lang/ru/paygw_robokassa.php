@@ -100,3 +100,6 @@ $string['sendlinkmsg_help'] = 'Если включено, то ссылка на
 
 $string['savedebugdata'] = 'Сохранять debug лог';
 $string['savedebugdata_help'] = 'Данные запросов и ответов банка будут сохраняться в /tmp/xxxx';
+
+$string['fixcost'] = 'Режим фиксированной цены';
+$string['maxcosterror'] = 'Максимальная цена должна быть выше рекомендуемой цены';

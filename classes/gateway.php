@@ -185,11 +185,21 @@ class gateway extends \core_payment\gateway {
         );
         $mform->setType('showduration', PARAM_INT);
 
+        $mform->addElement(
+            'advcheckbox',
+            'fixcost',
+            get_string('fixcost', 'paygw_robokassa'),
+            get_string('fixcost', 'paygw_robokassa')
+        );
+        $mform->setType('fixcost', PARAM_INT);
+
         $mform->addElement('text', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
         $mform->setType('suggest', PARAM_TEXT);
+        $mform->disabledIf('suggest', 'fixcost', "neq", 0);
 
         $mform->addElement('text', 'maxcost', get_string('maxcost', 'paygw_robokassa'), ['size' => 10]);
         $mform->setType('maxcost', PARAM_TEXT);
+        $mform->disabledIf('maxcost', 'fixcost', "neq", 0);
 
         global $CFG;
         $mform->addElement('html', '<div class="label-callback" style="background: #F2EFE6; padding: 15px;">' .
@@ -216,6 +226,9 @@ class gateway extends \core_payment\gateway {
     ): void {
         if ($data->enabled && empty($data->merchant_login)) {
             $errors['enabled'] = get_string('gatewaycannotbeenabled', 'payment');
+        }
+        if ($data->maxcost && $data->maxcost < $data->suggest) {
+            $errors['maxcost'] = get_string('maxcosterror', 'paygw_robokassa');
         }
     }
 }

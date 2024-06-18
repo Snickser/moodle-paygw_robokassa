@@ -113,13 +113,19 @@ if ($config->showduration) {
 
 $templatedata->passwordmode = $config->passwordmode;
 
-if ($config->suggest < $fee) {
-    $templatedata->suggest = $fee;
+$templatedata->maxcost = $config->maxcost;
+$templatedata->fixcost = $config->fixcost;
+
+if (!$config->fixcost) {
+    if ($config->suggest < $fee) {
+        $templatedata->suggest = $fee;
+    } else {
+        $templatedata->suggest = $config->suggest;
+    }
 } else {
-    $templatedata->suggest = $config->suggest;
+    $templatedata->localizedcost = \core_payment\helper::get_cost_as_string($fee, $currency);
 }
 
-$templatedata->maxcost = $config->maxcost;
 $templatedata->skipmode = $config->skipmode;
 
 if ($config->skipmode || $config->passwordmode) {
@@ -133,6 +139,7 @@ if (!empty($config->fixdesc)) {
     $templatedata->description = $description;
     $templatedata->fixdesc = 0;
 }
+
 
 $templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
 
