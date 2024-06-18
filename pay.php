@@ -59,6 +59,7 @@ if (!empty($costself)) {
 if ($config->maxcost && $cost > $config->maxcost) {
     $cost = $config->maxcost;
 }
+
 $cost = number_format($cost, 2, '.', '');
 
 // Get course and groups for user.
@@ -238,7 +239,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
-    "&ExpirationDate=" . date("Y-m-d\\TH:i:s", time() + 900) .
+    "&ExpirationDate=" . date("Y-m-d\\TH:i:s", time() + 3600) .
     "&Receipt=" . urlencode($receipt);
 
 if ($config->savedebugdata) {

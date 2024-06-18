@@ -110,3 +110,5 @@ $string['sendlinkmsg_help'] = 'If enabled, a link to the invoice for payment wil
 
 $string['savedebugdata'] = 'Save debug log';
 $string['savedebugdata_help'] = 'Bank request and response data will be saved in /tmp/xxxx';
+
+$string['fixcost'] = 'Fixed price mode';
