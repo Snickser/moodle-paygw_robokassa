@@ -113,6 +113,7 @@ if ($config->showduration) {
 
 $templatedata->passwordmode = $config->passwordmode;
 
+$templatedata->maxcost = $config->maxcost;
 $templatedata->fixcost = $config->fixcost;
 
 if (!$config->fixcost) {
@@ -120,10 +121,6 @@ if (!$config->fixcost) {
         $templatedata->suggest = $fee;
     } else {
         $templatedata->suggest = $config->suggest;
-    }
-    // Check max cost
-    if ($config->maxcost && $config->maxcost > $templatedata->suggest) {
-        $templatedata->maxcost = $config->maxcost;
     }
 } else {
     $templatedata->localizedcost = \core_payment\helper::get_cost_as_string($fee, $currency);
