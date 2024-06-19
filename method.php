@@ -99,19 +99,18 @@ echo $OUTPUT->header();
 
 // Create template.
 $templatedata = new stdClass();
-$templatedata->component   = $component;
-$templatedata->paymentarea = $paymentarea;
-$templatedata->itemid      = $itemid;
-$templatedata->fee         = $fee;
-$templatedata->currency    = $currency;
-$templatedata->sesskey     = sesskey();
+$templatedata->component    = $component;
+$templatedata->paymentarea  = $paymentarea;
+$templatedata->itemid       = $itemid;
+$templatedata->fee          = $fee;
+$templatedata->currency     = $currency;
+$templatedata->sesskey      = sesskey();
+$templatedata->passwordmode = $config->passwordmode;
 
 if ($config->showduration) {
     $templatedata->enrolperiod = $enrolperiod;
     $templatedata->enrolperiod_desc = $enrolperioddesc;
 }
-
-$templatedata->passwordmode = $config->passwordmode;
 
 $templatedata->maxcost = $config->maxcost;
 $templatedata->fixcost = $config->fixcost;
@@ -139,7 +138,6 @@ if (!empty($config->fixdesc)) {
     $templatedata->description = $description;
     $templatedata->fixdesc = 0;
 }
-
 
 $templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
 

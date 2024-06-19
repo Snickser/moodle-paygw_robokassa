@@ -192,6 +192,7 @@ class gateway extends \core_payment\gateway {
             get_string('fixcost', 'paygw_robokassa')
         );
         $mform->setType('fixcost', PARAM_INT);
+        $mform->addHelpButton('fixcost', 'fixcost', 'paygw_robokassa');
 
         $mform->addElement('text', 'suggest', get_string('suggest', 'paygw_robokassa'), ['size' => 10]);
         $mform->setType('suggest', PARAM_TEXT);
