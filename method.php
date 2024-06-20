@@ -111,6 +111,8 @@ if ($config->showduration) {
     $templatedata->enrolperiod_desc = $enrolperioddesc;
 }
 
+$templatedata->passwordmode = $config->passwordmode;
+
 $templatedata->maxcost = $config->maxcost;
 $templatedata->fixcost = $config->fixcost;
 
@@ -137,8 +139,6 @@ if (!empty($config->fixdesc)) {
     $templatedata->description = $description;
     $templatedata->fixdesc = 0;
 }
-
-$templatedata->passwordmode = $config->passwordmode;
 
 $templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
 
