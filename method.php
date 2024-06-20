@@ -105,7 +105,6 @@ $templatedata->itemid       = $itemid;
 $templatedata->fee          = $fee;
 $templatedata->currency     = $currency;
 $templatedata->sesskey      = sesskey();
-$templatedata->passwordmode = $config->passwordmode;
 
 if ($config->showduration) {
     $templatedata->enrolperiod = $enrolperiod;
@@ -138,6 +137,8 @@ if (!empty($config->fixdesc)) {
     $templatedata->description = $description;
     $templatedata->fixdesc = 0;
 }
+
+$templatedata->passwordmode = $config->passwordmode;
 
 $templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
 
