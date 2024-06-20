@@ -99,12 +99,12 @@ echo $OUTPUT->header();
 
 // Create template.
 $templatedata = new stdClass();
-$templatedata->component    = $component;
-$templatedata->paymentarea  = $paymentarea;
-$templatedata->itemid       = $itemid;
-$templatedata->fee          = $fee;
-$templatedata->currency     = $currency;
-$templatedata->sesskey      = sesskey();
+$templatedata->component   = $component;
+$templatedata->paymentarea = $paymentarea;
+$templatedata->itemid      = $itemid;
+$templatedata->fee         = $fee;
+$templatedata->currency    = $currency;
+$templatedata->sesskey     = sesskey();
 
 if ($config->showduration) {
     $templatedata->enrolperiod = $enrolperiod;
