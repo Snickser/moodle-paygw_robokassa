@@ -227,6 +227,7 @@ $items->items = [
 ];
 $receipt = json_encode($items);
 
+
 // Build CRC value.
 $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
@@ -241,6 +242,10 @@ $request = "MerchantLogin=$mrhlogin" .
     "&IsTest=" . $config->istestmode .
     "&ExpirationDate=" . date("Y-m-d\\TH:i:s", time() + 900) .
     "&Receipt=" . urlencode($receipt);
+
+if ($config->recurrent == 1 && $config->recurrentperiod > 0) {
+    $request .= "&Recurring=true";
+}
 
 if ($config->savedebugdata) {
     file_put_contents('/tmp/xxxx', "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1" . "\n" .
