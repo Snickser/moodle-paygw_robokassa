@@ -114,3 +114,7 @@ $string['savedebugdata_help'] = 'Bank request and response data will be saved in
 $string['fixcost'] = 'Fixed price mode';
 $string['fixcost_help'] = 'Disables the ability for students to pay with an arbitrary amount.';
 $string['maxcosterror'] = 'The maximum price must be higher than the recommended price';
+
+$string['recurrent'] = 'Enable recurring payments';
+$string['recurrent_help'] = 'Enable recurring payments';
+$string['recurrentperiod'] = 'Recurring payment frequency';
