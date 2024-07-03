@@ -78,6 +78,7 @@ class recurrent_payments extends \core\task\scheduled_task {
 
             $user = \core_user::get_user($userid);
 
+
 // Your registration data.
 $mrhlogin = $config->merchant_login;  // Your login here.
 
@@ -90,24 +91,37 @@ if ($config->istestmode) {
     $mrhpass2 = $config->password2;
 }
 
+$invid = $data->paymentid-50000; // Shop's invoice number.
+
 // Build CRC value.
-$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid:$mrhpass1"));
+$crc = strtoupper(md5("$mrhlogin:$payment->amount:$invid:$mrhpass1"));
 
 // Params.
 $request = "MerchantLogin=$mrhlogin" .
-    "&OutSum=$outsumm" . $outsumcurrency .
-    "&InvoiceID=" . $data->invoiceid .
-    "&PreviousInvoiceID=" .
+    "&InvoiceID=" . $invid .
+    "&PreviousInvoiceID=" . $data->paymentid .
     "&Description=" . urlencode("Recurrent payment " . $data->paymentid) .
     "&SignatureValue=$crc" .
     "&OutSum=" . $payment->amount .
     "&IsTest=" . $config->istestmode ;
 
-            if (($response->status !== 'succeeded' && $response->status !== 'pending') || $response->paid != true) {
+// Make invoice.
+$location = 'https://auth.robokassa.ru/Merchant/Recurring';
+$options = [
+    'CURLOPT_RETURNTRANSFER' => true,
+    'CURLOPT_TIMEOUT' => 30,
+    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+];
+$curl = new \curl();
+$response = $curl->post($location, $request, $options);
+
+
+            if (($response->status !== 'succeeded' && $response->status !== 'pending')) {
                 echo serialize($response) . "\n";
                 mtrace("$data->paymentid is not valid");
                 $data->recurrent = 0;
-                $DB->update_record('paygw_robokassa', $data);
+//                $DB->update_record('paygw_robokassa', $data);
             } else {
                 mtrace("$data->paymentid order paid successfully");
             }
