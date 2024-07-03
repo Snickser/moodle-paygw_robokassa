@@ -140,11 +140,11 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'recurrent',
-            get_string('recurrent', 'paygw_yookassa'),
-            get_string('recurrent', 'paygw_yookassa')
+            get_string('recurrent', 'paygw_robokassa'),
+            get_string('recurrent', 'paygw_robokassa')
         );
         $mform->setType('recurrent', PARAM_INT);
-        $mform->addHelpButton('recurrent', 'recurrent', 'paygw_yookassa');
+        $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
 
         $options = [
         '0.0035' => get_string('minute'),
@@ -156,7 +156,7 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'select',
             'recurrentperiod',
-            get_string('recurrentperiod', 'paygw_yookassa'),
+            get_string('recurrentperiod', 'paygw_robokassa'),
             $options,
         );
         $mform->setType('recurrentperiod', PARAM_TEXT);
