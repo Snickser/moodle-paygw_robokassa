@@ -76,58 +76,35 @@ class recurrent_payments extends \core\task\scheduled_task {
             // Get config.
             $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 
-            // Make invoice.
-            $invoice = new \stdClass();
-            $invoice->amount = [ "value" => $payment->amount, "currency" => $payment->currency ];
-            $invoice->capture = "true";
-            $invoice->payment_method_id = $data->invoiceid;
-            $invoice->description = "recurrent payment " . $data->paymentid;
-
             $user = \core_user::get_user($userid);
 
-            $invoice->receipt = [
-              "customer" => [
-                "email" => $user->email,
-              ],
-              "items" => [
-                [
-                  "description" => $invoice->description,
-                  "quantity" => 1,
-                  "amount" => [
-                    "value" => $payment->amount,
-                    "currency" => $payment->currency,
-                  ],
-                  "vat_code" => $config->vatcode,
-                  "payment_subject" => "payment",
-                  "payment_mode" => "full_payment",
-                ],
-              ],
-              "tax_system_code" => $config->taxsystemcode,
-            ];
+// Your registration data.
+$mrhlogin = $config->merchant_login;  // Your login here.
 
-            $jsondata = json_encode($invoice);
+// Check test-mode.
+if ($config->istestmode) {
+    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
+    $mrhpass2 = $config->test_password2;
+} else {
+    $mrhpass1 = $config->password1;      // Merchant pass1 here.
+    $mrhpass2 = $config->password2;
+}
 
-            // Make payment.
-            $location = 'https://api.robokassa.ru/v3/payments';
-            $options = [
-              'CURLOPT_RETURNTRANSFER' => true,
-              'CURLOPT_TIMEOUT' => 30,
-              'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
-              'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
-              'CURLOPT_HTTPHEADER' => [
-                'Idempotence-Key: ' . uniqid($data->paymentid, true),
-                'Content-Type: application/json',
-              ],
-              'CURLOPT_HTTPAUTH' => CURLAUTH_BASIC,
-              'CURLOPT_USERPWD' => $config->shopid . ':' . $config->apikey,
-            ];
-            $curl = new \curl();
-            $jsonresponse = $curl->post($location, $jsondata, $options);
+// Build CRC value.
+$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid:$mrhpass1"));
 
-            $response = json_decode($jsonresponse);
+// Params.
+$request = "MerchantLogin=$mrhlogin" .
+    "&OutSum=$outsumm" . $outsumcurrency .
+    "&InvoiceID=" . $data->invoiceid .
+    "&PreviousInvoiceID=" .
+    "&Description=" . urlencode("Recurrent payment " . $data->paymentid) .
+    "&SignatureValue=$crc" .
+    "&OutSum=" . $payment->amount .
+    "&IsTest=" . $config->istestmode ;
 
             if (($response->status !== 'succeeded' && $response->status !== 'pending') || $response->paid != true) {
-                echo serialize($response)."\n";
+                echo serialize($response) . "\n";
                 mtrace("$data->paymentid is not valid");
                 $data->recurrent = 0;
                 $DB->update_record('paygw_robokassa', $data);
