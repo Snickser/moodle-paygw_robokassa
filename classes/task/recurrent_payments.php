@@ -54,8 +54,9 @@ class recurrent_payments extends \core\task\scheduled_task {
         global $DB, $CFG;
         mtrace('Start');
 
-        $ctime = time();
-        $robokassatx = $DB->get_records_sql('SELECT * FROM {paygw_robokassa} WHERE (success=1 OR success=3) ' .
+        $ctime = strtotime("today");
+
+        $robokassatx = $DB->get_records_sql('SELECT * FROM {paygw_robokassa} WHERE success=1 ' .
                   'AND recurrent>0 AND recurrent < ?', [ $ctime ]);
 
         foreach ($robokassatx as $data) {
@@ -78,7 +79,6 @@ class recurrent_payments extends \core\task\scheduled_task {
 
             $user = \core_user::get_user($userid);
 
-
 // Your registration data.
 $mrhlogin = $config->merchant_login;  // Your login here.
 
@@ -91,10 +91,15 @@ if ($config->istestmode) {
     $mrhpass2 = $config->password2;
 }
 
-$invid = $data->paymentid-50000; // Shop's invoice number.
+                echo serialize($data) . "\n";
+
+
+// Make new transaction.
+$data->invoiceid = 'recurrent';
+//$invid = $DB->insert_record('paygw_robokassa', $data);
 
 // Build CRC value.
-$crc = strtoupper(md5("$mrhlogin:$payment->amount:$invid:$mrhpass1"));
+//$crc = strtoupper(md5("$mrhlogin:$payment->amount:$invid:$mrhpass1"));
 
 // Params.
 $request = "MerchantLogin=$mrhlogin" .
@@ -102,8 +107,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&PreviousInvoiceID=" . $data->paymentid .
     "&Description=" . urlencode("Recurrent payment " . $data->paymentid) .
     "&SignatureValue=$crc" .
-    "&OutSum=" . $payment->amount .
-    "&IsTest=" . $config->istestmode ;
+    "&OutSum=" . $payment->amount;
 
 // Make invoice.
 $location = 'https://auth.robokassa.ru/Merchant/Recurring';
@@ -116,14 +120,17 @@ $options = [
 $curl = new \curl();
 $response = $curl->post($location, $request, $options);
 
-
-            if (($response->status !== 'succeeded' && $response->status !== 'pending')) {
+            if (($response !== "OK$invid")) {
                 echo serialize($response) . "\n";
                 mtrace("$data->paymentid is not valid");
                 $data->recurrent = 0;
-//                $DB->update_record('paygw_robokassa', $data);
+                $DB->update_record('paygw_robokassa', $data);
             } else {
                 mtrace("$data->paymentid order paid successfully");
+
+
+
+
             }
         }
         mtrace('End.');
