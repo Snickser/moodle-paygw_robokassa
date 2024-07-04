@@ -78,6 +78,7 @@ class recurrent_payments extends \core\task\scheduled_task {
             $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
             $payable = helper::get_payable($component, $paymentarea, $itemid);
             $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
+
             $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
             $user = \core_user::get_user($userid);
@@ -87,7 +88,7 @@ class recurrent_payments extends \core\task\scheduled_task {
             $mrhpass1 = $config->password1;      // Merchant pass1 here.
             $mrhpass2 = $config->password2;
 
-                echo serialize($payable) . "\n";
+//                echo serialize($payable) . "\n";
 
             // Save payment.
             $newpaymentid = helper::save_payment(
@@ -104,7 +105,7 @@ class recurrent_payments extends \core\task\scheduled_task {
             // Make new transaction.
             $newtx = new \stdClass();
             $newtx->paymentid = $newpaymentid;
-            $newtx->invoiceid = 'recurrent';
+            $newtx->invoiceid = $data->paymentid;
             $newtx->courseid = $data->courseid;
             $newtx->groupnames = $data->groupnames;
             $newtx->timecreated = time();
@@ -112,11 +113,11 @@ class recurrent_payments extends \core\task\scheduled_task {
             $newtx->id = $invid;
 
             // Build CRC value.
-            $crc = strtoupper(md5("$mrhlogin:$cost:$invid:$mrhpass1"));
+            $crc = strtoupper(md5("$mrhlogin:$cost:$newpaymentid:$mrhpass1"));
 
             // Params.
             $request = "MerchantLogin=$mrhlogin" .
-              "&InvoiceID=" . $invid .
+              "&InvoiceID=" . $newpaymentid .
               "&PreviousInvoiceID=" . $data->paymentid .
               "&Description=" . urlencode("Recurrent payment " . $data->paymentid) .
               "&SignatureValue=$crc" .
@@ -133,7 +134,7 @@ class recurrent_payments extends \core\task\scheduled_task {
             $curl = new \curl();
             $response = $curl->post($location, $request, $options);
 
-            if (($response !== "OK$invid")) {
+            if (($response !== 'OK'.$newpaymentid)) {
                 echo serialize($response) . "\n";
                 mtrace("$data->paymentid is not valid");
                 // $data->recurrent = 0;
