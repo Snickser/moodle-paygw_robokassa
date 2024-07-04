@@ -140,10 +140,6 @@ class recurrent_payments extends \core\task\scheduled_task {
                 // $data->recurrent = 0;
             } else {
                 mtrace("$data->paymentid order paid successfully");
-
-                // Deliver order.
-                helper::deliver_order($component, $paymentarea, $itemid, $newpaymentid, $userid);
-
                 // Notify user.
                 notifications::notify(
                     $userid,
