@@ -76,62 +76,87 @@ class recurrent_payments extends \core\task\scheduled_task {
 
             // Get config.
             $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
+            $payable = helper::get_payable($component, $paymentarea, $itemid);
+            $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
+            $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
             $user = \core_user::get_user($userid);
 
-// Your registration data.
-$mrhlogin = $config->merchant_login;  // Your login here.
+            // Your registration data.
+            $mrhlogin = $config->merchant_login;  // Your login here.
+            $mrhpass1 = $config->password1;      // Merchant pass1 here.
+            $mrhpass2 = $config->password2;
 
-// Check test-mode.
-if ($config->istestmode) {
-    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
-    $mrhpass2 = $config->test_password2;
-} else {
-    $mrhpass1 = $config->password1;      // Merchant pass1 here.
-    $mrhpass2 = $config->password2;
-}
+                echo serialize($payable) . "\n";
 
-                echo serialize($data) . "\n";
+            // Save payment.
+            $newpaymentid = helper::save_payment(
+                $userid,
+                $component,
+                $paymentarea,
+                $itemid,
+                $userid,
+                $cost,
+                $payable->get_currency(),
+                'robokassa'
+            );
 
+            // Make new transaction.
+            $newtx = new \stdClass();
+            $newtx->paymentid = $newpaymentid;
+            $newtx->invoiceid = 'recurrent';
+            $newtx->courseid = $data->courseid;
+            $newtx->groupnames = $data->groupnames;
+            $newtx->timecreated = time();
+            $invid = $DB->insert_record('paygw_robokassa', $newtx);
+            $newtx->id = $invid;
 
-// Make new transaction.
-$data->invoiceid = 'recurrent';
-//$invid = $DB->insert_record('paygw_robokassa', $data);
+            // Build CRC value.
+            $crc = strtoupper(md5("$mrhlogin:$cost:$invid:$mrhpass1"));
 
-// Build CRC value.
-//$crc = strtoupper(md5("$mrhlogin:$payment->amount:$invid:$mrhpass1"));
+            // Params.
+            $request = "MerchantLogin=$mrhlogin" .
+              "&InvoiceID=" . $invid .
+              "&PreviousInvoiceID=" . $data->paymentid .
+              "&Description=" . urlencode("Recurrent payment " . $data->paymentid) .
+              "&SignatureValue=$crc" .
+              "&OutSum=" . $cost;
 
-// Params.
-$request = "MerchantLogin=$mrhlogin" .
-    "&InvoiceID=" . $invid .
-    "&PreviousInvoiceID=" . $data->paymentid .
-    "&Description=" . urlencode("Recurrent payment " . $data->paymentid) .
-    "&SignatureValue=$crc" .
-    "&OutSum=" . $payment->amount;
-
-// Make invoice.
-$location = 'https://auth.robokassa.ru/Merchant/Recurring';
-$options = [
-    'CURLOPT_RETURNTRANSFER' => true,
-    'CURLOPT_TIMEOUT' => 30,
-    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
-    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
-];
-$curl = new \curl();
-$response = $curl->post($location, $request, $options);
+            // Make invoice.
+            $location = 'https://auth.robokassa.ru/Merchant/Recurring';
+            $options = [
+              'CURLOPT_RETURNTRANSFER' => true,
+              'CURLOPT_TIMEOUT' => 30,
+              'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+              'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+            ];
+            $curl = new \curl();
+            $response = $curl->post($location, $request, $options);
 
             if (($response !== "OK$invid")) {
                 echo serialize($response) . "\n";
                 mtrace("$data->paymentid is not valid");
-                $data->recurrent = 0;
-                $DB->update_record('paygw_robokassa', $data);
+                // $data->recurrent = 0;
             } else {
                 mtrace("$data->paymentid order paid successfully");
 
+                // Deliver order.
+                helper::deliver_order($component, $paymentarea, $itemid, $newpaymentid, $userid);
 
-
-
+                // Notify user.
+                notifications::notify(
+                    $userid,
+                    $cost,
+                    $payment->currency,
+                    $newpaymentid,
+                    'Recurrent completed'
+                );
+                $newtx->success = 1;
+                $data->recurrent = time() + 86400 * $config->recurrentperiod;
             }
+            // Write status.
+            $DB->update_record('paygw_robokassa', $data);
+            $DB->update_record('paygw_robokassa', $newtx);
         }
         mtrace('End.');
     }
