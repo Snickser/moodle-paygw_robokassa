@@ -88,8 +88,6 @@ class recurrent_payments extends \core\task\scheduled_task {
             $mrhpass1 = $config->password1;      // Merchant pass1 here.
             $mrhpass2 = $config->password2;
 
-//                echo serialize($payable) . "\n";
-
             // Save payment.
             $newpaymentid = helper::save_payment(
                 $userid,
@@ -134,10 +132,9 @@ class recurrent_payments extends \core\task\scheduled_task {
             $curl = new \curl();
             $response = $curl->post($location, $request, $options);
 
-            if (($response !== 'OK'.$newpaymentid)) {
+            if (($response !== 'OK' . $newpaymentid)) {
                 echo serialize($response) . "\n";
                 mtrace("$data->paymentid is not valid");
-                // $data->recurrent = 0;
             } else {
                 mtrace("$data->paymentid order paid successfully");
                 // Notify user.
