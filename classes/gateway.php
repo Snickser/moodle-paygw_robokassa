@@ -96,6 +96,21 @@ class gateway extends \core_payment\gateway {
 
         $mform->addElement(
             'advcheckbox',
+            'recurrent',
+            get_string('recurrent', 'paygw_robokassa'),
+            get_string('recurrent', 'paygw_robokassa')
+        );
+        $mform->setType('recurrent', PARAM_INT);
+        $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
+        $mform->disabledIf('recurrent', 'istestmode', "neq", 0);
+
+        $mform->addElement('duration', 'recurrentperiod', get_string('recurrentperiod', 'paygw_robokassa'));
+        $mform->setType('recurrentperiod', PARAM_TEXT);
+        $mform->hideIf('recurrentperiod', 'recurrent', "neq", 1);
+        $mform->disabledIf('recurrentperiod', 'istestmode', "neq", 0);
+
+        $mform->addElement(
+            'advcheckbox',
             'istestmode',
             get_string('istestmode', 'paygw_robokassa'),
             get_string('istestmode', 'paygw_robokassa')
@@ -209,6 +224,13 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('html', get_string('return_url', 'paygw_robokassa') . '<br>');
         $mform->addElement('html', $CFG->wwwroot . '/payment/gateway/robokassa/return.php<br>');
         $mform->addElement('html', get_string('callback_help', 'paygw_robokassa') . '</div><br>');
+
+        $header = 'Новые версии плагина вы можете найти на
+ <a href=https://github.com/Snickser/moodle-paygw_robokassa>https://github.com/Snickser/moodle-paygw_robokassa</a><br>
+Пожалуйста, отправьте мне немного доната<br>
+-> https://www.paypal.com/paypalme/snickser :)
+';
+        $mform->addElement('html', $header);
     }
 
     /**

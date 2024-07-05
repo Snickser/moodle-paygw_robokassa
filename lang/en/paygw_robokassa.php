@@ -94,6 +94,10 @@ $string['messagesubject'] = 'Payment notification';
 $string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->localizedcost} is successfully completed.
 If the item is not accessable please contact the administrator.';
+
+$string['message_recurrent_completed'] = 'Hello, {$a->firstname}!
+Regular payment No. {$a->orderid} at {$a->localizedcost} is ready for payment.';
+
 $string['message_invoice_created'] = 'Hello {$a->firstname}!
 Your payment link {$a->orderid} to {$a->fee} {$a->currency} has been successfully created.
 You can make a payment using this link within 15 minutes.';
@@ -114,3 +118,7 @@ $string['savedebugdata_help'] = 'Bank request and response data will be saved in
 $string['fixcost'] = 'Fixed price mode';
 $string['fixcost_help'] = 'Disables the ability for students to pay with an arbitrary amount.';
 $string['maxcosterror'] = 'The maximum price must be higher than the recommended price';
+
+$string['recurrent'] = 'Enable recurring payments';
+$string['recurrent_help'] = 'Enable recurring payments';
+$string['recurrentperiod'] = 'Recurring payment frequency';
