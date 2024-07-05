@@ -104,7 +104,7 @@ class gateway extends \core_payment\gateway {
         $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
         $mform->disabledIf('recurrent', 'istestmode', "neq", 0);
 
-        $mform->addElement('duration','recurrentperiod',get_string('recurrentperiod', 'paygw_robokassa'));
+        $mform->addElement('duration', 'recurrentperiod', get_string('recurrentperiod', 'paygw_robokassa'));
         $mform->setType('recurrentperiod', PARAM_TEXT);
         $mform->hideIf('recurrentperiod', 'recurrent', "neq", 1);
         $mform->disabledIf('recurrentperiod', 'istestmode', "neq", 0);
