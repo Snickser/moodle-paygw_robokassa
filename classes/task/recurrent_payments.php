@@ -134,9 +134,9 @@ class recurrent_payments extends \core\task\scheduled_task {
 
             if (($response !== 'OK' . $newpaymentid)) {
                 echo serialize($response) . "\n";
-                mtrace("$data->paymentid is not valid");
+                mtrace("$data->paymentid Error");
             } else {
-                mtrace("$data->paymentid order paid successfully");
+                mtrace("$data->paymentid Done");
                 // Notify user.
                 notifications::notify(
                     $userid,
@@ -152,6 +152,6 @@ class recurrent_payments extends \core\task\scheduled_task {
             $DB->update_record('paygw_robokassa', $data);
             $DB->update_record('paygw_robokassa', $newtx);
         }
-        mtrace('End.');
+        mtrace('End');
     }
 }
