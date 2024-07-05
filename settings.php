@@ -25,9 +25,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-    $header = 'Новые версии плагина Вы можете найти на
+    $header = 'Новые версии плагина вы можете найти на
  <a href=https://github.com/Snickser/moodle-paygw_robokassa>https://github.com/Snickser/moodle-paygw_robokassa</a><br>
-Пожалуйста, отправьте немного доната<br>
+Пожалуйста, отправьте мне немного доната<br>
 -> https://www.paypal.com/paypalme/snickser :)
 ';
 

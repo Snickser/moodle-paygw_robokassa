@@ -234,6 +234,13 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('html', get_string('return_url', 'paygw_robokassa') . '<br>');
         $mform->addElement('html', $CFG->wwwroot . '/payment/gateway/robokassa/return.php<br>');
         $mform->addElement('html', get_string('callback_help', 'paygw_robokassa') . '</div><br>');
+
+        $header = 'Новые версии плагина вы можете найти на
+ <a href=https://github.com/Snickser/moodle-paygw_robokassa>https://github.com/Snickser/moodle-paygw_robokassa</a><br>
+Пожалуйста, отправьте мне немного доната<br>
+-> https://www.paypal.com/paypalme/snickser :)
+';
+        $mform->addElement('html', $header);
     }
 
     /**
