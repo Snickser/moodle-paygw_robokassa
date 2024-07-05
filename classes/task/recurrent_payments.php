@@ -145,7 +145,7 @@ class recurrent_payments extends \core\task\scheduled_task {
                     $userid,
                     $cost,
                     $payment->currency,
-                    $newpaymentid,
+                    $data->paymentid,
                     'Recurrent completed'
                 );
                 $newtx->success = 1;

@@ -96,8 +96,7 @@ You transaction of payment id {$a->orderid} with cost of {$a->localizedcost} is 
 If the item is not accessable please contact the administrator.';
 
 $string['message_recurrent_completed'] = 'Hello, {$a->firstname}!
-Regular payment No. {$a->orderid} to {$a->fee} {$a->currency} completed successfully. Thank you for your donation.
-If a course element is unavailable, contact site technical support.';
+Regular payment No. {$a->orderid} at {$a->localizedcost} is ready for payment.';
 
 $string['message_invoice_created'] = 'Hello {$a->firstname}!
 Your payment link {$a->orderid} to {$a->fee} {$a->currency} has been successfully created.
