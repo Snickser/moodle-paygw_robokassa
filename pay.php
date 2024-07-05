@@ -281,7 +281,7 @@ if ($response->errorCode) {
 }
 
 if ($config->recurrent == 1 && $config->recurrentperiod > 0) {
-    $paygwdata->recurrent = time() + 86400 * $config->recurrentperiod;
+    $paygwdata->recurrent = time() + $config->recurrentperiod;
 }
 
 // Write to DB.

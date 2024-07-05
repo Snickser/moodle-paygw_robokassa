@@ -146,7 +146,7 @@ class recurrent_payments extends \core\task\scheduled_task {
                     'Recurrent completed'
                 );
                 $newtx->success = 1;
-                $data->recurrent = time() + 86400 * $config->recurrentperiod;
+                $data->recurrent = time() + $config->recurrentperiod;
             }
             // Write status.
             $DB->update_record('paygw_robokassa', $data);

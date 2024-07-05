@@ -96,6 +96,21 @@ class gateway extends \core_payment\gateway {
 
         $mform->addElement(
             'advcheckbox',
+            'recurrent',
+            get_string('recurrent', 'paygw_robokassa'),
+            get_string('recurrent', 'paygw_robokassa')
+        );
+        $mform->setType('recurrent', PARAM_INT);
+        $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
+        $mform->disabledIf('recurrent', 'istestmode', "neq", 0);
+
+        $mform->addElement('duration','recurrentperiod',get_string('recurrentperiod', 'paygw_robokassa'));
+        $mform->setType('recurrentperiod', PARAM_TEXT);
+        $mform->hideIf('recurrentperiod', 'recurrent', "neq", 1);
+        $mform->disabledIf('recurrentperiod', 'istestmode', "neq", 0);
+
+        $mform->addElement(
+            'advcheckbox',
             'istestmode',
             get_string('istestmode', 'paygw_robokassa'),
             get_string('istestmode', 'paygw_robokassa')
@@ -136,31 +151,6 @@ class gateway extends \core_payment\gateway {
         );
         $mform->setType('savedebugdata', PARAM_INT);
         $mform->addHelpButton('savedebugdata', 'savedebugdata', 'paygw_robokassa');
-
-        $mform->addElement(
-            'advcheckbox',
-            'recurrent',
-            get_string('recurrent', 'paygw_robokassa'),
-            get_string('recurrent', 'paygw_robokassa')
-        );
-        $mform->setType('recurrent', PARAM_INT);
-        $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
-
-        $options = [
-        '0.0035' => get_string('minute'),
-        '1' => get_string('day'),
-        '7' => get_string('week'),
-        '30' => get_string('month'),
-        '365' => get_string('year'),
-        ];
-        $mform->addElement(
-            'select',
-            'recurrentperiod',
-            get_string('recurrentperiod', 'paygw_robokassa'),
-            $options,
-        );
-        $mform->setType('recurrentperiod', PARAM_TEXT);
-        $mform->hideIf('recurrentperiod', 'recurrent', "neq", 1);
 
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
