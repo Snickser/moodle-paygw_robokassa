@@ -159,7 +159,6 @@ function xmldb_paygw_robokassa_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024060300, 'paygw', 'robokassa');
     }
 
-
     if ($oldversion < 2024070300) {
         $table = new xmldb_table('paygw_robokassa');
         $field = new xmldb_field('recurrent', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'groupnames');
