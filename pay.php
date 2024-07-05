@@ -280,6 +280,10 @@ if ($response->errorCode) {
     throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)");
 }
 
+if ($config->recurrent == 1 && $config->recurrentperiod > 0) {
+    $paygwdata->recurrent = time() + 86400 * $config->recurrentperiod;
+}
+
 // Write to DB.
 $paygwdata->paymentid = $paymentid;
 $paygwdata->invoiceid = $response->invoiceID;

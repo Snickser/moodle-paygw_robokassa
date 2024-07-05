@@ -105,10 +105,6 @@ if ($payment->currency !== 'RUB') {
     $payment->currency = 'RUB';
 }
 
-if ($config->recurrent == 1 && $config->recurrentperiod > 0) {
-    $robokassatx->recurrent = time() + 86400 * $config->recurrentperiod;
-}
-
 // Update payment.
 $payment->timemodified = time();
 $DB->update_record('payments', $payment);
