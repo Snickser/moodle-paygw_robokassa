@@ -87,7 +87,7 @@ $string['message_success_completed'] = 'Здравствуйте, {$a->firstname
 Если элемент курса недоступен, обратитесь в техподдержку сайта.';
 
 $string['message_recurrent_completed'] = 'Здравствуйте, {$a->firstname}!
-Регулярный платёж № {$a->orderid} на {$a->localizedcost} готов к оплате.';
+Регулярный платёж № {$a->orderid} на {$a->localizedcost} создан.';
 
 $string['message_invoice_created'] = 'Здравствуйте, {$a->firstname}!
 Счёт на оплату по ссылке {$a->orderid} на {$a->localizedcost} успешно создан.
