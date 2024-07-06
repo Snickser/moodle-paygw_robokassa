@@ -227,7 +227,6 @@ $items->items = [
 ];
 $receipt = json_encode($items);
 
-
 // Build CRC value.
 $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
@@ -290,6 +289,9 @@ $paygwdata->invoiceid = $response->invoiceID;
 $DB->update_record('paygw_robokassa', $paygwdata);
 
 $url = 'https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID;
+
+// Set the context of the page.
+$PAGE->set_context(context_system::instance());
 
 // Notify user.
 if ($config->sendlinkmsg || is_siteadmin()) {
