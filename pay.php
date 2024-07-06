@@ -227,7 +227,6 @@ $items->items = [
 ];
 $receipt = json_encode($items);
 
-
 // Build CRC value.
 $crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
