@@ -2,7 +2,7 @@
 
 # Robokassa payment gateway plugin for Moodle.
 
-Version 1.3
+Version 2.0
 
 https://robokassa.com
 
@@ -22,7 +22,7 @@ https://robokassa.com
 + Поддержка пароля из модуля курса (mod_gwpaymets).
 + Оповещение пользователя при успешном платеже.
 + Режим дополнительных проверок платежа.
-+ Рекуррентные платежи (только совместно с моим report_payments).
++ Рекуррентные платежи (только совместно с моим report_payments, и только для платежей в рублях).
 
 ## Рекомендации
 

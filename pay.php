@@ -242,8 +242,10 @@ $request = "MerchantLogin=$mrhlogin" .
     "&ExpirationDate=" . date("Y-m-d\\TH:i:s", time() + 900) .
     "&Receipt=" . urlencode($receipt);
 
-if ($config->recurrent == 1 && $config->recurrentperiod > 0) {
+// Check recurrent.
+if ($config->recurrent == 1 && $config->recurrentperiod > 0 && $currency == 'RUB') {
     $request .= "&Recurring=true";
+    $paygwdata->recurrent = time() + $config->recurrentperiod;
 }
 
 if ($config->savedebugdata) {
@@ -277,10 +279,6 @@ if (!isset($response->errorCode)) {
 if ($response->errorCode) {
     $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
     throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)");
-}
-
-if ($config->recurrent == 1 && $config->recurrentperiod > 0) {
-    $paygwdata->recurrent = time() + $config->recurrentperiod;
 }
 
 // Write to DB.
