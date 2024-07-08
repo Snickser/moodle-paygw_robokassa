@@ -54,7 +54,7 @@ class recurrent_payments extends \core\task\scheduled_task {
         global $DB, $CFG;
         mtrace('Start');
 
-        $ctime = strtotime("today");
+        $ctime = strtotime("+1hour");
 
         $robokassatx = $DB->get_records_sql('SELECT * FROM {paygw_robokassa} WHERE success=1 ' .
                   'AND recurrent>0 AND recurrent < ?', [ $ctime ]);
