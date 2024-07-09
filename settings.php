@@ -26,10 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
     $header = 'Новые версии плагина вы можете найти на
- <a href=https://github.com/Snickser/moodle-paygw_robokassa>https://github.com/Snickser/moodle-paygw_robokassa</a><br>
-Пожалуйста, отправьте мне немного доната<br>
--> https://www.paypal.com/paypalme/snickser :)
-';
+ <a href=https://github.com/Snickser/moodle-paygw_robokassa>GitHub.com</a>';
 
     $settings->add(new admin_setting_heading(
         'paygw_robokassa_settings',
