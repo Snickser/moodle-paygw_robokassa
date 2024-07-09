@@ -218,7 +218,7 @@ class gateway extends \core_payment\gateway {
         $mform->disabledIf('maxcost', 'fixcost', "neq", 0);
 
         global $CFG;
-        $mform->addElement('html', '<div class="label-callback" style="background: #F2EFE6; padding: 15px;">' .
+        $mform->addElement('html', '<div class="label-callback" style="background: pink; padding: 15px;">' .
                                     get_string('callback_url', 'paygw_robokassa') . '</span><br>');
         $mform->addElement('html', $CFG->wwwroot . '/payment/gateway/robokassa/callback.php<br>');
         $mform->addElement('html', get_string('return_url', 'paygw_robokassa') . '<br>');
