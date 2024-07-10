@@ -132,11 +132,8 @@ class recurrent_payments extends \core\task\scheduled_task {
             $curl = new \curl();
             $response = $curl->post($location, $request, $options);
 
-            if (($response !== 'OK' . $newpaymentid)) {
-                echo serialize($response) . "\n";
-                mtrace("$data->paymentid Error");
-            } else {
-                mtrace("$data->paymentid Done");
+            if ($response == 'OK' . $newpaymentid) {
+                mtrace("$data->paymentid done.");
                 // Notify user.
                 notifications::notify(
                     $userid,
@@ -147,6 +144,9 @@ class recurrent_payments extends \core\task\scheduled_task {
                 );
                 $newtx->success = 1;
                 $data->recurrent = time() + $config->recurrentperiod;
+            } else {
+                echo serialize($response) . "\n";
+                mtrace("$data->paymentid Error");
             }
             // Write status.
             $DB->update_record('paygw_robokassa', $data);
