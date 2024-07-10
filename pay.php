@@ -239,7 +239,7 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Culture=" . current_language() .
     "&Email=" . urlencode($USER->email) .
     "&IsTest=" . $config->istestmode .
-    "&ExpirationDate=" . date("Y-m-d\\TH:i:s", time() + 900) .
+    "&ExpirationDate=" . date("Y-m-d\\TH:i:s", time() + 1800) .
     "&Receipt=" . urlencode($receipt);
 
 // Check recurrent.
