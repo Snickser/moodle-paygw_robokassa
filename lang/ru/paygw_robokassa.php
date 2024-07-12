@@ -80,7 +80,7 @@ $string['sno_help'] = 'Тип системы налогообложения дл
 4 - Единый сельскохозяйственный налог (ЕСН)<br>
 5 - Патентная система налогообложения';
 
-$string['messagesubject'] = 'Уведомление о платеже ({$a})';
+$string['messagesubject'] = 'Уведомление о платеже';
 
 $string['message_success_completed'] = 'Здравствуйте, {$a->firstname}!
 Ваша платёжная транзакция № {$a->orderid} на {$a->fee} {$a->currency} успешно завершена. Спасибо за ваше пожертвование.
@@ -89,6 +89,23 @@ $string['message_success_completed'] = 'Здравствуйте, {$a->firstname
 $string['message_recurrent_completed'] = 'Здравствуйте, {$a->firstname}!
 Регулярный платёж № {$a->orderid} на {$a->localizedcost} создан и передан в банк.
 Отключить регулярные платежи можно в разделе Отчёты о платежах в личном профиле.';
+
+$string['message_success_recurrent'] = 'Здравствуйте, {$a->firstname}!
+Регулярная платёжная транзакция № {$a->orderid} на {$a->localizedcost} успешно создана. Спасибо за ваше пожертвование.
+Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
+
+$string['message_recurrent_completed'] = 'Здравствуйте, {$a->firstname}!
+Регулярный платёж № {$a->orderid} на {$a->localizedcost} создан и передан в банк.
+Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
+
+$string['message_recurrent_error'] = 'Здравствуйте, {$a->firstname}!
+Регулярный платёж № {$a->orderid} на {$a->localizedcost} завершился с ошибкой.
+Подписка была отключена, для возобновления подписки произведите новую оплату.';
+
+$string['message_recurrent_notify'] = 'Здравствуйте, {$a->firstname}!
+Напоминаем о том, что приближается дата регулярного платежа № {$a->orderid} на {$a->localizedcost}.
+Пожалуйста, обеспечьте наличие указанной суммы на счёте, иначе подписка не будет продлена.
+Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
 
 $string['message_invoice_created'] = 'Здравствуйте, {$a->firstname}!
 Счёт на оплату по ссылке {$a->orderid} на {$a->localizedcost} успешно создан.
