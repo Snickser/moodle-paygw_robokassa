@@ -90,7 +90,7 @@ $string['privacy:metadata:paygw_robokassa:courceid'] = 'Cource id';
 $string['privacy:metadata:paygw_robokassa:groupnames'] = 'Group names';
 $string['privacy:metadata:paygw_robokassa:success'] = 'Status';
 
-$string['messagesubject'] = 'Payment notification';
+$string['messagesubject'] = 'Payment notification ({$a})';
 
 $string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->localizedcost} is successfully completed.
