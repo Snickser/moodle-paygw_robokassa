@@ -36,6 +36,7 @@ $invid = required_param('InvId', PARAM_INT);
 $outsumm   = optional_param('OutSum', null, PARAM_TEXT);
 $signature = optional_param('SignatureValue', null, PARAM_TEXT);
 
+sleep(5);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
     throw new Error('FAIL. Not a valid transaction id');
