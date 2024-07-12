@@ -53,7 +53,6 @@ $url = helper::get_success_url($component, $paymentarea, $itemid);
 
 if (!isset($signature)) {
     redirect($url, '', 0, '');
-    die;
 }
 
 // Get config.
@@ -76,7 +75,11 @@ $signature = strtoupper($signature);  // Force uppercase.
 $crc = strtoupper(md5("$outsumm:$invid:$mrhpass1"));
 
 // Check crc and redirect.
-if ($signature == $crc && $robokassatx->success) {
+if ($signature != $crc) {
+    throw new Error('FAIL. Not a valid signature.');
+}
+
+if ($robokassatx->success) {
     redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
 } else {
     redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
