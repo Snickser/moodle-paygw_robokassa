@@ -53,7 +53,8 @@ $userid      = $payment->userid;
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 
 if ($config->savedebugdata) {
-    file_put_contents('/tmp/xxxx', serialize($_REQUEST) . "\n\n", FILE_APPEND | LOCK_EX);
+    file_put_contents($CFG->dataroot . '/payment.log', date("Y-m-d H:i:s") . "\n" .
+    serialize($_REQUEST) . "\n\n", FILE_APPEND | LOCK_EX);
 }
 
 // Check test-mode.
@@ -113,12 +114,13 @@ $DB->update_record('payments', $payment);
 helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
 // Notify user.
+$reason = 'Success completed';
 notifications::notify(
     $userid,
     $payment->amount,
     $payment->currency,
     $paymentid,
-    'Success completed'
+    $reason
 );
 
 // Update paygw.

@@ -36,7 +36,6 @@ $invid = required_param('InvId', PARAM_INT);
 $outsumm   = optional_param('OutSum', null, PARAM_TEXT);
 $signature = optional_param('SignatureValue', null, PARAM_TEXT);
 
-
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
     throw new Error('FAIL. Not a valid transaction id');
 }
@@ -54,11 +53,15 @@ $url = helper::get_success_url($component, $paymentarea, $itemid);
 
 if (!isset($signature)) {
     redirect($url, '', 0, '');
-    die;
 }
 
 // Get config.
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
+
+if ($config->savedebugdata) {
+    file_put_contents($CFG->dataroot . '/payment.log', date("Y-m-d H:i:s") . "\n" .
+    serialize($_REQUEST) . "\n\n", FILE_APPEND | LOCK_EX);
+}
 
 // Check test-mode.
 if ($config->istestmode) {
@@ -73,7 +76,11 @@ $signature = strtoupper($signature);  // Force uppercase.
 $crc = strtoupper(md5("$outsumm:$invid:$mrhpass1"));
 
 // Check crc and redirect.
-if ($signature == $crc && $robokassatx->success) {
+if ($signature != $crc) {
+    throw new Error('FAIL. Not a valid signature.');
+}
+
+if ($robokassatx->success) {
     redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
 } else {
     redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');

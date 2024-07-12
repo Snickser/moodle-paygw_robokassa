@@ -90,7 +90,7 @@ $string['privacy:metadata:paygw_robokassa:courceid'] = 'Cource id';
 $string['privacy:metadata:paygw_robokassa:groupnames'] = 'Group names';
 $string['privacy:metadata:paygw_robokassa:success'] = 'Status';
 
-$string['messagesubject'] = 'Payment notification';
+$string['messagesubject'] = 'Payment notification ({$a})';
 
 $string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->localizedcost} is successfully completed.
@@ -100,7 +100,7 @@ $string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->fee} {$a->currency} for "{$a->description}" is successfully completed.
 If the item is not accessable please contact the administrator.';
 
-$string['message_recurrent_completed'] = 'Hello, {$a->firstname}!
+$string['message_recurrent_created'] = 'Hello, {$a->firstname}!
 Regular payment No. {$a->orderid} at {$a->localizedcost} is ready for payment.
 You can disable regular payments in the Reports (payment) section in your personal profile {$a->$url}/user/profile.php';
 
@@ -132,7 +132,7 @@ $string['sendlinkmsg'] = 'Send payment link by email';
 $string['sendlinkmsg_help'] = 'If enabled, a link to the invoice for payment will be sent to the users email.';
 
 $string['savedebugdata'] = 'Save debug log';
-$string['savedebugdata_help'] = 'Bank request and response data will be saved in /tmp/xxxx';
+$string['savedebugdata_help'] = 'Bank request and response data will be saved in {dataroot}/payment.log';
 
 $string['fixcost'] = 'Fixed price mode';
 $string['fixcost_help'] = 'Disables the ability for students to pay with an arbitrary amount.';

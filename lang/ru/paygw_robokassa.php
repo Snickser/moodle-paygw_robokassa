@@ -48,7 +48,7 @@ $string['callback_url'] = 'ResultURL:';
 $string['callback_help'] = 'Copy this and put it in URLs at your Robokassa account.';
 $string['return_url'] = 'SuccessURL и FailURL:';
 $string['payment_success'] = 'Оплата успешно произведена';
-$string['payment_error'] = 'Ошибка оплаты';
+$string['payment_error'] = 'Ошибка перенаправления, нет подтверждения платежа от банка, подождите 2-3 минуты и обновите страницу вручную, или обратитесь в тех.поддержку.';
 $string['suggest'] = 'Рекомендуемая цена';
 $string['password_success'] = 'Платёжный пароль принят';
 $string['password_error'] = 'Введён неверный платёжный пароль';
@@ -80,7 +80,7 @@ $string['sno_help'] = 'Тип системы налогообложения дл
 4 - Единый сельскохозяйственный налог (ЕСН)<br>
 5 - Патентная система налогообложения';
 
-$string['messagesubject'] = 'Уведомление о платеже';
+$string['messagesubject'] = 'Уведомление о платеже ({$a})';
 
 $string['message_success_completed'] = 'Здравствуйте, {$a->firstname}!
 Ваша платёжная транзакция № {$a->orderid} на {$a->fee} {$a->currency} успешно завершена. Спасибо за ваше пожертвование.
@@ -94,7 +94,7 @@ $string['message_success_recurrent'] = 'Здравствуйте, {$a->firstname
 Регулярная платёжная транзакция № {$a->orderid} на {$a->localizedcost} успешно создана. Спасибо за ваше пожертвование.
 Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
 
-$string['message_recurrent_completed'] = 'Здравствуйте, {$a->firstname}!
+$string['message_recurrent_created'] = 'Здравствуйте, {$a->firstname}!
 Регулярный платёж № {$a->orderid} на {$a->localizedcost} создан и передан в банк.
 Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
 
@@ -120,7 +120,7 @@ $string['sendlinkmsg'] = 'Отправлять ссылку оплаты на п
 $string['sendlinkmsg_help'] = 'Если включено, то ссылка на счёт для оплаты будет отправляться на почту пользователя.';
 
 $string['savedebugdata'] = 'Сохранять debug лог';
-$string['savedebugdata_help'] = 'Данные запросов и ответов банка будут сохраняться в /tmp/xxxx';
+$string['savedebugdata_help'] = 'Данные запросов и ответов банка будут сохраняться в {dataroot}/payment.log';
 
 $string['fixcost'] = 'Режим фиксированной цены';
 $string['fixcost_help'] = 'Отключает для студентов возможность оплаты произвольной суммой.';
