@@ -113,12 +113,13 @@ $DB->update_record('payments', $payment);
 helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
 // Notify user.
+$reason = 'Success completed';
 notifications::notify(
     $userid,
     $payment->amount,
     $payment->currency,
     $paymentid,
-    'Success completed'
+    $reason
 );
 
 // Update paygw.
