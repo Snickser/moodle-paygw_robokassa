@@ -94,7 +94,7 @@ $string['message_success_recurrent'] = 'Здравствуйте, {$a->firstname
 Регулярная платёжная транзакция № {$a->orderid} на {$a->localizedcost} успешно создана. Спасибо за ваше пожертвование.
 Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
 
-$string['message_recurrent_completed'] = 'Здравствуйте, {$a->firstname}!
+$string['message_recurrent_created'] = 'Здравствуйте, {$a->firstname}!
 Регулярный платёж № {$a->orderid} на {$a->localizedcost} создан и передан в банк.
 Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
 

@@ -78,7 +78,7 @@ class notifications {
             case 'Success recurrent':
                 $messagebody = get_string('message_success_recurrent', 'paygw_robokassa', $a);
                 break;
-            case 'Recurrent completed':
+            case 'Recurrent created':
                 $messagebody = get_string('message_recurrent_completed', 'paygw_robokassa', $a);
                 break;
             case 'Recurrent error':
