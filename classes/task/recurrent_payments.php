@@ -130,7 +130,7 @@ class recurrent_payments extends \core\task\scheduled_task {
 
             // Save payment.
             $newpaymentid = helper::save_payment(
-                $userid,
+                $payable->get_account_id(),
                 $component,
                 $paymentarea,
                 $itemid,
