@@ -182,7 +182,6 @@ class recurrent_payments extends \core\task\scheduled_task {
                     $data->paymentid,
                     'Recurrent created'
                 );
-                $newtx->success = 1;
                 $data->recurrent = time() + $config->recurrentperiod;
             } else {
                 echo serialize($response) . "\n";
