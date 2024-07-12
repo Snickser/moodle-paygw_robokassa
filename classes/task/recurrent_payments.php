@@ -54,6 +54,46 @@ class recurrent_payments extends \core\task\scheduled_task {
         global $DB, $CFG;
         mtrace('Start');
 
+        // Stage One.
+        $stime = strtotime("+1day");
+        $ctime = strtotime("+1day1hour");
+
+        $robokassatx = $DB->get_records_sql('SELECT * FROM {paygw_robokassa} WHERE success=1 ' .
+                  'AND recurrent>? AND recurrent<?', [ $stime, $ctime ]);
+
+        foreach ($robokassatx as $data) {
+            // Get payment data.
+            if (!$payment = $DB->get_record('payments', ['id' => $data->paymentid])) {
+                mtrace("$data->paymentid not found");
+                continue;
+            }
+
+            $component   = $payment->component;
+            $paymentarea = $payment->paymentarea;
+            $itemid      = $payment->itemid;
+            $paymentid   = $payment->id;
+            $userid      = $payment->userid;
+
+            // Get config.
+            $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
+            $payable = helper::get_payable($component, $paymentarea, $itemid);
+            $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
+            $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
+            $user = \core_user::get_user($userid);
+
+            // Notify user.
+            notifications::notify(
+                $userid,
+                $cost,
+                $payment->currency,
+                $data->paymentid,
+                'Recurrent notify'
+            );
+
+            mtrace("$data->paymentid notified");
+        }
+
+        // Stage Two.
         $ctime = strtotime("+1hour");
 
         $robokassatx = $DB->get_records_sql('SELECT * FROM {paygw_robokassa} WHERE success=1 ' .
@@ -133,7 +173,7 @@ class recurrent_payments extends \core\task\scheduled_task {
             $response = $curl->post($location, $request, $options);
 
             if ($response == 'OK' . $newpaymentid) {
-                mtrace("$data->paymentid done.");
+                mtrace("$data->paymentid done");
                 // Notify user.
                 notifications::notify(
                     $userid,
@@ -146,7 +186,15 @@ class recurrent_payments extends \core\task\scheduled_task {
                 $data->recurrent = time() + $config->recurrentperiod;
             } else {
                 echo serialize($response) . "\n";
-                mtrace("$data->paymentid Error");
+                mtrace("$data->paymentid error");
+                // Notify user.
+                notifications::notify(
+                    $userid,
+                    $cost,
+                    $payment->currency,
+                    $data->paymentid,
+                    'Recurrent error'
+                );
             }
             // Write status.
             $DB->update_record('paygw_robokassa', $data);
