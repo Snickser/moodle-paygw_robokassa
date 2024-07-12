@@ -249,7 +249,7 @@ if ($config->recurrent == 1 && $config->recurrentperiod > 0 && $currency == 'RUB
 }
 
 if ($config->savedebugdata) {
-    file_put_contents('/tmp/xxxx', date("Y-m-d H:i:s") . "\n" . "$mrhlogin:$outsumm:$invid" . $currencyarg .
+    file_put_contents($CFG->dataroot . '/payment.log', date("Y-m-d H:i:s") . "\n" . "$mrhlogin:$outsumm:$invid" . $currencyarg .
     ":$receipt:$mrhpass1" . "\n" . $request . "\n\n", FILE_APPEND | LOCK_EX);
 }
 
