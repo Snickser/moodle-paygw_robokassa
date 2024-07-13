@@ -116,6 +116,7 @@ helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 // Notify user.
 if ($robokassatx->recurrent) {
     $reason = 'Success recurrent';
+    $nextpay = userdate($robokassatx->recurrent, "%d %B %Y, %I:%M");
 } else {
     $reason = 'Success completed';
 }
@@ -124,7 +125,8 @@ notifications::notify(
     $payment->amount,
     $payment->currency,
     $paymentid,
-    $reason
+    $reason,
+    $nextpay
 );
 
 // Update paygw.
