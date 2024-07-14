@@ -35,7 +35,6 @@ $invid     = required_param('InvId', PARAM_INT);
 $outsumm   = required_param('OutSum', PARAM_TEXT); // TEXT only!
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
-
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
     die('FAIL. Not a valid transaction id');
 }
@@ -116,7 +115,7 @@ helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 // Notify user.
 if ($robokassatx->recurrent) {
     $reason = 'Success recurrent';
-    $nextpay = userdate($robokassatx->recurrent, "%d %B %Y, %I:%M");
+    $nextpay = userdate($robokassatx->recurrent, "%d %B %Y, %k:%M");
 } else {
     $reason = 'Success completed';
 }
