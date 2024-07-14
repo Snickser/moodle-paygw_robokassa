@@ -78,8 +78,18 @@ class recurrent_payments extends \core\task\scheduled_task {
             $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
             $payable = helper::get_payable($component, $paymentarea, $itemid);
             $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
-            $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
             $user = \core_user::get_user($userid);
+
+            switch ($config->recurrentcost) {
+                case 'suggest':
+                    $cost = $config->suggest;
+                    break;
+                case 'last':
+                    $cost = $payment->amount;
+                    break;
+                default:
+                    $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
+            }
 
             // Notify user.
             notifications::notify(
@@ -119,7 +129,16 @@ class recurrent_payments extends \core\task\scheduled_task {
             $payable = helper::get_payable($component, $paymentarea, $itemid);
             $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
 
-            $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
+            switch ($config->recurrentcost) {
+                case 'suggest':
+                    $cost = $config->suggest;
+                    break;
+                case 'last':
+                    $cost = $payment->amount;
+                    break;
+                default:
+                    $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
+            }
 
             $user = \core_user::get_user($userid);
 

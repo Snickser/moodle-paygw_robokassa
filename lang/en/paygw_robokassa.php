@@ -141,5 +141,16 @@ $string['maxcosterror'] = 'The maximum price must be higher than the recommended
 $string['recurrent'] = 'Enable recurring payments';
 $string['recurrent_help'] = 'Enable recurring payments';
 $string['recurrentperiod'] = 'Recurring payment frequency';
+$string['recurrentperioderror'] = 'Specify the frequency. More than once a day - only for tests!';
 
 $string['noreportplugin'] = '<font color=red>The report_payments plugin is not installed, you will not be able to cancel recurring payments.</font>';
+
+$string['recurrentcost'] = 'Recurring payment cost';
+$string['recurrentcost_help'] = 'Specify what price to charge when making a recurring payment:<br>
+Paid - the one that was specified by the user when creating a regular payment.<br>
+Item cost - the one specified in the settings of the payment module or course.<br>
+Recommended - taken from the settings of this interface.';
+$string['recurrentcost1'] = 'Paid';
+$string['recurrentcost2'] = 'Item cost';
+$string['recurrentcost3'] = 'Recommended price';
+$string['suggesterror'] = 'Suggested price must be for recurring payment enabled';
