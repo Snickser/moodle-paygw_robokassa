@@ -109,6 +109,23 @@ class gateway extends \core_payment\gateway {
         $mform->hideIf('recurrentperiod', 'recurrent', "neq", 1);
         $mform->disabledIf('recurrentperiod', 'istestmode', "neq", 0);
 
+        $options = [
+        'last' => get_string('recurrentcost1', 'paygw_robokassa'),
+        'fee' => get_string('recurrentcost2', 'paygw_robokassa'),
+        'suggest' => get_string('recurrentcost3', 'paygw_robokassa'),
+        ];
+        $mform->addElement(
+            'select',
+            'recurrentcost',
+            get_string('recurrentcost', 'paygw_robokassa'),
+            $options,
+        );
+        $mform->setType('recurrentcost', PARAM_TEXT);
+        $mform->addHelpButton('recurrentcost', 'recurrentcost', 'paygw_robokassa');
+        $mform->setDefault('recurrentcost', 'fee');
+        $mform->hideIf('recurrentcost', 'recurrent', "neq", 1);
+        $mform->disabledIf('recurrentcost', 'istestmode', "neq", 0);
+
         $plugininfo = \core_plugin_manager::instance()->get_plugin_info('report_payments');
         if ($plugininfo->versiondisk < 3024070800) {
             $mform->addElement('static', 'noreport', null, get_string('noreportplugin', 'paygw_robokassa'));
@@ -256,6 +273,12 @@ class gateway extends \core_payment\gateway {
         }
         if ($data->maxcost && $data->maxcost < $data->suggest) {
             $errors['maxcost'] = get_string('maxcosterror', 'paygw_robokassa');
+        }
+        if (!$data->suggest && $data->recurrentcost == 'suggest' && $data->recurrent) {
+            $errors['suggest'] = get_string('suggesterror', 'paygw_robokassa');
+        }
+        if (!$data->recurrentperiod && $data->recurrent) {
+            $errors['recurrentperiod'] = get_string('recurrentperioderror', 'paygw_robokassa');
         }
     }
 }
