@@ -52,6 +52,7 @@ class gateway extends \core_payment\gateway {
 
         $mform->addElement('text', 'merchant_login', get_string('merchant_login', 'paygw_robokassa'));
         $mform->setType('merchant_login', PARAM_TEXT);
+        $mform->addRule('merchant_login', get_string('required'), 'required', null, 'client');
 
         $mform->addElement('text', 'password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('password1', PARAM_TEXT);
@@ -104,10 +105,26 @@ class gateway extends \core_payment\gateway {
         $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
         $mform->disabledIf('recurrent', 'istestmode', "neq", 0);
 
+        $options = [0 => get_string('no')];
+        for ($i = 1; $i <= 28; $i++) {
+            $options[] = $i;
+        }
+        $mform->addElement(
+            'select',
+            'recurrentday',
+            get_string('recurrentday', 'paygw_robokassa'),
+            $options,
+        );
+        $mform->addHelpButton('recurrentday', 'recurrentday', 'paygw_robokassa');
+        $mform->setDefault('recurrentday', 1);
+        $mform->hideIf('recurrentday', 'recurrent', "neq", 1);
+        $mform->disabledIf('recurrentday', 'istestmode', "neq", 0);
+
         $mform->addElement('duration', 'recurrentperiod', get_string('recurrentperiod', 'paygw_robokassa'));
         $mform->setType('recurrentperiod', PARAM_TEXT);
         $mform->hideIf('recurrentperiod', 'recurrent', "neq", 1);
         $mform->disabledIf('recurrentperiod', 'istestmode', "neq", 0);
+        $mform->disabledIf('recurrentperiod', 'recurrentday', "neq", 0);
 
         $options = [
         'last' => get_string('recurrentcost1', 'paygw_robokassa'),
@@ -277,8 +294,8 @@ class gateway extends \core_payment\gateway {
         if (!$data->suggest && $data->recurrentcost == 'suggest' && $data->recurrent) {
             $errors['suggest'] = get_string('suggesterror', 'paygw_robokassa');
         }
-        if (!$data->recurrentperiod && $data->recurrent && !$data->istestmode) {
-            $errors['recurrentperiod'] = get_string('recurrentperioderror', 'paygw_robokassa');
+        if (!$data->recurrentperiod && $data->recurrent && !$data->recurrentday) {
+            $errors['recurrentperiod'] = get_string('recurrentperioderror', 'paygw_yookassa');
         }
     }
 }

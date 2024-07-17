@@ -141,7 +141,10 @@ $string['maxcosterror'] = 'The maximum price must be higher than the recommended
 $string['recurrent'] = 'Enable recurring payments';
 $string['recurrent_help'] = 'Enable recurring payments';
 $string['recurrentperiod'] = 'Recurring payment frequency';
-$string['recurrentperioderror'] = 'Specify the frequency. More than once a day - only for tests!';
+$string['recurrentperiod_help'] = 'It is advisable to specify the frequency no more than once a day. This involves executing the corresponding regular task in the task scheduler. More than once a day - only for tests.';
+$string['recurrentperioderror'] = 'Specify the frequency';
+$string['recurrentday'] = 'Day of payments';
+$string['recurrentday_help'] = 'Sets the day of the month on which the next debits will occur. If not set, payments will be made according to a cyclic schedule';
 
 $string['noreportplugin'] = '<font color=red>The report_payments plugin is not installed, you will not be able to cancel recurring payments.</font>';
 

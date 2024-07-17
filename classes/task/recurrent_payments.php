@@ -104,7 +104,7 @@ class recurrent_payments extends \core\task\scheduled_task {
         }
 
         // Stage Two.
-        $ctime = strtotime("+1hour");
+        $ctime = strtotime(date('d-M-Y H:00', strtotime("+1hour")));
 
         $robokassatx = $DB->get_records_sql('SELECT * FROM {paygw_robokassa} WHERE success=1 ' .
                   'AND recurrent>0 AND recurrent < ?', [ $ctime ]);
@@ -128,6 +128,11 @@ class recurrent_payments extends \core\task\scheduled_task {
             $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
             $payable = helper::get_payable($component, $paymentarea, $itemid);
             $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
+
+            if (date('d') != $config->recurrentday && $config->recurrentday > 0) {
+                mtrace("$data->paymentid too early");
+                continue;
+            }
 
             switch ($config->recurrentcost) {
                 case 'suggest':
