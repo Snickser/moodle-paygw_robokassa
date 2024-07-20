@@ -103,7 +103,7 @@ class gateway extends \core_payment\gateway {
         );
         $mform->setType('recurrent', PARAM_INT);
         $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
-        $mform->disabledIf('recurrent', 'istestmode', "neq", 0);
+        $mform->hideIf('recurrent', 'istestmode', "neq", 0);
 
         $options = [0 => get_string('no')];
         for ($i = 1; $i <= 28; $i++) {
@@ -118,12 +118,12 @@ class gateway extends \core_payment\gateway {
         $mform->addHelpButton('recurrentday', 'recurrentday', 'paygw_robokassa');
         $mform->setDefault('recurrentday', 1);
         $mform->hideIf('recurrentday', 'recurrent', "neq", 1);
-        $mform->disabledIf('recurrentday', 'istestmode', "neq", 0);
+        $mform->hideIf('recurrentday', 'istestmode', "neq", 0);
 
         $mform->addElement('duration', 'recurrentperiod', get_string('recurrentperiod', 'paygw_robokassa'));
         $mform->setType('recurrentperiod', PARAM_TEXT);
         $mform->hideIf('recurrentperiod', 'recurrent', "neq", 1);
-        $mform->disabledIf('recurrentperiod', 'istestmode', "neq", 0);
+        $mform->hideIf('recurrentperiod', 'istestmode', "neq", 0);
         $mform->disabledIf('recurrentperiod', 'recurrentday', "neq", 0);
 
         $options = [
@@ -141,7 +141,7 @@ class gateway extends \core_payment\gateway {
         $mform->addHelpButton('recurrentcost', 'recurrentcost', 'paygw_robokassa');
         $mform->setDefault('recurrentcost', 'fee');
         $mform->hideIf('recurrentcost', 'recurrent', "neq", 1);
-        $mform->disabledIf('recurrentcost', 'istestmode', "neq", 0);
+        $mform->hideIf('recurrentcost', 'istestmode', "neq", 0);
 
         $plugininfo = \core_plugin_manager::instance()->get_plugin_info('report_payments');
         if ($plugininfo->versiondisk < 3024070800) {
@@ -266,9 +266,12 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('html', get_string('callback_help', 'paygw_robokassa') . '</div><br>');
 
         $header = '<div>Новые версии плагина вы можете найти на
- <a href=https://github.com/Snickser/moodle-paygw_robokassa>GitHub.com</a><br>
- Пожалуйста, отправьте мне немножко <a href="https://www.paypal.com/paypalme/snickser">доната</a>😊</div>';
-         $mform->addElement('html', $header);
+ <a href=https://github.com/Snickser/moodle-paygw_yookassa>GitHub.com</a><br>
+ Пожалуйста, отправьте мне немножко <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">доната</a>😊</div>
+ <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
+ width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
+
+        $mform->addElement('html', $header);
     }
 
     /**
