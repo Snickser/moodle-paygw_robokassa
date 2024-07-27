@@ -32,6 +32,7 @@ $string['payment'] = 'Пожертвование';
 $string['abouttopay'] = 'Вы собираетесь пожертвовать на';
 $string['pluginname'] = 'Платежи Robokassa';
 $string['pluginname_desc'] = 'Плагин Robokassa позволяет получать платежи через Robokassa.';
+$string['gatewayname'] = 'Robokassa';
 $string['gatewaydescription'] = 'Robokassa — авторизованный платежный шлюз для обработки транзакций по кредитным картам.';
 $string['cost'] = 'Стоимость записи';
 $string['currency'] = 'Валюта';
