@@ -155,6 +155,7 @@ class gateway extends \core_payment\gateway {
             get_string('istestmode', 'paygw_robokassa')
         );
         $mform->setType('istestmode', PARAM_INT);
+        $mform->addHelpButton('istestmode', 'istestmode', 'paygw_robokassa');
 
         $mform->addElement('text', 'test_password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('test_password1', PARAM_TEXT);

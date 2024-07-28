@@ -45,6 +45,7 @@ $string['password1'] = 'Password1';
 $string['password2'] = 'Password2';
 $string['merchant_login'] = 'Merchant login';
 $string['istestmode'] = 'Test mode';
+$string['istestmode_help'] = 'There are no recurring payments in test mode.';
 $string['suggest'] = 'Suggested cost';
 $string['maxcost'] = 'Maximium cost';
 $string['skipmode'] = 'Can skip payment';

@@ -45,6 +45,7 @@ $string['password1'] = 'Пароль1';
 $string['password2'] = 'Пароль2';
 $string['merchant_login'] = 'Идентификатор магазина';
 $string['istestmode'] = 'Тестовый режим';
+$string['istestmode_help'] = 'В тестовом режиме нет рекуррентных платежей.';
 $string['callback_url'] = 'ResultURL:';
 $string['callback_help'] = 'Скопируйте это и поместите в URL-адреса своей учетной записи магазина Robokassa.';
 $string['return_url'] = 'SuccessURL и FailURL:';
