@@ -60,7 +60,7 @@ class gateway extends \core_payment\gateway {
 
         $mform->addElement('passwordunmask', 'password2', get_string('password2', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('password2', PARAM_TEXT);
-        $mform->HideIf('password2', 'istestmode', "neq", 0);
+        $mform->disabledIf('password2', 'istestmode', "neq", 0);
 
         $options = [
         'osn' => 1,
@@ -216,12 +216,10 @@ class gateway extends \core_payment\gateway {
             get_string('passwordmode', 'paygw_robokassa')
         );
         $mform->setType('passwordmode', PARAM_INT);
-        $mform->disabledIf('passwordmode', 'skipmode', "neq", 0);
+        $mform->DisabledIf('passwordmode', 'skipmode', "neq", 0);
 
         $mform->addElement('passwordunmask', 'password', get_string('password', 'paygw_robokassa'), ['size' => 20]);
         $mform->setType('password', PARAM_TEXT);
-        $mform->HideIf('password', 'passwordmode');
-        $mform->HideIf('password', 'skipmode', "neq", 0);
         $mform->addHelpButton('password', 'password', 'paygw_robokassa');
 
         $mform->addElement(
