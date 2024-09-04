@@ -150,7 +150,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'istestmode',
-            get_string('istestmode', 'paygw_robokassa'),
             get_string('istestmode', 'paygw_robokassa')
         );
         $mform->setType('istestmode', PARAM_INT);
@@ -167,7 +166,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'checkinvoice',
-            get_string('checkinvoice', 'paygw_robokassa'),
             get_string('checkinvoice', 'paygw_robokassa')
         );
         $mform->setType('checkinvoice', PARAM_INT);
@@ -176,7 +174,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'sendlinkmsg',
-            get_string('sendlinkmsg', 'paygw_robokassa'),
             get_string('sendlinkmsg', 'paygw_robokassa')
         );
         $mform->setType('sendlinkmsg', PARAM_INT);
@@ -186,7 +183,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'savedebugdata',
-            get_string('savedebugdata', 'paygw_robokassa'),
             get_string('savedebugdata', 'paygw_robokassa')
         );
         $mform->setType('savedebugdata', PARAM_INT);
@@ -202,7 +198,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'skipmode',
-            get_string('skipmode', 'paygw_robokassa'),
             get_string('skipmode', 'paygw_robokassa')
         );
         $mform->setType('skipmode', PARAM_INT);
@@ -211,7 +206,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'passwordmode',
-            get_string('passwordmode', 'paygw_robokassa'),
             get_string('passwordmode', 'paygw_robokassa')
         );
         $mform->setType('passwordmode', PARAM_INT);
@@ -224,7 +218,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'usedetails',
-            get_string('usedetails', 'paygw_robokassa'),
             get_string('usedetails', 'paygw_robokassa')
         );
         $mform->setType('usedetails', PARAM_INT);
@@ -233,7 +226,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'showduration',
-            get_string('showduration', 'paygw_robokassa'),
             get_string('showduration', 'paygw_robokassa')
         );
         $mform->setType('showduration', PARAM_INT);
@@ -241,7 +233,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'fixcost',
-            get_string('fixcost', 'paygw_robokassa'),
             get_string('fixcost', 'paygw_robokassa')
         );
         $mform->setType('fixcost', PARAM_INT);
@@ -263,8 +254,10 @@ class gateway extends \core_payment\gateway {
         $mform->addElement('html', $CFG->wwwroot . '/payment/gateway/robokassa/return.php<br>');
         $mform->addElement('html', get_string('callback_help', 'paygw_robokassa') . '</div><br>');
 
-        $header = '<div>Новые версии плагина вы можете найти на
- <a href=https://github.com/Snickser/moodle-paygw_yookassa>GitHub.com</a><br>
+        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('paygw_robokassa');
+        $header = "<div>Версия плагина: $plugininfo->release ($plugininfo->versiondisk)<br>" .
+        'Новые версии плагина вы можете найти на <a href=https://github.com/Snickser/moodle-paygw_yookassa>GitHub.com</a>
+ <img src="https://img.shields.io/github/v/release/Snickser/moodle-paygw_robokassa.svg"><br>
  Пожалуйста, отправьте мне немножко <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">доната</a>😊</div>
  <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
  width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';

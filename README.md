@@ -3,9 +3,9 @@
 [![](https://img.shields.io/github/v/release/Snickser/moodle-paygw_robokassa.svg)](https://github.com/Snickser/moodle-paygw_robokassa/releases)
 [![Build Status](https://github.com/Snickser/moodle-paygw_robokassa/actions/workflows/moodle-ci.yml/badge.svg)](https://github.com/Snickser/moodle-paygw_robokassa/actions/workflows/moodle-ci.yml)
 
-https://robokassa.com
-
 ![alt text](https://raw.githubusercontent.com/Snickser/moodle-paygw_robokassa/da4ffeef22702ad4e087ca6ed78133f6c48dde65/pix/img.svg)
+
+https://robokassa.com
 
 ## Возможности
 
