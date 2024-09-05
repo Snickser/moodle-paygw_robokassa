@@ -97,7 +97,6 @@ class gateway extends \core_payment\gateway {
         $mform->addElement(
             'advcheckbox',
             'recurrent',
-            get_string('recurrent', 'paygw_robokassa'),
             get_string('recurrent', 'paygw_robokassa')
         );
         $mform->setType('recurrent', PARAM_INT);
