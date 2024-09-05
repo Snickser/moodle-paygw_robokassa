@@ -38,6 +38,7 @@
         "maxcost": "1000",
         "fixdesc": "1",
         "fixcost": "0",
+        "recurrent": "1",
         "localizedcost": "1 $"
     }
 
@@ -65,6 +66,9 @@
 {{#enrolperiod}}
 <h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
 {{/enrolperiod}}
+{{#recurrent}}
+<h5>{{# str }} recurrentdesc, paygw_robokassa {{/ str}}</h5>
+{{/recurrent}}
 
 <img src="{{{image}}}" alt="Robokassa" height="60">
 
