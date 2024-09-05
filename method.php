@@ -140,7 +140,9 @@ if (!empty($config->fixdesc)) {
     $templatedata->fixdesc = 0;
 }
 
-$templatedata->recurrent = $config->recurrent;
+if (!$config->istestmode) {
+    $templatedata->recurrent = $config->recurrent;
+}
 
 $templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
 
