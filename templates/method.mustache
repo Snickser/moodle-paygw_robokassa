@@ -66,9 +66,6 @@
 {{#enrolperiod}}
 <h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
 {{/enrolperiod}}
-{{#recurrent}}
-<h5>{{# str }} recurrentdesc, paygw_robokassa {{/ str}}</h5>
-{{/recurrent}}
 
 <img src="{{{image}}}" alt="Robokassa" height="60">
 
@@ -79,6 +76,10 @@
 
 
 <div style="text-align: center;">
+
+{{#recurrent}}
+<h5>{{# str }} recurrentdesc, paygw_robokassa {{/ str}}</h5>
+{{/recurrent}}
 
     <p>{{# str }} paymentinstant {{/ str}}</p>
     <button type="submit" class="btn btn-primary" id="robokassa-modal-submit-btn">{{# str }} sendpaymentbutton, paygw_robokassa {{/ str }}</button>
