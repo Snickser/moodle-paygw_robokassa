@@ -66,7 +66,6 @@ $string['usedetails_help'] = 'Прячет кнопку или пароль по
 $string['usedetails_text'] = 'Нажмите тут если у вас нет возможности совершить пожертвование';
 $string['inccurrlabel'] = 'Метод платежа';
 
-/* Payment systems */
 $string['paymentsystem'] = 'Платежная система';
 $string['robokassa'] = 'Robokassa';
 $string['plastic'] = 'VISA, MasterCard, МИР';

@@ -59,7 +59,6 @@ $string['usedetails_help'] = 'Display a button or password in a collapsed block.
 $string['usedetails_text'] = 'Click here if you are unable to donate.';
 $string['inccurrlabel'] = 'Payment method';
 
-/* Payment systems */
 $string['paymentsystem'] = 'Payment system';
 $string['robokassa'] = 'Robokassa';
 $string['plastic'] = 'VISA, MasterCard, MIR';
