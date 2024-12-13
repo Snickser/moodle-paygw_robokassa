@@ -86,7 +86,7 @@ $string['privacy:metadata:paygw_robokassa:email'] = 'Email';
 $string['privacy:metadata:paygw_robokassa:userip'] = 'Userip';
 $string['privacy:metadata:paygw_robokassa:robokassa_plus'] = 'Send json data';
 $string['privacy:metadata:paygw_robokassa:invoiceid'] = 'Invoice id';
-$string['privacy:metadata:paygw_robokassa:courceid'] = 'Cource id';
+$string['privacy:metadata:paygw_robokassa:courseid'] = 'Course id';
 $string['privacy:metadata:paygw_robokassa:groupnames'] = 'Group names';
 $string['privacy:metadata:paygw_robokassa:success'] = 'Status';
 
