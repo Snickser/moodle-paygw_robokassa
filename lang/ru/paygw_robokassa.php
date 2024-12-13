@@ -158,3 +158,5 @@ $string['donate'] = '<div>Версия плагина: {$a->release} ({$a->versi
 Пожалуйста, отправьте мне немножко <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">доната</a>😊</div>
 <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
 width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
+
+$string['error_txdatabase'] = 'Error write TX data to database';

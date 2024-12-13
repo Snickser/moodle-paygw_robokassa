@@ -61,7 +61,7 @@ class provider implements \core_privacy\local\request\data_provider, paygw_provi
             'paygw_robokassa',
             [
                 'invoiceid'  => 'privacy:metadata:paygw_robokassa:invoiceid',
-                'courceid'   => 'privacy:metadata:paygw_robokassa:courceid',
+                'courseid'   => 'privacy:metadata:paygw_robokassa:courseid',
                 'groupnames' => 'privacy:metadata:paygw_robokassa:groupnames',
                 'success'    => 'privacy:metadata:paygw_robokassa:success',
             ],
