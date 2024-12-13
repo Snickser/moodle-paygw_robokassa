@@ -59,7 +59,6 @@ $string['usedetails_help'] = 'Display a button or password in a collapsed block.
 $string['usedetails_text'] = 'Click here if you are unable to donate.';
 $string['inccurrlabel'] = 'Payment method';
 
-/* Payment systems */
 $string['paymentsystem'] = 'Payment system';
 $string['robokassa'] = 'Robokassa';
 $string['plastic'] = 'VISA, MasterCard, MIR';
@@ -87,7 +86,7 @@ $string['privacy:metadata:paygw_robokassa:email'] = 'Email';
 $string['privacy:metadata:paygw_robokassa:userip'] = 'Userip';
 $string['privacy:metadata:paygw_robokassa:robokassa_plus'] = 'Send json data';
 $string['privacy:metadata:paygw_robokassa:invoiceid'] = 'Invoice id';
-$string['privacy:metadata:paygw_robokassa:courceid'] = 'Cource id';
+$string['privacy:metadata:paygw_robokassa:courseid'] = 'Course id';
 $string['privacy:metadata:paygw_robokassa:groupnames'] = 'Group names';
 $string['privacy:metadata:paygw_robokassa:success'] = 'Status';
 
@@ -131,9 +130,6 @@ And upon receipt of payment, a request is made to verify payment of the invoice.
 
 $string['sendlinkmsg'] = 'Send payment link by email';
 $string['sendlinkmsg_help'] = 'If enabled, a link to the invoice for payment will be sent to the users email.';
-
-$string['savedebugdata'] = 'Save debug log';
-$string['savedebugdata_help'] = 'Bank request and response data will be saved in {dataroot}/payment.log';
 
 $string['fixcost'] = 'Fixed price mode';
 $string['fixcost_help'] = 'Disables the ability for students to pay with an arbitrary amount.';

@@ -179,14 +179,6 @@ class gateway extends \core_payment\gateway {
         $mform->addHelpButton('sendlinkmsg', 'sendlinkmsg', 'paygw_robokassa');
         $mform->setDefault('sendlinkmsg', 1);
 
-        $mform->addElement(
-            'advcheckbox',
-            'savedebugdata',
-            get_string('savedebugdata', 'paygw_robokassa')
-        );
-        $mform->setType('savedebugdata', PARAM_INT);
-        $mform->addHelpButton('savedebugdata', 'savedebugdata', 'paygw_robokassa');
-
         $mform->addElement('text', 'fixdesc', get_string('fixdesc', 'paygw_robokassa'), ['size' => 50]);
         $mform->setType('fixdesc', PARAM_TEXT);
         $mform->addRule('fixdesc', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
@@ -282,7 +274,7 @@ class gateway extends \core_payment\gateway {
             $errors['suggest'] = get_string('suggesterror', 'paygw_robokassa');
         }
         if (!$data->recurrentperiod && $data->recurrent && !$data->recurrentday) {
-            $errors['recurrentperiod'] = get_string('recurrentperioderror', 'paygw_yookassa');
+            $errors['recurrentperiod'] = get_string('recurrentperioderror', 'paygw_robokassa');
         }
     }
 }

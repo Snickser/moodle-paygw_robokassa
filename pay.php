@@ -51,7 +51,7 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
 // Check self cost.
-if (!empty($costself)) {
+if (!empty($costself) && !$config->fixcost) {
     $cost = $costself;
 }
 
@@ -246,11 +246,6 @@ $request = "MerchantLogin=$mrhlogin" .
 if ($config->recurrent == 1 && $config->recurrentperiod > 0 && $currency == 'RUB') {
     $request .= "&Recurring=true";
     $paygwdata->recurrent = time() + $config->recurrentperiod;
-}
-
-if ($config->savedebugdata) {
-    file_put_contents($CFG->dataroot . '/payment.log', date("Y-m-d H:i:s") . "\n" . "$mrhlogin:$outsumm:$invid" . $currencyarg .
-    ":$receipt:$mrhpass1" . "\n" . $request . "\n\n", FILE_APPEND | LOCK_EX);
 }
 
 // Make invoice.
