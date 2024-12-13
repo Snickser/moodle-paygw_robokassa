@@ -274,7 +274,7 @@ class gateway extends \core_payment\gateway {
             $errors['suggest'] = get_string('suggesterror', 'paygw_robokassa');
         }
         if (!$data->recurrentperiod && $data->recurrent && !$data->recurrentday) {
-            $errors['recurrentperiod'] = get_string('recurrentperioderror', 'paygw_yookassa');
+            $errors['recurrentperiod'] = get_string('recurrentperioderror', 'paygw_robokassa');
         }
     }
 }
