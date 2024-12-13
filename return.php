@@ -37,11 +37,11 @@ $outsumm   = optional_param('OutSum', null, PARAM_TEXT);
 $signature = optional_param('SignatureValue', null, PARAM_TEXT);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
-    throw new Error('FAIL. Not a valid transaction id');
+    throw new \moodle_exception(get_string('error_notvalidtxid', 'paygw_robokassa'), 'paygw_robokassa');
 }
 
 if (!$payment = $DB->get_record('payments', ['id' => $robokassatx->paymentid])) {
-    throw new Error('FAIL. Not a valid payment.');
+    throw new \moodle_exception(get_string('error_notvalidpayment', 'paygw_robokassa'), 'paygw_robokassa');
 }
 
 $paymentarea = $payment->paymentarea;
@@ -77,7 +77,7 @@ $crc = strtoupper(md5("$outsumm:$invid:$mrhpass1"));
 
 // Check crc and redirect.
 if ($signature != $crc) {
-    throw new Error('FAIL. Not a valid signature.');
+    throw new \moodle_exception(get_string('error_notvalidsignature', 'paygw_robokassa'), 'paygw_robokassa');
 }
 
 if ($robokassatx->success) {
