@@ -131,9 +131,6 @@ And upon receipt of payment, a request is made to verify payment of the invoice.
 $string['sendlinkmsg'] = 'Send payment link by email';
 $string['sendlinkmsg_help'] = 'If enabled, a link to the invoice for payment will be sent to the users email.';
 
-$string['savedebugdata'] = 'Save debug log';
-$string['savedebugdata_help'] = 'Bank request and response data will be saved in {dataroot}/payment.log';
-
 $string['fixcost'] = 'Fixed price mode';
 $string['fixcost_help'] = 'Disables the ability for students to pay with an arbitrary amount.';
 $string['maxcosterror'] = 'The maximum price must be higher than the recommended price';
