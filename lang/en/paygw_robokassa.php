@@ -66,7 +66,6 @@ $string['wallet'] = 'Wallet One';
 $string['sbp'] = 'SBP';
 
 $string['internalerror'] = 'An internal error has occurred. Please contact us.';
-$string['privacy:metadata'] = 'The Robokassa plugin does not store any personal data.';
 
 $string['tax'] = 'VAT rate';
 $string['tax_help'] = 'VAT rate according to YooKass documentation.';
@@ -78,7 +77,7 @@ $string['sno_help'] = 'Type of tax system for generating checks:<br>
 4 - Unified Agricultural Tax (UST)<br>
 5 - Patent taxation system';
 
-$string['privacy:metadata'] = 'The robokassa plugin store some personal data.';
+$string['privacy:metadata'] = 'The Robokassa plugin store some personal data.';
 $string['privacy:metadata:paygw_robokassa:paygw_robokassa'] = 'Store some data';
 $string['privacy:metadata:paygw_robokassa:shopid'] = 'Shopid';
 $string['privacy:metadata:paygw_robokassa:paymentid'] = 'Paymentid';
