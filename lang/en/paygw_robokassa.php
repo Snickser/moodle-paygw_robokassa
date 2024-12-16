@@ -66,7 +66,6 @@ $string['wallet'] = 'Wallet One';
 $string['sbp'] = 'SBP';
 
 $string['internalerror'] = 'An internal error has occurred. Please contact us.';
-$string['privacy:metadata'] = 'The Robokassa plugin does not store any personal data.';
 
 $string['tax'] = 'VAT rate';
 $string['tax_help'] = 'VAT rate according to YooKass documentation.';
@@ -78,7 +77,7 @@ $string['sno_help'] = 'Type of tax system for generating checks:<br>
 4 - Unified Agricultural Tax (UST)<br>
 5 - Patent taxation system';
 
-$string['privacy:metadata'] = 'The robokassa plugin store some personal data.';
+$string['privacy:metadata'] = 'The Robokassa plugin store some personal data.';
 $string['privacy:metadata:paygw_robokassa:paygw_robokassa'] = 'Store some data';
 $string['privacy:metadata:paygw_robokassa:shopid'] = 'Shopid';
 $string['privacy:metadata:paygw_robokassa:paymentid'] = 'Paymentid';
@@ -94,10 +93,6 @@ $string['messagesubject'] = 'Payment notification ({$a})';
 
 $string['message_success_completed'] = 'Hello {$a->firstname},
 You transaction of payment id {$a->orderid} with cost of {$a->localizedcost} is successfully completed.
-If the item is not accessable please contact the administrator.';
-
-$string['message_success_completed'] = 'Hello {$a->firstname},
-You transaction of payment id {$a->orderid} with cost of {$a->fee} {$a->currency} for "{$a->description}" is successfully completed.
 If the item is not accessable please contact the administrator.';
 
 $string['message_recurrent_created'] = 'Hello, {$a->firstname}!

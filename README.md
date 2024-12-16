@@ -12,7 +12,7 @@ https://robokassa.com
 + Можно использовать пароль или кнопку для обхода платежа.
 + Сохраняет в базе номер курса и название группы студента.
 + Можно указать рекомендуемую цену, ограничить максимальную цену, или включить режим фиксированной цены.
-+ Отображание продолжительности обучения (для enrol_fee и mod_gwpaymets), если она установлена.
++ Отображание продолжительности обучения (для enrol_yafee и mod_gwpaymets), если она установлена.
 + Конвертация валют на стороне банка (usd, eur, kzt).
 + Поддержка пароля из модуля курса (mod_gwpaymets).
 + Оповещение пользователя при успешном платеже.
@@ -21,7 +21,7 @@ https://robokassa.com
 ## Рекомендации
 
 + Moodle 4.3+
-+ Для записи в курс используйте мой пропатченный плагин "Зачисление за оплату" [enrol_fee](https://github.com/Snickser/moodle-enrol_fee/tree/dev).
++ Для записи в курс используйте мой пропатченный плагин "Зачисление за оплату" [enrol_yafee](https://github.com/Snickser/moodle-enrol_yafee).
 + Для контрольного задания используйте пропатченный мной плагин по ссылке [mod_gwpayments](https://github.com/Snickser/moodle-mod_gwpayments/tree/dev).
 + Для ограничения доступности используйте пропатченный мной плагин по ссылке [availability_gwpayments](https://github.com/Snickser/moodle-availability_gwpayments/tree/dev).
 + Плагин просмотра отчётов и отключения регулярных платежей [report_payments](https://github.com/Snickser/moodle-report_payments/tree/dev).
