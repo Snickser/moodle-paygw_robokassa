@@ -97,7 +97,7 @@ $paygwdata->groupnames  = $groupnames;
 $paygwdata->timecreated = time();
 
 if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
-    throw new Error(get_string('error_txdatabase', 'paygw_robokassa'));
+    throw new \moodle_exception(get_string('error_txdatabase', 'paygw_robokassa'));
 }
 $paygwdata->id = $transactionid;
 
@@ -198,14 +198,14 @@ if ($config->checkinvoice) {
 
     if (!empty($curl->errno)) {
         $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-        throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
+        throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
     }
 
     $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', true);
     $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
     if ($err != 3) {
         $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-        throw new Error("Invoice ID check error $err");
+        throw new \moodle_exception("Invoice ID check error $err");
     }
 }
 
@@ -265,19 +265,19 @@ $jsonresponse = $curl->post($location, $request, $options);
 
 if (!empty($curl->errno)) {
     $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
+    throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
 }
 
 $response = json_decode($jsonresponse);
 
 if (!isset($response->errorCode)) {
     $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (response error)");
+    throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (response error)");
 }
 
 if ($response->errorCode) {
     $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    throw new Error(get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)");
+    throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)");
 }
 
 // Write to DB.
