@@ -43,6 +43,8 @@ $string['password_help'] = 'Using this password you can bypass the payback proce
 $string['password_text'] = 'If you are unable to make a payment, then ask your curator for a password and enter it.';
 $string['password1'] = 'Password1';
 $string['password2'] = 'Password2';
+$string['testpassword1'] = 'Test Password1';
+$string['testpassword2'] = 'Test Password2';
 $string['merchant_login'] = 'Merchant login';
 $string['istestmode'] = 'Test mode';
 $string['istestmode_help'] = 'There are no recurring payments in test mode.';
@@ -163,4 +165,3 @@ $string['error_txdatabase'] = 'Error write TX data to database';
 $string['error_notvalidtxid'] = 'FAIL. Not a valid transaction id';
 $string['error_notvalidpayment'] = 'FAIL. Not a valid payment';
 $string['error_notvalidsignature'] = 'FAIL. Not a valid signature';
-
