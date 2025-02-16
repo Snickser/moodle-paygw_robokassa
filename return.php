@@ -58,11 +58,6 @@ if (!isset($signature)) {
 // Get config.
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 
-if ($config->savedebugdata) {
-    file_put_contents($CFG->dataroot . '/payment.log', date("Y-m-d H:i:s") . "\n" .
-    serialize($_REQUEST) . "\n\n", FILE_APPEND | LOCK_EX);
-}
-
 // Check test-mode.
 if ($config->istestmode) {
     $mrhpass1 = $config->test_password1; // Merchant test_pass2 here.
