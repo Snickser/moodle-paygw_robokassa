@@ -155,6 +155,7 @@ $string['donate'] = '<div>Версия плагина: {$a->release} ({$a->versi
 <img src="https://img.shields.io/github/v/release/Snickser/moodle-paygw_robokassa.svg"><br>
 Пожалуйста, отправьте мне немножко <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">доната</a>😊</div>
 BTC 1FHtZ82jLoBZ8ZsU7J2E9Cxy2xgUU7GJtD<br>
+EVM 0x4E2E41CD0F72095126f3d2945C545D069629b4d4<br>
 <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
 width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe><br>
 ';
