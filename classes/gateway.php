@@ -63,7 +63,7 @@ class gateway extends \core_payment\gateway {
             get_string('crypto', 'paygw_robokassa'),
             $options
         );
-        $mform->setType('crypto', PARAM_INT);
+        $mform->setType('crypto', PARAM_TEXT);
         $mform->addHelpButton('crypto', 'crypto', 'paygw_robokassa');
 
         $mform->addElement('text', 'password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
