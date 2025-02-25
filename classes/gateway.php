@@ -55,7 +55,7 @@ class gateway extends \core_payment\gateway {
         $mform->addRule('merchant_login', get_string('required'), 'required', null, 'client');
 
         $options = [
-          1 => 'MD5',
+          'md5' => 'MD5',
         ];
         $mform->addElement(
             'select',
