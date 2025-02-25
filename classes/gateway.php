@@ -54,6 +54,18 @@ class gateway extends \core_payment\gateway {
         $mform->setType('merchant_login', PARAM_TEXT);
         $mform->addRule('merchant_login', get_string('required'), 'required', null, 'client');
 
+        $options = [
+          1 => 'MD5',
+        ];
+        $mform->addElement(
+            'select',
+            'crypto',
+            get_string('crypto', 'paygw_robokassa'),
+            $options
+        );
+        $mform->setType('crypto', PARAM_INT);
+        $mform->addHelpButton('crypto', 'crypto', 'paygw_robokassa');
+
         $mform->addElement('text', 'password1', get_string('password1', 'paygw_robokassa'), ['size' => 24]);
         $mform->setType('password1', PARAM_TEXT);
         $mform->disabledIf('password1', 'istestmode', "neq", 0);

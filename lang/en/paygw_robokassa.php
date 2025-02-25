@@ -167,3 +167,5 @@ $string['error_txdatabase'] = 'Error write TX data to database';
 $string['error_notvalidtxid'] = 'FAIL. Not a valid transaction id';
 $string['error_notvalidpayment'] = 'FAIL. Not a valid payment';
 $string['error_notvalidsignature'] = 'FAIL. Not a valid signature';
+$string['crypto'] = 'Hash calculation algorithm';
+$string['crypto_help'] = 'The method used to calculate the checksum of the payment parameters hash, which ensures security during payment and the integrity of the transmitted data. <b>Make sure this algorithm is specified in the store settings, otherwise nothing will work!</b>';
