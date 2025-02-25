@@ -36,11 +36,11 @@ $outsumm   = required_param('OutSum', PARAM_TEXT); // TEXT only!
 $signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
 
 if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
-    die('FAIL. Not a valid transaction id');
+    throw new \moodle_exception('FAIL. Not a valid transaction id');
 }
 
 if (!$payment = $DB->get_record('payments', ['id' => $robokassatx->paymentid])) {
-    die('FAIL. Not a valid payment.');
+    throw new \moodle_exception('FAIL. Not a valid payment.');
 }
 $component   = $payment->component;
 $paymentarea = $payment->paymentarea;
@@ -63,7 +63,7 @@ if ($config->istestmode) {
 // Check crc.
 $crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
 if ($signature !== $crc) {
-    die('FAIL. Signature does not match.');
+    throw new \moodle_exception('FAIL. Signature does not match.');
 }
 
 // Check invoice.
@@ -86,11 +86,11 @@ if ($config->checkinvoice && !$config->istestmode) {
 
     $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
     if ($err) {
-        die('FAIL. Invoice result error.');
+        throw new \moodle_exception('FAIL. Invoice result error.');
     }
     $err = $response['OperationStateResponse']['#']['State'][0]['#']['Code'][0]['#'];
     if ($err !== '100') {
-        die('FAIL. Invoice not paid.');
+        throw new \moodle_exception('FAIL. Invoice not paid.');
     }
 }
 
@@ -125,7 +125,7 @@ notifications::notify(
 
 // Update paygw.
 if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
-    die('FAIL. Update db error.');
+    throw new \moodle_exception('FAIL. Update db error.');
 } else {
     die('OK' . $invid);
 }
