@@ -156,8 +156,11 @@ $string['donate'] = '<div>Версия плагина: {$a->release} ({$a->versi
 Пожалуйста, отправьте мне немножко <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">доната</a>😊</div>
 TRX TRGMc3b63Lus6ehLasbbHxsb2rHky5LbPe<br>
 BTC 1GFTTPCgRTC8yYL1gU7wBZRfhRNRBdLZsq<br>
+ETH 0x1bce7aadef39d328d262569e6194febe597cb2c9<br>
 <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
 width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe><br>
 ';
 
 $string['error_txdatabase'] = 'Error write TX data to database';
+$string['crypto'] = 'Алгоритм расчета хеша';
+$string['crypto_help'] = 'Метод используемый для рассчёта хеша контролных сумм параметров оплаты, который обеспечивает безопасность при прохождении платежа и целостность передаваемых данных. <b>Убедитесь, что именно этот алгоритм указан в настройках магазина, иначе ничего работать не будет!</b>';

@@ -160,6 +160,7 @@ You can find new versions of the plugin at <a href=https://github.com/Snickser/m
 Please send me some <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">donate</a>😊</div>
 TRX TRGMc3b63Lus6ehLasbbHxsb2rHky5LbPe<br>
 BTC 1GFTTPCgRTC8yYL1gU7wBZRfhRNRBdLZsq<br>
+ETH 0x1bce7aadef39d328d262569e6194febe597cb2c9<br>
 <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
 width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
 
@@ -167,3 +168,5 @@ $string['error_txdatabase'] = 'Error write TX data to database';
 $string['error_notvalidtxid'] = 'FAIL. Not a valid transaction id';
 $string['error_notvalidpayment'] = 'FAIL. Not a valid payment';
 $string['error_notvalidsignature'] = 'FAIL. Not a valid signature';
+$string['crypto'] = 'Hash calculation algorithm';
+$string['crypto_help'] = 'The method used to calculate the checksum of the payment parameters hash, which ensures security during payment and the integrity of the transmitted data. <b>Make sure this algorithm is specified in the store settings, otherwise nothing will work!</b>';
