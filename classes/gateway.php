@@ -56,6 +56,7 @@ class gateway extends \core_payment\gateway {
 
         $options = [
           'md5' => 'MD5',
+          'sha1' => 'SHA1',
         ];
         $mform->addElement(
             'select',

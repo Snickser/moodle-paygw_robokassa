@@ -65,10 +65,17 @@ if ($config->istestmode) {
     $mrhpass1 = $config->password1;      // Merchant pass2 here.
 }
 
+// Check crypto or set default.
+if (isset($config->crypto)) {
+    $crypto = $config->crypto;
+} else {
+    $crypto = 'md5';
+}
+
 $signature = strtoupper($signature);  // Force uppercase.
 
 // Build own CRC.
-$crc = strtoupper(md5("$outsumm:$invid:$mrhpass1"));
+$crc = strtoupper(hash($crypto, "$outsumm:$invid:$mrhpass1"));
 
 // Check crc and redirect.
 if ($signature != $crc) {

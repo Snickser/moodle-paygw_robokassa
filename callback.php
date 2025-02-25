@@ -60,8 +60,15 @@ if ($config->istestmode) {
     $robokassatx->success = 1;
 }
 
+// Check crypto or set default.
+if (isset($config->crypto)) {
+    $crypto = $config->crypto;
+} else {
+    $crypto = 'md5';
+}
+
 // Check crc.
-$crc = strtoupper(md5("$outsumm:$invid:$mrhpass2"));
+$crc = strtoupper(hash($crypto, "$outsumm:$invid:$mrhpass2"));
 if ($signature !== $crc) {
     throw new \moodle_exception('FAIL. Signature does not match.');
 }
@@ -70,7 +77,7 @@ if ($signature !== $crc) {
 if ($config->checkinvoice && !$config->istestmode) {
     $mrhlogin = $config->merchant_login;
     $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
-    $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
+    $crc = strtoupper(hash($crypto, "$mrhlogin:$invid:$mrhpass2"));
     $location .= "?MerchantLogin=$mrhlogin" .
         "&InvoiceID=$invid" .
         "&Signature=$crc";

@@ -180,10 +180,17 @@ if ($config->istestmode) {
     $mrhpass2 = $config->password2;
 }
 
+// Check crypto or set default.
+if (isset($config->crypto)) {
+    $crypto = $config->crypto;
+} else {
+    $crypto = 'md5';
+}
+
 // Checks if invoiceid already exist.
 if ($config->checkinvoice) {
     $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
-    $crc = strtoupper(md5("$mrhlogin:$invid:$mrhpass2"));
+    $crc = strtoupper(hash($crypto, "$mrhlogin:$invid:$mrhpass2"));
     $location .= "?MerchantLogin=$mrhlogin" .
         "&InvoiceID=$invid" .
         "&Signature=$crc";
@@ -232,7 +239,7 @@ $items->items = [
 $receipt = json_encode($items);
 
 // Build CRC value.
-$crc = strtoupper(md5("$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
+$crc = strtoupper(hash($crypto, "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
 
 // Params.
 $request = "MerchantLogin=$mrhlogin" .
