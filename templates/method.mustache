@@ -51,7 +51,9 @@
 <p>{{# str }} abouttopay, paygw_robokassa {{/ str}} "{{description}}"</p>
 {{/fixdesc}}
 
+{{^fixcost}}
 <p>{{# str }} paymore, paygw_robokassa {{/ str}}</p>
+{{/fixcost}}
 
 <h3>{{# str }} cost {{/ str}}:
 {{^fixcost}}
