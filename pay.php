@@ -254,9 +254,13 @@ $request = "MerchantLogin=$mrhlogin" .
     "&Receipt=" . urlencode($receipt);
 
 // Check recurrent.
-if ($config->recurrent == 1 && $config->recurrentperiod > 0 && $currency == 'RUB') {
+if ($config->recurrent == 1 && $currency == 'RUB' && !$config->istestmode) {
     $request .= "&Recurring=true";
-    $paygwdata->recurrent = time() + $config->recurrentperiod;
+    if ($config->recurrentperiod > 0) {
+        $paygwdata->recurrent = time() + $config->recurrentperiod;
+    } else if ($config->recurrentday > 0) {
+        $paygwdata->recurrent = time();
+    }
 }
 
 // Make invoice.
