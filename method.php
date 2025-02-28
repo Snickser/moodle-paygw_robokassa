@@ -117,7 +117,10 @@ $templatedata->maxcost = $config->maxcost;
 $templatedata->fixcost = $config->fixcost;
 
 if (!$config->fixcost) {
-    if ($config->suggest < $fee) {
+    if ($config->maxcost < $fee) {
+        $templatedata->suggest = $config->maxcost;
+        $templatedata->fee = $config->maxcost;
+    } else if ($config->suggest < $fee) {
         $templatedata->suggest = $fee;
     } else {
         $templatedata->suggest = $config->suggest;
