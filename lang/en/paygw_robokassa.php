@@ -133,7 +133,8 @@ $string['fixcost_help'] = 'Disables the ability for students to pay with an arbi
 $string['maxcosterror'] = 'The maximum price must be higher than the recommended price';
 
 $string['recurrent'] = 'Enable recurring payments';
-$string['recurrent_help'] = 'Enable recurring payments';
+$string['recurrent_help'] = 'Regular (recurring) payments are executed on a timer without the students participation, the data of the first payment is saved on the banks side and is used repeatedly, with some frequency.
+<br><b>Only works for rubles (without conversion)! Incorrect settings can lead to emptying of clients bank accounts!</b>';
 $string['recurrentperiod'] = 'Recurring payment frequency';
 $string['recurrentperiod_help'] = 'It is advisable to specify the frequency no more than once a day. This involves executing the corresponding regular task in the task scheduler. More than once a day - only for tests.';
 $string['recurrentperioderror'] = 'Specify the frequency';
