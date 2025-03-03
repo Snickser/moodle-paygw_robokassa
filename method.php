@@ -146,7 +146,7 @@ $templatedata->passwordmode = $config->passwordmode;
 
 if (isset($config->maxcost)) {
     $templatedata->maxcost = $config->maxcost;
-    if ($config->maxcost && $fee > $config->maxcost) {
+    if ($config->maxcost && $config->maxcost < $fee) {
         $fee = $config->maxcost;
         $templatedata->fee = $fee;
     }
@@ -155,10 +155,7 @@ if (isset($config->maxcost)) {
 $templatedata->fixcost = $config->fixcost;
 
 if (!$config->fixcost) {
-    if ($config->maxcost < $fee && $config->maxcost) {
-        $templatedata->suggest = $config->maxcost;
-        $templatedata->fee = $config->maxcost;
-    } else if ($config->suggest < $fee) {
+    if ($config->suggest < $fee) {
         $templatedata->suggest = $fee;
     } else {
         $templatedata->suggest = $config->suggest;
