@@ -54,9 +54,10 @@ $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses sur
 $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 
 // Get course info and check area.
-$enrolperiod = '';
-$enrolperioddesc = '';
+$enrolperiod = 0;
+$enrolperioddesc = null;
 $uninterrupted = false;
+$showenrolperiod = true;
 if ($component == "enrol_yafee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => 'yafee']);
     $enrolperiod = $cs->enrolperiod;
@@ -90,13 +91,23 @@ if ($component == "enrol_yafee") {
             }
         }
     }
+    // Set month/year period.
+    if ($cs->customchar1 == 'month' && $cs->customint7 > 0) {
+        $enrolperiod = $cs->customint7;
+        $enrolperioddesc = get_string('months');
+        $showenrolperiod = false;
+    } else if ($cs->customchar1 == 'year' && $cs->customint7 > 0) {
+        $enrolperiod = $cs->customint7;
+        $enrolperioddesc = get_string('years');
+        $showenrolperiod = false;
+    }
 } else if ($component == "mod_gwpayments") {
     $cs = $DB->get_record('gwpayments', ['id' => $itemid]);
     $enrolperiod = $cs->costduration;
 }
 
 // Set enrolperiod.
-if ($enrolperiod > 0) {
+if ($enrolperiod > 0 && $showenrolperiod) {
     if ($enrolperiod >= 86400 * 7) {
         $enrolperioddesc = get_string('weeks');
         $enrolperiod = round($enrolperiod / (86400 * 7));
