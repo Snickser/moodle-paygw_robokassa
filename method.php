@@ -106,7 +106,7 @@ if ($component == "enrol_yafee") {
     $enrolperiod = $cs->costduration;
 }
 
-// Set enrolperiod.
+// Set standard enrolperiod.
 if ($enrolperiod > 0 && $showenrolperiod) {
     if ($enrolperiod >= 86400 * 7) {
         $enrolperioddesc = get_string('weeks');
