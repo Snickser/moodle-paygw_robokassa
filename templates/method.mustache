@@ -79,11 +79,11 @@
 <div style="text-align: center;">
 
 {{#uninterrupted}}
- <h4>{{# str }} uninterrupted_desc, enrol_yafee {{/ str}}</h4>
+ <h4>{{# str }} uninterrupted_desc, paygw_robokassa {{/ str}}</h4>
 {{/uninterrupted}}
 
 {{#enrolperiod}}
-<h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
+ <h4>{{# str }} enrolperiod, paygw_robokassa, { "count": {{enrolperiod}}, "desc": {{#quote}} {{enrolperiod_desc}} {{/quote}} } {{/ str}}</h4>
 {{/enrolperiod}}
 
 {{#recurrent}}

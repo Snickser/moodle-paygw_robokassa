@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['enrolperiod'] = 'Продолжительность обучения ({$a->desc}): {$a->count}';
 $string['sendpaymentbutton'] = 'Пожертвовать!';
 $string['skippaymentbutton'] = 'Не имею возможности :(';
 $string['paymore'] = 'Если вы хотите пожертвовать больше, то просто впишите свою сумму вместо указанной.';
@@ -164,3 +165,4 @@ width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no">
 $string['error_txdatabase'] = 'Error write TX data to database';
 $string['crypto'] = 'Алгоритм расчета хеша';
 $string['crypto_help'] = 'Метод используемый для рассчёта хеша контролных сумм параметров оплаты, который обеспечивает безопасность при прохождении платежа и целостность передаваемых данных. <b>Убедитесь, что именно этот алгоритм указан в настройках магазина, иначе ничего работать не будет!</b>';
+$string['uninterrupted_desc'] = 'Цена за курс сформирована с учётом пропущенного времени неоплаченного вами периода.';
