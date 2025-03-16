@@ -21,6 +21,8 @@
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+$string['enrolperiod'] = 'Enrolment duration ({$a->desc}): {$a->count}';
 $string['pluginname'] = 'Robokassa payment';
 $string['pluginname_desc'] = 'The Robokassa plugin allows you to receive payments via Robokassa.';
 $string['gatewaydescription'] = 'Robokassa is an authorised payment gateway provider for processing credit card transactions.';
@@ -171,3 +173,4 @@ $string['error_notvalidpayment'] = 'FAIL. Not a valid payment';
 $string['error_notvalidsignature'] = 'FAIL. Not a valid signature';
 $string['crypto'] = 'Hash calculation algorithm';
 $string['crypto_help'] = 'The method used to calculate the checksum of the payment parameters hash, which ensures security during payment and the integrity of the transmitted data. <b>Make sure this algorithm is specified in the store settings, otherwise nothing will work!</b>';
+$string['uninterrupted_desc'] = 'The price for the course is formed taking into account the missed time of the period you have not paid for.';
