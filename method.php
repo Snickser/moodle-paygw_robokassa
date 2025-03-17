@@ -75,7 +75,7 @@ if ($component == "enrol_yafee") {
             if ($data->timeend < time() && $data->timestart) {
                 if ($cs->enrolperiod) {
                     $price = $fee / $cs->enrolperiod;
-                    $delta = ceil(((time() - $data->timestart) / $cs->enrolperiod) + 0.7) * $cs->enrolperiod +
+                    $delta = ceil(((time() - $data->timestart) / $cs->enrolperiod) + 0) * $cs->enrolperiod +
                              $data->timestart - $data->timeend;
                     $fee = $delta * $price;
                     $uninterrupted = true;
