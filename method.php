@@ -58,6 +58,8 @@ $enrolperiod = 0;
 $enrolperioddesc = null;
 $uninterrupted = false;
 $showenrolperiod = true;
+$plugin = \core_plugin_manager::instance()->get_plugin_info('enrol_yafee');
+$ver = 2025040100;
 if ($component == "enrol_yafee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => 'yafee']);
     $enrolperiod = $cs->enrolperiod;
@@ -77,15 +79,21 @@ if ($component == "enrol_yafee") {
                     $price = $fee / $cs->enrolperiod;
                     $delta = ceil(((time() - $data->timestart) / $cs->enrolperiod) + 0) * $cs->enrolperiod +
                              $data->timestart - $data->timeend;
-                    $fee = $delta * $price;
+                    if ($plugin->versiondisk < $ver) {
+                        $fee = $delta * $price;
+                    }
                     $uninterrupted = true;
                 } else if ($cs->customchar1 == 'month' && $cs->customint7 > 0) {
                     $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
-                    $fee = $delta * $fee;
+                    if ($plugin->versiondisk < $ver) {
+                        $fee = $delta * $fee;
+                    }
                     $uninterrupted = true;
                 } else if ($cs->customchar1 == 'year' && $cs->customint7 > 0) {
                     $delta = ($t2['year'] - $t1['year']) + 1;
-                    $fee = $delta * $fee;
+                    if ($plugin->versiondisk < $ver) {
+                        $fee = $delta * $fee;
+                    }
                     $uninterrupted = true;
                 }
                 $fee = helper::get_rounded_cost($fee, $currency, $surcharge);
