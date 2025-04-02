@@ -57,12 +57,12 @@
 <p>{{# str }} paymore, paygw_robokassa {{/ str}}</p>
 {{/fixcost}}
 
-<h3>{{# str }} cost {{/ str}}:
+<h3>{{# str }} amount, paygw_robokassa {{/ str}}
 {{^fixcost}}
  <input type="number" id="costself" name="costself"
  value="{{#suggest}}{{suggest}}{{/suggest}}{{^suggest}}{{fee}}{{/suggest}}"
  min="{{fee}}" {{#maxcost}}max="{{maxcost}}"{{/maxcost}} step="0.01"
- style="width: 5em;">{{^fixcost}}&nbsp;{{currency}}{{/fixcost}}
+ style="width: 6em;">{{^fixcost}}&nbsp;{{currency}}{{/fixcost}}
 {{/fixcost}}
 {{#fixcost}}{{localizedcost}}{{/fixcost}}
 </h3>

@@ -54,6 +54,11 @@ class recurrent_payments extends \core\task\scheduled_task {
         global $DB, $CFG;
         mtrace('Start');
 
+        // Unfortunately this may take a long time, it should not be interrupted,
+        // otherwise users get duplicate notification.
+        core_php_time_limit::raise();
+        raise_memory_limit(MEMORY_HUGE);
+
         // Stage One.
         $stime = strtotime("+1day");
         $ctime = strtotime("+1day1hour");

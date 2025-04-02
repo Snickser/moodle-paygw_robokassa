@@ -174,3 +174,4 @@ $string['error_notvalidsignature'] = 'FAIL. Not a valid signature';
 $string['crypto'] = 'Hash calculation algorithm';
 $string['crypto_help'] = 'The method used to calculate the checksum of the payment parameters hash, which ensures security during payment and the integrity of the transmitted data. <b>Make sure this algorithm is specified in the store settings, otherwise nothing will work!</b>';
 $string['uninterrupted_desc'] = 'The price for the course is formed taking into account the missed time of the period you have not paid for.';
+$string['amount'] = 'Amount:';
