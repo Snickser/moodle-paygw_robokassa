@@ -120,13 +120,14 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/payment/gateway/robokassa/method.php', $params);
 $string = get_string('payment', 'paygw_robokassa');
 $PAGE->set_title(format_string($string));
-$PAGE->set_heading(format_string($string));
 
 // Set the appropriate headers for the page.
 $PAGE->set_cacheable(false);
 $PAGE->set_pagelayout('standard');
 
 echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string('payment', 'paygw_robokassa'), 2);
+
 
 // Create template.
 $templatedata = new stdClass();
