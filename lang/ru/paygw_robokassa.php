@@ -14,7 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Local language pack
+ *
+ * @package    paygw_robokassa
+ * @subpackage robokassa
+ * @copyright  2024 Alex Orlov <snickser@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 $string['abouttopay'] = 'Вы собираетесь пожертвовать на';
 $string['amount'] = 'Сумма:';
