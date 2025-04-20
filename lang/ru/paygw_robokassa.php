@@ -15,18 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local language pack
+ * Strings for component 'paygw_robokassa', language 'ru'
  *
  * @package    paygw_robokassa
- * @subpackage robokassa
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['abouttopay'] = 'Вы собираетесь пожертвовать на';
 $string['amount'] = 'Сумма:';
-$string['callback_url'] = 'ResultURL:';
 $string['callback_help'] = 'Скопируйте это и поместите в URL-адреса технических настроек магазина Robokassa, метод отсылки - POST.';
+$string['callback_url'] = 'ResultURL:';
 $string['checkinvoice'] = 'Предпроверка invoice';
 $string['checkinvoice_help'] = 'Эта опция включает дополнительную проверку инвойса в Робокассе при создании и получении платежа. При создании проверяется что такой платёж ещё не существует, а при получении подтверждения от банка делается запрос на проверку факта оплаты выставленного счёта.';
 $string['cost'] = 'Стоимость записи';
@@ -90,9 +89,9 @@ $string['password_help'] = 'С помощью этого пароля можно
 $string['password_mode'] = 'Разрешить ввод резервного пароля';
 $string['password_success'] = 'Платёжный пароль принят';
 $string['password_text'] = 'Если у вас нет возможности сделать пожертвование, то попросите у вашего куратора пароль и введите его.';
+$string['payment'] = 'Пожертвование';
 $string['paymentserver'] = 'URL сервера оплаты';
 $string['paymentsystem'] = 'Платежная система';
-$string['payment'] = 'Пожертвование';
 $string['payment_error'] = 'Ошибка создания платежа, попробуйте ещё раз или обратитесь в тех.поддержку.';
 $string['payment_success'] = 'Оплата успешно произведена';
 $string['paymore'] = 'Если вы хотите пожертвовать больше, то просто впишите свою сумму вместо указанной.';
