@@ -43,8 +43,8 @@ ETH 0x1bce7aadef39d328d262569e6194febe597cb2c9<br>
 width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
 $string['enrolperiod'] = 'Enrolment duration ({$a->desc}): {$a->count}';
 $string['error_notvalidpayment'] = 'FAIL. Not a valid payment';
-$string['error_notvalidtxid'] = 'FAIL. Not a valid transaction id';
 $string['error_notvalidsignature'] = 'FAIL. Not a valid signature';
+$string['error_notvalidtxid'] = 'FAIL. Not a valid transaction id';
 $string['error_txdatabase'] = 'Error write TX data to database';
 $string['fixcost'] = 'Fixed price mode';
 $string['fixcost_help'] = 'Disables the ability for students to pay with an arbitrary amount.';
