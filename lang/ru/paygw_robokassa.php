@@ -80,7 +80,7 @@ $string['message_success_recurrent'] = 'Здравствуйте, {$a->firstname
 Следующий автоматический платёж назначен на {$a->nextpay}.
 Отключить регулярные платежи можно в разделе Отчёты (оплата) в личном профиле {$a->url}/user/profile.php';
 $string['messagesubject'] = 'Уведомление о платеже ({$a})';
-$string['noreportplugin'] = '<font color=red>Не установлен report_payments плагин, вы не сможете отменить регулярные платежи.</font>';
+$string['noreportplugin'] = '<font color="red">Не установлен <a href="https://github.com/Snickser/moodle-report_payments">report_payments</a> плагин, вы не сможете отменять регулярные платежи.</font>';
 $string['password'] = 'Резервный пароль';
 $string['password1'] = 'Пароль1';
 $string['password2'] = 'Пароль2';
