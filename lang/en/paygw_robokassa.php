@@ -80,7 +80,7 @@ Your regular payment transaction No. {$a->orderid} for {$a->localizedcost} has b
 You can disable regular payments in the Reports (payment) section in your personal profile {$a->$url}/user/profile.php';
 $string['messageprovider:payment_receipt'] = 'Payment receipt';
 $string['messagesubject'] = 'Payment notification ({$a})';
-$string['noreportplugin'] = '<font color=red>The report_payments plugin is not installed, you will not be able to cancel recurring payments.</font>';
+$string['noreportplugin'] = '<font color="red">The <a href="https://github.com/Snickser/moodle-report_payments">report_payments</a> plugin is not installed, you will not be able to cancel recurring payments.</font>';
 $string['password'] = 'Password';
 $string['password1'] = 'Password1';
 $string['password2'] = 'Password2';

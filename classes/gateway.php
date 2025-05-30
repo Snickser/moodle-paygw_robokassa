@@ -120,6 +120,12 @@ class gateway extends \core_payment\gateway {
         $mform->addHelpButton('recurrent', 'recurrent', 'paygw_robokassa');
         $mform->hideIf('recurrent', 'istestmode', "neq", 0);
 
+        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('report_payments');
+        if ($plugininfo->versiondisk < 3024070800) {
+            $mform->addElement('static', 'noreport', null, get_string('noreportplugin', 'paygw_robokassa'));
+            $mform->hideIf('noreport', 'recurrent', "neq", 1);
+        }
+
         $options = [0 => get_string('no')];
         for ($i = 1; $i <= 28; $i++) {
             $options[] = $i;
@@ -157,11 +163,6 @@ class gateway extends \core_payment\gateway {
         $mform->setDefault('recurrentcost', 'fee');
         $mform->hideIf('recurrentcost', 'recurrent', "neq", 1);
         $mform->hideIf('recurrentcost', 'istestmode', "neq", 0);
-
-        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('report_payments');
-        if ($plugininfo->versiondisk < 3024070800) {
-            $mform->addElement('static', 'noreport', null, get_string('noreportplugin', 'paygw_robokassa'));
-        }
 
         $mform->addElement(
             'advcheckbox',
