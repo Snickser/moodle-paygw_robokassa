@@ -101,6 +101,10 @@ class gateway extends \core_payment\gateway {
         'vat110' => "10/110",
         'vat20' => "20%",
         'vat220' => "20/120",
+        'vat5' => "5%",
+        'vat7' => "7%",
+        'vat105' => "5/105",
+        'vat107' => "7/107",
         ];
         $mform->addElement(
             'select',
