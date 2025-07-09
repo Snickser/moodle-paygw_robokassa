@@ -21,7 +21,6 @@
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 $string['abouttopay'] = 'You are about to pay for';
 $string['amount'] = 'Amount:';
 $string['callback_help'] = 'Copy this and put it in URLs at your Robokassa shop technical preferences, method of sending data - POST.';

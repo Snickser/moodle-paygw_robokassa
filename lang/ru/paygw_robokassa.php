@@ -21,7 +21,6 @@
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 $string['abouttopay'] = 'Вы собираетесь пожертвовать на';
 $string['amount'] = 'Сумма:';
 $string['callback_help'] = 'Скопируйте это и поместите в URL-адреса технических настроек магазина Robokassa, метод отсылки - POST.';
