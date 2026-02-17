@@ -15,24 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for paygw_robokassa.
+ * Privacy Subsystem implementation for paygw_monobank.
  *
- * @package    paygw_robokassa
+ * @package    paygw_monobank
  * @category   privacy
- * @copyright  2024 Alex Orlov <snicker@gmail.com>
+ * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace paygw_robokassa\privacy;
+namespace paygw_monobank\privacy;
 
 use core_payment\privacy\paygw_provider;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\writer;
 
 /**
- * Privacy Subsystem implementation for paygw_robokassa.
+ * Privacy Subsystem implementation for paygw_monobank.
  *
- * @copyright  2024 Alex Orlov <snicker@gmail.com>
+ * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\request\data_provider, paygw_provider, \core_privacy\local\metadata\provider {
@@ -44,32 +44,27 @@ class provider implements \core_privacy\local\request\data_provider, paygw_provi
      */
     public static function get_metadata(collection $collection): collection {
 
-        // Data may be exported to an external location.
         $collection->add_external_location_link(
-            'robokassa.plus',
+            'monobank.ua',
             [
-                'shopid'    => 'privacy:metadata:paygw_robokassa:shopid',
-                'paymentid' => 'privacy:metadata:paygw_robokassa:paymentid',
-                'email'     => 'privacy:metadata:paygw_robokassa:email',
-                'userip'    => 'privacy:metadata:paygw_robokassa:userip',
+                'paymentid' => 'privacy:metadata:paygw_monobank:paymentid',
+                'email'     => 'privacy:metadata:paygw_monobank:email',
             ],
-            'privacy:metadata:paygw_robokassa:robokassa_plus'
+            'privacy:metadata:paygw_monobank:monobank_ua'
         );
 
-        // The paygw_robokassa has a database table that contains user data.
         $collection->add_database_table(
-            'paygw_robokassa',
+            'paygw_monobank',
             [
-                'invoiceid'  => 'privacy:metadata:paygw_robokassa:invoiceid',
-                'courseid'   => 'privacy:metadata:paygw_robokassa:courseid',
-                'groupnames' => 'privacy:metadata:paygw_robokassa:groupnames',
-                'success'    => 'privacy:metadata:paygw_robokassa:success',
+                'invoiceid'  => 'privacy:metadata:paygw_monobank:invoiceid',
+                'courseid'   => 'privacy:metadata:paygw_monobank:courseid',
+                'groupnames' => 'privacy:metadata:paygw_monobank:groupnames',
+                'success'    => 'privacy:metadata:paygw_monobank:success',
             ],
-            'privacy:metadata:paygw_robokassa:paygw_robokassa'
+            'privacy:metadata:paygw_monobank:paygw_monobank'
         );
         return $collection;
     }
-
 
     /**
      * Export all user data for the specified payment record, and the given context.
@@ -81,8 +76,8 @@ class provider implements \core_privacy\local\request\data_provider, paygw_provi
     public static function export_payment_data(\context $context, array $subcontext, \stdClass $payment) {
         global $DB;
 
-        $subcontext[] = get_string('gatewayname', 'paygw_robokassa');
-        $record = $DB->get_record('paygw_robokassa', ['paymentid' => $payment->id]);
+        $subcontext[] = get_string('gatewayname', 'paygw_monobank');
+        $record = $DB->get_record('paygw_monobank', ['paymentid' => $payment->id]);
 
         $data = (object) [
             'orderid' => $record->invoiceid,
@@ -102,6 +97,6 @@ class provider implements \core_privacy\local\request\data_provider, paygw_provi
     public static function delete_data_for_payment_sql(string $paymentsql, array $paymentparams) {
         global $DB;
 
-        $DB->delete_records_select('paygw_robokassa', "paymentid IN ({$paymentsql})", $paymentparams);
+        $DB->delete_records_select('paygw_monobank', "paymentid IN ({$paymentsql})", $paymentparams);
     }
 }

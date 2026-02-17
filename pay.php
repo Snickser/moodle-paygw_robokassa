@@ -17,13 +17,13 @@
 /**
  * Redirects user to the payment page
  *
- * @package   paygw_robokassa
+ * @package   paygw_monobank
  * @copyright 2024 Alex Orlov <snickser@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use core_payment\helper;
-use paygw_robokassa\notifications;
+use paygw_monobank\notifications;
 
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir . '/filelib.php');
@@ -44,10 +44,10 @@ $password    = optional_param('password', null, PARAM_TEXT);
 $skipmode    = optional_param('skipmode', 0, PARAM_INT);
 $costself    = optional_param('costself', null, PARAM_TEXT);
 
-$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
-$payable = helper::get_payable($component, $paymentarea, $itemid);// Get currency and payment amount.
+$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'monobank');
+$payable = helper::get_payable($component, $paymentarea, $itemid);
 $currency = $payable->get_currency();
-$surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
+$surcharge = helper::get_gateway_surcharge('monobank');
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
 // Check self cost.
@@ -58,29 +58,6 @@ if (!empty($costself) && !$config->fixcost) {
 // Check maxcost.
 if ($config->maxcost && $cost > $config->maxcost) {
     $cost = $config->maxcost;
-}
-
-// Check uninterrupted mode.
-if ($component == "enrol_yafee" && $config->fixcost) {
-    $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => 'yafee']);
-    if ($cs->customint5) {
-        $data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $cs->id]);
-        // Prepare month and year.
-        $timeend = time();
-        if (isset($data->timeend)) {
-            $timeend = $data->timeend;
-        }
-        // Check periods.
-        if (isset($data->timeend) && $data->timeend < time()) {
-            if ($cs->enrolperiod) {
-                $uninterrupted = true;
-            } else if ($cs->customchar1 == 'month' && $cs->customint7 > 0) {
-                $uninterrupted = true;
-            } else if ($cs->customchar1 == 'year' && $cs->customint7 > 0) {
-                $uninterrupted = true;
-            }
-        }
-    }
 }
 
 $cost = number_format($cost, 2, '.', '');
@@ -119,8 +96,8 @@ $paygwdata->courseid    = $courseid;
 $paygwdata->groupnames  = $groupnames;
 $paygwdata->timecreated = time();
 
-if (!$transactionid = $DB->insert_record('paygw_robokassa', $paygwdata)) {
-    throw new \moodle_exception(get_string('error_txdatabase', 'paygw_robokassa'));
+if (!$transactionid = $DB->insert_record('paygw_monobank', $paygwdata)) {
+    throw new \moodle_exception(get_string('error_txdatabase', 'paygw_monobank'));
 }
 $paygwdata->id = $transactionid;
 
@@ -137,12 +114,10 @@ if (!empty($password) || $skipmode) {
     if ($config->skipmode) {
         $success = true;
     } else if (isset($cs->password) && !empty($cs->password)) {
-        // Check module password.
         if ($password === $cs->password) {
             $success = true;
         }
     } else if ($config->passwordmode && !empty($config->password)) {
-        // Check payment password.
         if ($password === $config->password) {
             $success = true;
         }
@@ -158,18 +133,18 @@ if (!empty($password) || $skipmode) {
             $userid,
             0,
             $payable->get_currency(),
-            'robokassa'
+            'monobank'
         );
         helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
         // Write to DB.
         $paygwdata->success = 2;
         $paygwdata->paymentid = $paymentid;
-        $DB->update_record('paygw_robokassa', $paygwdata);
-        redirect($url, get_string('password_success', 'paygw_robokassa'), 0, 'success');
+        $DB->update_record('paygw_monobank', $paygwdata);
+        redirect($url, get_string('password_success', 'paygw_monobank'), 0, 'success');
     } else {
-        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-        redirect($url, get_string('password_error', 'paygw_robokassa'), 0, 'error');
+        $DB->delete_records('paygw_monobank', ['id' => $transactionid]);
+        redirect($url, get_string('password_error', 'paygw_monobank'), 0, 'error');
     }
     die; // Never.
 }
@@ -183,143 +158,76 @@ $paymentid = helper::save_payment(
     $userid,
     $cost,
     $payable->get_currency(),
-    'robokassa'
+    'monobank'
 );
 
-// Order properties.
-$invid    = $paymentid;    // Shop's invoice number.
-$invdesc  = $description;  // Invoice desc.
-$outsumm  = $cost;         // Invoice summ.
-
-// Your registration data.
-$mrhlogin = $config->merchant_login;  // Your login here.
-
-// Check test-mode.
-if ($config->istestmode) {
-    $mrhpass1 = $config->test_password1; // Merchant test_pass1 here.
-    $mrhpass2 = $config->test_password2;
-} else {
-    $mrhpass1 = $config->password1;      // Merchant pass1 here.
-    $mrhpass2 = $config->password2;
-}
-
-// Check crypto or set default.
-if (isset($config->crypto)) {
-    $crypto = $config->crypto;
-} else {
-    $crypto = 'md5';
-}
-
-// Checks if invoiceid already exist.
-if ($config->checkinvoice) {
-    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
-    $crc = strtoupper(hash($crypto, "$mrhlogin:$invid:$mrhpass2"));
-    $location .= "?MerchantLogin=$mrhlogin" .
-        "&InvoiceID=$invid" .
-        "&Signature=$crc";
-    $options = [
-        'CURLOPT_RETURNTRANSFER' => true,
-        'CURLOPT_TIMEOUT' => 30,
-        'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
-        'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
-    ];
-    $curl = new curl();
-    $xmlresponse = $curl->get($location, $options);
-
-    if (!empty($curl->errno)) {
-        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-        throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
-    }
-
-    $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', true);
-    $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
-    if ($err != 3) {
-        $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-        throw new \moodle_exception("Invoice ID check error $err");
-    }
-}
-
-// For non-RUB pay.
-if ($currency != 'RUB') {
-    $outsumcurrency = "&OutSumCurrency=$currency";
-    $currencyarg = ":$currency";
-} else {
-    $outsumcurrency = null;
-    $currencyarg = null;
-}
-
-// Nomenclatura.
-$items = new stdClass();
-$items->sno = $config->sno;
-$items->items = [
-    [
-    "name" => $description,
-    "quantity" => 1,
-    "sum" => $cost,
-    "tax" => $config->tax,
-    ],
+// Currency code mapping (ISO 4217 numeric).
+$currencymap = [
+    'UAH' => 980,
+    'USD' => 840,
+    'EUR' => 978,
 ];
-$receipt = json_encode($items);
+$ccy = isset($currencymap[$currency]) ? $currencymap[$currency] : 980;
 
-// Build CRC value.
-$crc = strtoupper(hash($crypto, "$mrhlogin:$outsumm:$invid" . $currencyarg . ":$receipt:$mrhpass1"));
+// Amount in kopiykas (smallest currency unit).
+$amount = (int) round($cost * 100);
 
-// Params.
-$request = "MerchantLogin=$mrhlogin" .
-    "&OutSum=$outsumm" . $outsumcurrency .
-    "&InvId=$invid" .
-    "&Description=" . urlencode($invdesc) .
-    "&SignatureValue=$crc" .
-    "&Culture=" . current_language() .
-    "&Email=" . urlencode($USER->email) .
-    "&IsTest=" . $config->istestmode .
-    "&ExpirationDate=" . urlencode(date("Y-m-d\\TH:i:s.000P", time() + 1800)) .
-    "&Receipt=" . urlencode($receipt);
+// Build MonoBank API request.
+$invoicedata = [
+    'amount' => $amount,
+    'ccy' => $ccy,
+    'merchantPaymInfo' => [
+        'reference' => (string) $paymentid,
+        'destination' => $description,
+        'basketOrder' => [
+            [
+                'name' => $description,
+                'qty' => 1,
+                'sum' => $amount,
+                'code' => (string) $paymentid,
+            ],
+        ],
+    ],
+    'redirectUrl' => $CFG->wwwroot . '/payment/gateway/monobank/return.php?id=' . $paymentid,
+    'webHookUrl' => $CFG->wwwroot . '/payment/gateway/monobank/callback.php',
+    'validity' => 3600,
+    'paymentType' => 'debit',
+];
 
-// Check recurrent.
-if ($config->recurrent == 1 && $currency == 'RUB' && !$config->istestmode) {
-    $request .= "&Recurring=true";
-    if ($config->recurrentperiod > 0) {
-        $paygwdata->recurrent = time() + $config->recurrentperiod;
-    } else if ($config->recurrentday > 0) {
-        $paygwdata->recurrent = time();
-    }
-}
-
-// Make invoice.
-$location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';
+// Make invoice via MonoBank API.
+$apiurl = 'https://api.monobank.ua/api/merchant/invoice/create';
+$curl = new curl();
+$curl->setHeader([
+    'Content-Type: application/json',
+    'X-Token: ' . $config->api_token,
+]);
 $options = [
     'CURLOPT_RETURNTRANSFER' => true,
     'CURLOPT_TIMEOUT' => 30,
     'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
     'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
 ];
-$curl = new curl();
-$jsonresponse = $curl->post($location, $request, $options);
+$jsonresponse = $curl->post($apiurl, json_encode($invoicedata), $options);
 
 if (!empty($curl->errno)) {
-    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (Error $curl->error)");
+    $DB->delete_records('paygw_monobank', ['id' => $transactionid]);
+    throw new \moodle_exception(get_string('payment_error', 'paygw_monobank') . " (Error $curl->error)");
 }
 
 $response = json_decode($jsonresponse);
 
-if (!isset($response->errorCode)) {
-    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (response error)");
-}
-
-if ($response->errorCode) {
-    $DB->delete_records('paygw_robokassa', ['id' => $transactionid]);
-    throw new \moodle_exception(get_string('payment_error', 'paygw_robokassa') . " (Error code $response->errorCode)");
+if (!isset($response->invoiceId)) {
+    $DB->delete_records('paygw_monobank', ['id' => $transactionid]);
+    $errmsg = isset($response->errText) ? $response->errText : 'response error';
+    throw new \moodle_exception(get_string('payment_error', 'paygw_monobank') . " ($errmsg)");
 }
 
 // Write to DB.
 $paygwdata->paymentid = $paymentid;
-$paygwdata->invoiceid = $response->invoiceID;
-$DB->update_record('paygw_robokassa', $paygwdata);
+$paygwdata->invoiceid = $response->invoiceId;
+$DB->update_record('paygw_monobank', $paygwdata);
 
-$url = 'https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID;
+$payurl = $response->pageUrl;
 
 // Notify user.
 if ($config->sendlinkmsg || is_siteadmin()) {
@@ -327,9 +235,9 @@ if ($config->sendlinkmsg || is_siteadmin()) {
         $userid,
         $cost,
         $currency,
-        $url,
+        $payurl,
         'Invoice created'
     );
 }
 
-redirect($url);
+redirect($payurl);

@@ -15,32 +15,54 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin administration pages are defined here.
+ * MonoBank webhook handler.
  *
- * @package     paygw_robokassa
+ * @package     paygw_monobank
  * @copyright   2024 Alex Orlov <snickser@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use core_payment\helper;
-use paygw_robokassa\notifications;
+use paygw_monobank\notifications;
 
 require("../../../config.php");
-global $CFG, $USER, $DB;
+global $CFG, $DB;
 require_once($CFG->libdir . '/filelib.php');
 
-defined('MOODLE_INTERNAL') || die();
+// Read the webhook payload.
+$input = file_get_contents('php://input');
+$data = json_decode($input);
 
-$invid     = required_param('InvId', PARAM_INT);
-$outsumm   = required_param('OutSum', PARAM_TEXT); // TEXT only!
-$signature = required_param('SignatureValue', PARAM_ALPHANUMEXT);
-
-if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
-    throw new \moodle_exception('FAIL. Not a valid transaction id');
+if (empty($data) || !isset($data->invoiceId) || !isset($data->status)) {
+    http_response_code(400);
+    die('FAIL. Invalid webhook data.');
 }
 
-if (!$payment = $DB->get_record('payments', ['id' => $robokassatx->paymentid])) {
-    throw new \moodle_exception('FAIL. Not a valid payment.');
+$invoiceid = $data->invoiceId;
+$status = $data->status;
+$reference = isset($data->reference) ? $data->reference : null;
+
+// Only process successful payments.
+if ($status !== 'success') {
+    http_response_code(200);
+    die('OK');
+}
+
+// Find payment by invoiceid.
+if (!$monobanktx = $DB->get_record('paygw_monobank', ['invoiceid' => $invoiceid])) {
+    http_response_code(404);
+    die('FAIL. Not a valid transaction id.');
+}
+
+// Already processed.
+if ($monobanktx->success > 0) {
+    http_response_code(200);
+    die('OK. Already processed.');
+}
+
+if (!$payment = $DB->get_record('payments', ['id' => $monobanktx->paymentid])) {
+    http_response_code(404);
+    die('FAIL. Not a valid payment.');
 }
 $component   = $payment->component;
 $paymentarea = $payment->paymentarea;
@@ -49,65 +71,32 @@ $paymentid   = $payment->id;
 $userid      = $payment->userid;
 
 // Get config.
-$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
+$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'monobank');
 
-// Check test-mode.
-if ($config->istestmode) {
-    $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
-    $robokassatx->success = 3;
-} else {
-    $mrhpass2 = $config->password2;      // Merchant pass2 here.
-    $robokassatx->success = 1;
+// Optionally verify the payment status via API.
+$apiurl = 'https://api.monobank.ua/api/merchant/invoice/status?invoiceId=' . urlencode($invoiceid);
+$curl = new curl();
+$curl->setHeader([
+    'X-Token: ' . $config->api_token,
+]);
+$options = [
+    'CURLOPT_RETURNTRANSFER' => true,
+    'CURLOPT_TIMEOUT' => 30,
+    'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+    'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+];
+$jsonresponse = $curl->get($apiurl, $options);
+$statusresponse = json_decode($jsonresponse);
+
+if (empty($statusresponse) || !isset($statusresponse->status) || $statusresponse->status !== 'success') {
+    http_response_code(400);
+    die('FAIL. Payment not confirmed by API.');
 }
 
-// Check crypto or set default.
-if (isset($config->crypto)) {
-    $crypto = $config->crypto;
-} else {
-    $crypto = 'md5';
+// Update payment amount from actual data.
+if (isset($statusresponse->amount)) {
+    $payment->amount = $statusresponse->amount / 100;
 }
-
-// Check crc.
-$crc = strtoupper(hash($crypto, "$outsumm:$invid:$mrhpass2"));
-if ($signature !== $crc) {
-    throw new \moodle_exception('FAIL. Signature does not match.');
-}
-
-// Check invoice.
-if ($config->checkinvoice && !$config->istestmode) {
-    $mrhlogin = $config->merchant_login;
-    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
-    $crc = strtoupper(hash($crypto, "$mrhlogin:$invid:$mrhpass2"));
-    $location .= "?MerchantLogin=$mrhlogin" .
-        "&InvoiceID=$invid" .
-        "&Signature=$crc";
-    $options = [
-       'CURLOPT_RETURNTRANSFER' => true,
-       'CURLOPT_TIMEOUT' => 30,
-       'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
-       'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
-       ];
-    $curl = new curl();
-    $xmlresponse = $curl->get($location, $options);
-    $response = xmlize($xmlresponse, $whitespace = 1, $encoding = 'UTF-8', false);
-
-    $err = $response['OperationStateResponse']['#']['Result'][0]['#']['Code'][0]['#'];
-    if ($err) {
-        throw new \moodle_exception('FAIL. Invoice result error.');
-    }
-    $err = $response['OperationStateResponse']['#']['State'][0]['#']['Code'][0]['#'];
-    if ($err !== '100') {
-        throw new \moodle_exception('FAIL. Invoice not paid.');
-    }
-}
-
-// For currency conversion.
-$payment->amount = (float)$outsumm;
-if ($payment->currency !== 'RUB') {
-    $payment->currency = 'RUB';
-}
-
-// Update payment.
 $payment->timemodified = time();
 $DB->update_record('payments', $payment);
 
@@ -115,24 +104,20 @@ $DB->update_record('payments', $payment);
 helper::deliver_order($component, $paymentarea, $itemid, $paymentid, $userid);
 
 // Notify user.
-if ($robokassatx->recurrent) {
-    $reason = 'Success recurrent';
-    $nextpay = userdate($robokassatx->recurrent, "%d %B %Y, %k:%M");
-} else {
-    $reason = 'Success completed';
-}
 notifications::notify(
     $userid,
     $payment->amount,
     $payment->currency,
     $paymentid,
-    $reason,
-    $nextpay
+    'Success completed'
 );
 
 // Update paygw.
-if (!$DB->update_record('paygw_robokassa', $robokassatx)) {
-    throw new \moodle_exception('FAIL. Update db error.');
-} else {
-    die('OK' . $invid);
+$monobanktx->success = $config->istestmode ? 3 : 1;
+if (!$DB->update_record('paygw_monobank', $monobanktx)) {
+    http_response_code(500);
+    die('FAIL. Update db error.');
 }
+
+http_response_code(200);
+die('OK');

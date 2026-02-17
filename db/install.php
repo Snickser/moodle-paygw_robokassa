@@ -1,5 +1,5 @@
 <?php
-// This file is part of the bank paymnts module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * paygw_robokassa installer script.
+ * paygw_monobank installer script.
  *
- * @package    paygw_robokassa
+ * @package    paygw_monobank
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,11 +27,11 @@
  *
  * @return boolean
  */
-function xmldb_paygw_robokassa_install() {
+function xmldb_paygw_monobank_install() {
     global $CFG;
 
-    // Enable the bank payment gateway on installation. It still needs to be configured and enabled for accounts.
+    // Enable the monobank payment gateway on installation.
     $order = (!empty($CFG->paygw_plugins_sortorder)) ? explode(',', $CFG->paygw_plugins_sortorder) : [];
-    set_config('paygw_plugins_sortorder', join(',', array_merge($order, ['robokassa'])));
+    set_config('paygw_plugins_sortorder', join(',', array_merge($order, ['monobank'])));
     return true;
 }

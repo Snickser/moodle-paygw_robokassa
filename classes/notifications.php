@@ -14,39 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/** Notifications for paygw_robokassa.
+/** Notifications for paygw_monobank.
  *
- * @package    paygw_robokassa
+ * @package    paygw_monobank
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace paygw_robokassa;
+namespace paygw_monobank;
 
 /** Notifications class.
  *
  * Handle notifications for users about their transactions.
  *
- * @package    paygw_robokassa
+ * @package    paygw_monobank
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class notifications {
     /**
-     * Function that handle the notifications about transactions using robokassa payment gateway
+     * Function that handle the notifications about transactions using monobank payment gateway
      * and all kinds of responses.
-     *
-     * this function sending the message to the user and return the id of the message if needed
-     * or false in case of error.
      *
      * @param int $userid
      * @param float $fee
      * @param string $currency
      * @param int $orderid
      * @param string $type
-     * @param string $nextpay
      * @return int|false
      */
-    public static function notify($userid, $fee, $currency, $orderid, $type = '', $nextpay = '') {
+    public static function notify($userid, $fee, $currency, $orderid, $type = '') {
         global $DB, $CFG;
 
         // Get the user object for messaging and fullname.
@@ -55,42 +51,29 @@ class notifications {
             return false;
         }
 
-        // Set the object wiht all informations to notify the user.
+        // Set the object with all information to notify the user.
         $a = (object)[
-            'fee'       => $fee, // The original cost.
+            'fee'       => $fee,
             'currency'  => $currency,
             'orderid'   => $orderid,
             'firstname' => $user->firstname,
             'fullname'  => fullname($user),
-            'nextpay'   => $nextpay,
             'localizedcost' => \core_payment\helper::get_cost_as_string($fee, $currency),
             'url'       => $CFG->wwwroot,
         ];
 
         $message = new \core\message\message();
-        $message->component = 'paygw_robokassa';
-        $message->name      = 'payment_receipt'; // The notification name from message.php.
-        $message->userfrom  = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here.
+        $message->component = 'paygw_monobank';
+        $message->name      = 'payment_receipt';
+        $message->userfrom  = \core_user::get_noreply_user();
         $message->userto    = $user;
-        $message->subject   = get_string('messagesubject', 'paygw_robokassa', $type);
+        $message->subject   = get_string('messagesubject', 'paygw_monobank', $type);
         switch ($type) {
             case 'Success completed':
-                $messagebody = get_string('message_success_completed', 'paygw_robokassa', $a);
-                break;
-            case 'Success recurrent':
-                $messagebody = get_string('message_success_recurrent', 'paygw_robokassa', $a);
-                break;
-            case 'Recurrent created':
-                $messagebody = get_string('message_recurrent_created', 'paygw_robokassa', $a);
-                break;
-            case 'Recurrent error':
-                $messagebody = get_string('message_recurrent_error', 'paygw_robokassa', $a);
-                break;
-            case 'Recurrent notify':
-                $messagebody = get_string('message_recurrent_notify', 'paygw_robokassa', $a);
+                $messagebody = get_string('message_success_completed', 'paygw_monobank', $a);
                 break;
             case 'Invoice created':
-                $messagebody = get_string('message_invoice_created', 'paygw_robokassa', $a);
+                $messagebody = get_string('message_invoice_created', 'paygw_monobank', $a);
                 break;
             default:
                 $messagebody = 'null';
@@ -99,13 +82,12 @@ class notifications {
         $message->fullmessage       = $messagebody;
         $message->fullmessageformat = FORMAT_MARKDOWN;
         $message->fullmessagehtml   = "<p>$messagebody</p>";
-        $message->notification      = 1; // Because this is a notification generated from Moodle, not a user-to-user message.
-        $message->contexturl        = ''; // A relevant URL for the notification.
-        $message->contexturlname    = ''; // Link title explaining where users get to for the contexturl.
-        $content = ['*' => ['header' => '', 'footer' => '']]; // Extra content for specific processor.
+        $message->notification      = 1;
+        $message->contexturl        = '';
+        $message->contexturlname    = '';
+        $content = ['*' => ['header' => '', 'footer' => '']];
         $message->set_additional_content('email', $content);
 
-        // Actually send the message.
         $messageid = message_send($message);
 
         return $messageid;

@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Redirects user to the payment page
+ * Handles user return from MonoBank payment page.
  *
- * @package   paygw_robokassa
+ * @package   paygw_monobank
  * @copyright 2024 Alex Orlov <snickser@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,17 +31,14 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$invid = required_param('InvId', PARAM_INT);
+$paymentid = required_param('id', PARAM_INT);
 
-$outsumm   = optional_param('OutSum', null, PARAM_TEXT);
-$signature = optional_param('SignatureValue', null, PARAM_TEXT);
-
-if (!$robokassatx = $DB->get_record('paygw_robokassa', ['paymentid' => $invid])) {
-    throw new \moodle_exception(get_string('error_notvalidtxid', 'paygw_robokassa'), 'paygw_robokassa');
+if (!$monobanktx = $DB->get_record('paygw_monobank', ['paymentid' => $paymentid])) {
+    throw new \moodle_exception(get_string('error_notvalidtxid', 'paygw_monobank'), 'paygw_monobank');
 }
 
-if (!$payment = $DB->get_record('payments', ['id' => $robokassatx->paymentid])) {
-    throw new \moodle_exception(get_string('error_notvalidpayment', 'paygw_robokassa'), 'paygw_robokassa');
+if (!$payment = $DB->get_record('payments', ['id' => $monobanktx->paymentid])) {
+    throw new \moodle_exception(get_string('error_notvalidpayment', 'paygw_monobank'), 'paygw_monobank');
 }
 
 $paymentarea = $payment->paymentarea;
@@ -51,39 +48,43 @@ $itemid      = $payment->itemid;
 // Build redirect.
 $url = helper::get_success_url($component, $paymentarea, $itemid);
 
-if (!isset($signature)) {
-    redirect($url, '', 0, '');
-}
-
-// Get config.
-$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
-
-// Check test-mode.
-if ($config->istestmode) {
-    $mrhpass1 = $config->test_password1; // Merchant test_pass2 here.
+if ($monobanktx->success) {
+    redirect($url, get_string('payment_success', 'paygw_monobank'), 0, 'success');
 } else {
-    $mrhpass1 = $config->password1;      // Merchant pass2 here.
-}
+    // Check status via API in case webhook hasn't arrived yet.
+    $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'monobank');
+    require_once($CFG->libdir . '/filelib.php');
 
-// Check crypto or set default.
-if (isset($config->crypto)) {
-    $crypto = $config->crypto;
-} else {
-    $crypto = 'md5';
-}
+    $apiurl = 'https://api.monobank.ua/api/merchant/invoice/status?invoiceId=' . urlencode($monobanktx->invoiceid);
+    $curl = new curl();
+    $curl->setHeader([
+        'X-Token: ' . $config->api_token,
+    ]);
+    $options = [
+        'CURLOPT_RETURNTRANSFER' => true,
+        'CURLOPT_TIMEOUT' => 30,
+        'CURLOPT_HTTP_VERSION' => CURL_HTTP_VERSION_1_1,
+        'CURLOPT_SSLVERSION' => CURL_SSLVERSION_TLSv1_2,
+    ];
+    $jsonresponse = $curl->get($apiurl, $options);
+    $statusresponse = json_decode($jsonresponse);
 
-$signature = strtoupper($signature);  // Force uppercase.
+    if (!empty($statusresponse) && isset($statusresponse->status) && $statusresponse->status === 'success') {
+        // Payment is successful but webhook hasn't been processed yet.
+        // Process it now.
+        if (isset($statusresponse->amount)) {
+            $payment->amount = $statusresponse->amount / 100;
+        }
+        $payment->timemodified = time();
+        $DB->update_record('payments', $payment);
 
-// Build own CRC.
-$crc = strtoupper(hash($crypto, "$outsumm:$invid:$mrhpass1"));
+        helper::deliver_order($component, $paymentarea, $itemid, $payment->id, $payment->userid);
 
-// Check crc and redirect.
-if ($signature != $crc) {
-    throw new \moodle_exception(get_string('error_notvalidsignature', 'paygw_robokassa'), 'paygw_robokassa');
-}
+        $monobanktx->success = $config->istestmode ? 3 : 1;
+        $DB->update_record('paygw_monobank', $monobanktx);
 
-if ($robokassatx->success) {
-    redirect($url, get_string('payment_success', 'paygw_robokassa'), 0, 'success');
-} else {
-    redirect($url, get_string('payment_error', 'paygw_robokassa'), 0, 'error');
+        redirect($url, get_string('payment_success', 'paygw_monobank'), 0, 'success');
+    } else {
+        redirect($url, get_string('payment_error', 'paygw_monobank'), 0, 'error');
+    }
 }

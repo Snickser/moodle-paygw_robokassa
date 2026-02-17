@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines message providers for robokassa payment gateway.
+ * Defines message providers for monobank payment gateway.
  *
- * @package    paygw_robokassa
+ * @package    paygw_monobank
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

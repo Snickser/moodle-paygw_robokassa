@@ -17,15 +17,15 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package     paygw_robokassa
+ * @package     paygw_monobank
  * @copyright   2024 Alex Orlov <snickser@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025053001;
+$plugin->version   = 2025021700;
 $plugin->requires  = 2023100900;
-$plugin->component = 'paygw_robokassa';
-$plugin->release   = '2.11';
-$plugin->maturity  = MATURITY_STABLE;
+$plugin->component = 'paygw_monobank';
+$plugin->release   = '1.0';
+$plugin->maturity  = MATURITY_BETA;

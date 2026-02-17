@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Settings for the Robokassa payment gateway
+ * Settings for the MonoBank payment gateway
  *
- * @package    paygw_robokassa
+ * @package    paygw_monobank
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,13 +25,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-    $plugininfo = \core_plugin_manager::instance()->get_plugin_info('paygw_robokassa');
-    $donate = get_string('donate', 'paygw_robokassa', $plugininfo);
+    $plugininfo = \core_plugin_manager::instance()->get_plugin_info('paygw_monobank');
+    $donate = get_string('donate', 'paygw_monobank', $plugininfo);
 
     $settings->add(new admin_setting_heading(
-        'paygw_robokassa_settings',
-        get_string('pluginname_desc', 'paygw_robokassa'),
+        'paygw_monobank_settings',
+        get_string('pluginname_desc', 'paygw_monobank'),
         $donate,
     ));
-    \core_payment\helper::add_common_gateway_settings($settings, 'paygw_robokassa');
+    \core_payment\helper::add_common_gateway_settings($settings, 'paygw_monobank');
 }

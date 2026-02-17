@@ -17,7 +17,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     paygw_robokassa
+ * @package     paygw_monobank
  * @category    admin
  * @copyright   2024 Alex Orlov <snickser@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -47,39 +47,19 @@ $params = [
     'description' => $description,
 ];
 
-$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
-$payable = helper::get_payable($component, $paymentarea, $itemid);// Get currency and payment amount.
+$config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'monobank');
+$payable = helper::get_payable($component, $paymentarea, $itemid);
 $currency = $payable->get_currency();
-$surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
+$surcharge = helper::get_gateway_surcharge('monobank');
 $fee = helper::get_rounded_cost($payable->get_amount(), $currency, $surcharge);
 
 // Get course info and check area.
 $enrolperiod = 0;
 $enrolperioddesc = null;
-$uninterrupted = false;
 $showenrolperiod = true;
 if ($component == "enrol_yafee") {
     $cs = $DB->get_record('enrol', ['id' => $itemid, 'enrol' => 'yafee']);
     $enrolperiod = $cs->enrolperiod;
-    if ($cs->customint5) {
-        if ($data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $cs->id])) {
-            // Prepare month and year.
-            $timeend = time();
-            if (isset($data->timeend)) {
-                $timeend = $data->timeend;
-            }
-            // Check periods.
-            if ($data->timeend < time() && $data->timestart) {
-                if ($cs->enrolperiod) {
-                    $uninterrupted = true;
-                } else if ($cs->customchar1 == 'month' && $cs->customint7 > 0) {
-                    $uninterrupted = true;
-                } else if ($cs->customchar1 == 'year' && $cs->customint7 > 0) {
-                    $uninterrupted = true;
-                }
-            }
-        }
-    }
     // Set month/year period.
     if ($cs->customchar1 == 'month' && $cs->customint7 > 0) {
         $enrolperiod = $cs->customint7;
@@ -117,8 +97,8 @@ if ($enrolperiod > 0 && $showenrolperiod) {
 // Set the context of the page.
 $PAGE->set_context(context_system::instance());
 
-$PAGE->set_url('/payment/gateway/robokassa/method.php', $params);
-$string = get_string('payment', 'paygw_robokassa');
+$PAGE->set_url('/payment/gateway/monobank/method.php', $params);
+$string = get_string('payment', 'paygw_monobank');
 $PAGE->set_title(format_string($string));
 
 // Set the appropriate headers for the page.
@@ -126,8 +106,7 @@ $PAGE->set_cacheable(false);
 $PAGE->set_pagelayout('standard');
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('payment', 'paygw_robokassa'), 2);
-
+echo $OUTPUT->heading(get_string('payment', 'paygw_monobank'), 2);
 
 // Create template.
 $templatedata = new stdClass();
@@ -165,10 +144,6 @@ if (!$config->fixcost) {
     $templatedata->localizedcost = \core_payment\helper::get_cost_as_string($fee, $currency);
 }
 
-if ($uninterrupted && $fee != $cs->cost) {
-    $templatedata->uninterrupted = true;
-}
-
 $templatedata->skipmode = $config->skipmode;
 
 if ($config->skipmode || $config->passwordmode) {
@@ -183,12 +158,8 @@ if (!empty($config->fixdesc)) {
     $templatedata->fixdesc = 0;
 }
 
-if (!$config->istestmode) {
-    $templatedata->recurrent = $config->recurrent;
-}
+$templatedata->image = $OUTPUT->image_url('img', 'paygw_monobank');
 
-$templatedata->image = $OUTPUT->image_url('img', 'paygw_robokassa');
-
-echo $OUTPUT->render_from_template('paygw_robokassa/method', $templatedata);
+echo $OUTPUT->render_from_template('paygw_monobank/method', $templatedata);
 
 echo $OUTPUT->footer();

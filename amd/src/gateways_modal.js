@@ -14,9 +14,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This module is responsible for PayNL content in the gateways modal.
+ * This module is responsible for MonoBank content in the gateways modal.
  *
- * @module     paygw_robokassa/gateways_modal
+ * @module     paygw_monobank/gateways_modal
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,14 +25,14 @@ import Templates from 'core/templates';
 import Modal from 'core/modal';
 
 /**
- * Show modal with the PayNL placeholder.
+ * Show modal with the MonoBank placeholder.
  *
  * @returns {Promise}
  */
 
 const showModalWithPlaceholder = async() => {
     const modal = await Modal.create({
-        body: await Templates.render('paygw_robokassa/button_placeholder', {}),
+        body: await Templates.render('paygw_monobank/button_placeholder', {}),
         show: true,
         removeOnClose: true,
     });
@@ -52,7 +52,7 @@ const showModalWithPlaceholder = async() => {
 export const process = (component, paymentArea, itemId, description) => {
     return showModalWithPlaceholder()
         .then(() => {
-            location.href = M.cfg.wwwroot + '/payment/gateway/robokassa/method.php?' +
+            location.href = M.cfg.wwwroot + '/payment/gateway/monobank/method.php?' +
                 'sesskey=' + M.cfg.sesskey +
                 '&component=' + component +
                 '&paymentarea=' + paymentArea +

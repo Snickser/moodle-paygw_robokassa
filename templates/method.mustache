@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template paygw_robokassa/method
+    @template paygw_monobank/method
 
     Context variables required for this template:
     * fee - the amount to pay
@@ -27,37 +27,33 @@
         "image": "https://url",
         "sesskey": "abcd",
         "fee": "10.05",
-        "currency": "RUB",
+        "currency": "UAH",
         "description": "For enrolment in course",
         "enrolperiod": "7",
         "enrolperiod_desc": "day",
         "passwordmode": "1",
         "skipmode": "1",
         "suggested": "100",
-        "group": "Test",
         "maxcost": "1000",
         "fixdesc": "1",
         "fixcost": "0",
-        "recurrent": "1",
-        "localizedcost": "1 $",
-        "uninterrupted": 1
-
+        "localizedcost": "100 UAH"
     }
 
 }}
-<form id="robokassa-method-select" action="{{config.wwwroot}}/payment/gateway/robokassa/pay.php" class="robokassa-form" method="POST">
+<form id="monobank-method-select" action="{{config.wwwroot}}/payment/gateway/monobank/pay.php" class="monobank-form" method="POST">
     <div class="cost-display">
         <div style="text-align: center;">
 
 {{^fixdesc}}
-<p>{{# str }} abouttopay, paygw_robokassa {{/ str}} "{{description}}"</p>
+<p>{{# str }} abouttopay, paygw_monobank {{/ str}} "{{description}}"</p>
 {{/fixdesc}}
 
 {{^fixcost}}
-<p>{{# str }} paymore, paygw_robokassa {{/ str}}</p>
+<p>{{# str }} paymore, paygw_monobank {{/ str}}</p>
 {{/fixcost}}
 
-<h3>{{# str }} amount, paygw_robokassa {{/ str}}
+<h3>{{# str }} amount, paygw_monobank {{/ str}}
 {{^fixcost}}
  <input type="number" id="costself" name="costself"
  value="{{#suggest}}{{suggest}}{{/suggest}}{{^suggest}}{{fee}}{{/suggest}}"
@@ -68,7 +64,7 @@
 </h3>
 
 
-<img src="{{{image}}}" alt="Robokassa" height="60">
+<img src="{{{image}}}" alt="MonoBank" height="60">
 
         </div>
     </div>
@@ -78,35 +74,27 @@
 
 <div style="text-align: center;">
 
-{{#uninterrupted}}
- <h5>{{# str }} uninterrupted_desc, paygw_robokassa {{/ str}}</h5>
-{{/uninterrupted}}
-
 {{#enrolperiod}}
- <h4>{{# str }} enrolperiod, paygw_robokassa, { "count": {{enrolperiod}}, "desc": {{#quote}} {{enrolperiod_desc}} {{/quote}} } {{/ str}}</h4>
+ <h4>{{# str }} enrolperiod, paygw_monobank, { "count": {{enrolperiod}}, "desc": {{#quote}} {{enrolperiod_desc}} {{/quote}} } {{/ str}}</h4>
 {{/enrolperiod}}
 
-{{#recurrent}}
-<h5>{{# str }} recurrentdesc, paygw_robokassa {{/ str}}</h5>
-{{/recurrent}}
-
     <p>{{# str }} paymentinstant {{/ str}}</p>
-    <button type="submit" class="btn btn-primary" id="robokassa-modal-submit-btn">{{# str }} sendpaymentbutton, paygw_robokassa {{/ str }}</button>
+    <button type="submit" class="btn btn-primary" id="monobank-modal-submit-btn">{{# str }} sendpaymentbutton, paygw_monobank {{/ str }}</button>
     <br><br>
 
 {{#usedetails}}
 <details>
-  <summary>{{# str }} usedetails_text, paygw_robokassa {{/ str }}</summary>
+  <summary>{{# str }} usedetails_text, paygw_monobank {{/ str }}</summary>
 {{/usedetails}}
 
 {{#skipmode}}
-<p>{{# str }} skipmode_text, paygw_robokassa {{/ str}}</p>
-<button type="submit" id="skipmode" name="skipmode" value="1" class="btn btn-secondary btn-paygw-skipmode">{{# str }} skippaymentbutton, paygw_robokassa {{/ str }}</button>
+<p>{{# str }} skipmode_text, paygw_monobank {{/ str}}</p>
+<button type="submit" id="skipmode" name="skipmode" value="1" class="btn btn-secondary btn-paygw-skipmode">{{# str }} skippaymentbutton, paygw_monobank {{/ str }}</button>
 {{/skipmode}}
 
 {{^skipmode}}
 {{#passwordmode}}
-<p>{{# str }} password_text, paygw_robokassa {{/ str}} <br>
+<p>{{# str }} password_text, paygw_monobank {{/ str}} <br>
 {{# str }} password {{/ str}}: <input type="password" id="password" name="password" value="" autocomplete="off">
 <button type="submit" class="btn btn-secondary btn-paygw-password">{{# str }} submit {{/ str }}</button>
 </p>
