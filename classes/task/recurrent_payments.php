@@ -134,6 +134,12 @@ class recurrent_payments extends \core\task\scheduled_task {
             $payable = helper::get_payable($component, $paymentarea, $itemid);
             $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
 
+            // Check country.
+            $apiurl = 'auth.robokassa.ru';
+            if (isset($config->origin) && $config->origin == 2) {
+                $apiurl = 'auth.robokassa.kz';
+            }
+
             if (date('d') != $config->recurrentday && $config->recurrentday > 0) {
                 mtrace("$data->paymentid too early");
                 continue;
@@ -191,7 +197,7 @@ class recurrent_payments extends \core\task\scheduled_task {
               "&OutSum=" . $cost;
 
             // Make invoice.
-            $location = 'https://auth.robokassa.ru/Merchant/Recurring';
+            $location = 'https://' . $apiurl . '/Merchant/Recurring';
             $options = [
               'CURLOPT_RETURNTRANSFER' => true,
               'CURLOPT_TIMEOUT' => 30,

@@ -51,6 +51,12 @@ $userid      = $payment->userid;
 // Get config.
 $config = (object) helper::get_gateway_configuration($component, $paymentarea, $itemid, 'robokassa');
 
+// Check country.
+$apiurl = 'auth.robokassa.ru';
+if (isset($config->origin) && $config->origin == 2) {
+    $apiurl = 'auth.robokassa.kz';
+}
+
 // Check test-mode.
 if ($config->istestmode) {
     $mrhpass2 = $config->test_password2; // Merchant test_pass2 here.
@@ -76,7 +82,7 @@ if ($signature !== $crc) {
 // Check invoice.
 if ($config->checkinvoice && !$config->istestmode) {
     $mrhlogin = $config->merchant_login;
-    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+    $location = 'https://' . $apiurl . '/Merchant/WebService/Service.asmx/OpStateExt';
     $crc = strtoupper(hash($crypto, "$mrhlogin:$invid:$mrhpass2"));
     $location .= "?MerchantLogin=$mrhlogin" .
         "&InvoiceID=$invid" .

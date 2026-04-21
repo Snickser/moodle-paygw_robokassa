@@ -50,6 +50,12 @@ $currency = $payable->get_currency();
 $surcharge = helper::get_gateway_surcharge('robokassa');// In case user uses surcharge.
 $cost = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
 
+// Check country.
+$apiurl = 'auth.robokassa.ru';
+if (isset($config->origin) && $config->origin == 2) {
+    $apiurl = 'auth.robokassa.kz';
+}
+
 // Check self cost.
 if (!empty($costself) && !$config->fixcost) {
     $cost = $costself;
@@ -212,7 +218,7 @@ if (isset($config->crypto)) {
 
 // Checks if invoiceid already exist.
 if ($config->checkinvoice) {
-    $location = 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt';
+    $location = 'https://' . $apiurl . '/Merchant/WebService/Service.asmx/OpStateExt';
     $crc = strtoupper(hash($crypto, "$mrhlogin:$invid:$mrhpass2"));
     $location .= "?MerchantLogin=$mrhlogin" .
         "&InvoiceID=$invid" .
@@ -287,7 +293,7 @@ if ($config->recurrent == 1 && $currency == 'RUB' && !$config->istestmode) {
 }
 
 // Make invoice.
-$location = 'https://auth.robokassa.ru/Merchant/Indexjson.aspx';
+$location = 'https://' . $apiurl . '/Merchant/Indexjson.aspx';
 $options = [
     'CURLOPT_RETURNTRANSFER' => true,
     'CURLOPT_TIMEOUT' => 30,
@@ -319,7 +325,7 @@ $paygwdata->paymentid = $paymentid;
 $paygwdata->invoiceid = $response->invoiceID;
 $DB->update_record('paygw_robokassa', $paygwdata);
 
-$url = 'https://auth.robokassa.ru/Merchant/Index/' . $response->invoiceID;
+$url = 'https://' . $apiurl . '/Merchant/Index/' . $response->invoiceID;
 
 // Notify user.
 if ($config->sendlinkmsg || is_siteadmin()) {

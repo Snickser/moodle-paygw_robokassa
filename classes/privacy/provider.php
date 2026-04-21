@@ -35,7 +35,7 @@ use core_privacy\local\request\writer;
  * @copyright  2024 Alex Orlov <snicker@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider implements \core_privacy\local\request\data_provider, paygw_provider, \core_privacy\local\metadata\provider {
+class provider implements \core_privacy\local\metadata\provider, \core_privacy\local\request\data_provider, paygw_provider {
     /**
      * Returns meta data about this system.
      *
