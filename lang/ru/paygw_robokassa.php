@@ -21,7 +21,6 @@
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 $string['abouttopay'] = 'Вы собираетесь пожертвовать на';
 $string['amount'] = 'Сумма:';
 $string['callback_help'] = 'Скопируйте это и поместите в URL-адреса технических настроек магазина Robokassa, метод отсылки - POST.';
@@ -36,18 +35,19 @@ $string['donate'] = '<div>Версия плагина: {$a->release} ({$a->versi
 Новые версии плагина вы можете найти на <a href=https://github.com/Snickser/moodle-paygw_robokassa>GitHub.com</a>
 <img src="https://img.shields.io/github/v/release/Snickser/moodle-paygw_robokassa.svg"><br>
 Пожалуйста, отправьте мне немножко <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">доната</a>😊</div>
+<iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
+width="330" height="35" frameborder="0" allowtransparency="true" scrolling="no"></iframe><br>
 TRX TRGMc3b63Lus6ehLasbbHxsb2rHky5LbPe<br>
 BTC 1GFTTPCgRTC8yYL1gU7wBZRfhRNRBdLZsq<br>
 ETH 0x1bce7aadef39d328d262569e6194febe597cb2c9<br>
-<iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
-width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe><br>';
+';
 $string['enrolperiod'] = 'Продолжительность обучения ({$a->desc}): {$a->count}';
 $string['error_txdatabase'] = 'Error write TX data to database';
 $string['fixcost'] = 'Режим фиксированной цены';
 $string['fixcost_help'] = 'Отключает для студентов возможность оплаты произвольной суммой.';
 $string['fixdesc'] = 'Фиксированный комментарий платежа';
 $string['fixdesc_help'] = 'Эта настройка устанавливает фиксированный комментарий для всех платежей, и отключает отображение описания комментария на странице платежа.';
-$string['gatewaydescription'] = 'Robokassa — авторизованный платежный шлюз для обработки транзакций по кредитным картам.';
+$string['gatewaydescription'] = 'Robokassa — авторизованный платёжный шлюз для обработки транзакций по кредитным картам.';
 $string['gatewayname'] = 'Robokassa';
 $string['inccurrlabel'] = 'Метод платежа';
 $string['istestmode'] = 'Тестовый режим';
@@ -93,7 +93,7 @@ $string['payment'] = 'Пожертвование';
 $string['payment_error'] = 'Ошибка создания платежа, попробуйте ещё раз или обратитесь в тех.поддержку.';
 $string['payment_success'] = 'Оплата успешно произведена';
 $string['paymentserver'] = 'URL сервера оплаты';
-$string['paymentsystem'] = 'Платежная система';
+$string['paymentsystem'] = 'Платёжная система';
 $string['paymore'] = 'Если вы хотите пожертвовать больше, то просто впишите свою сумму вместо указанной.';
 $string['plastic'] = 'VISA, MasterCard, МИР';
 $string['pluginname'] = 'Платежи Robokassa';

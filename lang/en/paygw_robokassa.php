@@ -21,7 +21,6 @@
  * @copyright  2024 Alex Orlov <snickser@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 $string['abouttopay'] = 'You are about to pay for';
 $string['amount'] = 'Amount:';
 $string['callback_help'] = 'Copy this and put it in URLs at your Robokassa shop technical preferences, method of sending data - POST.';
@@ -36,11 +35,12 @@ $string['donate'] = '<div>Plugin version: {$a->release} ({$a->versiondisk})<br>
 You can find new versions of the plugin at <a href=https://github.com/Snickser/moodle-paygw_robokassa>GitHub.com</a>
 <img src="https://img.shields.io/github/v/release/Snickser/moodle-paygw_robokassa.svg"><br>
 Please send me some <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">donate</a>😊</div>
+<iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
+width="330" height="35" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
 TRX TRGMc3b63Lus6ehLasbbHxsb2rHky5LbPe<br>
 BTC 1GFTTPCgRTC8yYL1gU7wBZRfhRNRBdLZsq<br>
 ETH 0x1bce7aadef39d328d262569e6194febe597cb2c9<br>
-<iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
-width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
+';
 $string['enrolperiod'] = 'Enrolment duration ({$a->desc}): {$a->count}';
 $string['error_notvalidpayment'] = 'FAIL. Not a valid payment';
 $string['error_notvalidsignature'] = 'FAIL. Not a valid signature';
@@ -81,6 +81,8 @@ You can disable regular payments in the Reports (payment) section in your person
 $string['messageprovider:payment_receipt'] = 'Payment receipt';
 $string['messagesubject'] = 'Payment notification ({$a})';
 $string['noreportplugin'] = '<font color="red">The <a href="https://github.com/Snickser/moodle-report_payments">report_payments</a> plugin is not installed, you will not be able to cancel recurring payments.</font>';
+$string['origin'] = 'Country of origin';
+$string['origin_help'] = 'Select the payment interface country.';
 $string['password'] = 'Password';
 $string['password1'] = 'Password1';
 $string['password2'] = 'Password2';

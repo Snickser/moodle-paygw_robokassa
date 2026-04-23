@@ -50,6 +50,20 @@ class gateway extends \core_payment\gateway {
     public static function add_configuration_to_gateway_form(\core_payment\form\account_gateway $form): void {
         $mform = $form->get_mform();
 
+        $options = [
+          '1' => get_string('RU', 'countries'),
+          '2' => get_string('KZ', 'countries'),
+        ];
+        $mform->addElement(
+            'select',
+            'origin',
+            get_string('origin', 'paygw_robokassa'),
+            $options
+        );
+
+        $mform->setType('origin', PARAM_TEXT);
+        $mform->addHelpButton('origin', 'origin', 'paygw_robokassa');
+
         $mform->addElement('text', 'merchant_login', get_string('merchant_login', 'paygw_robokassa'));
         $mform->setType('merchant_login', PARAM_TEXT);
         $mform->addRule('merchant_login', get_string('required'), 'required', null, 'client');
